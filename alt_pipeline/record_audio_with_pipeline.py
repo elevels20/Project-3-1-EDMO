@@ -25,7 +25,7 @@ last_recording_path = None
 # Tkinter UI
 root = tk.Tk()
 root.title("Audio Recorder")
-root.geometry("300x275")
+root.geometry("300x325")
 
 window_len_var = tk.IntVar(value=2)
 
