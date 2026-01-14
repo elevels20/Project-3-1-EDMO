@@ -73,7 +73,7 @@ pipeline_btn.pack(pady=5)
 # Assign Clusters Button
 assign_btn = tk.Button(
     root,
-    text="Assign Audio Clusters",
+    text="Assign Clusters",
     width=20,
     state=tk.DISABLED
 )
