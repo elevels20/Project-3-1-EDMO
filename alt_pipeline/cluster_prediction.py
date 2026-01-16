@@ -61,5 +61,5 @@ def test_predict():
     print(assignments)
     return assignments
 
-test_predict()
+# test_predict()
 
