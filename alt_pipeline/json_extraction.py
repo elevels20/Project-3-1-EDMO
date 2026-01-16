@@ -8,6 +8,60 @@ class Datapoint:
         self.dimension_labels = labels
         self.dimension_values = values
 
+
+selected_features = [
+    "audio_features.base_window_len",                                           # 1
+    "audio_features.emotion.emotions[0].score",                                 # 2
+    "audio_features.emotion.emotions[1].score",                                 # 3
+    "audio_features.emotion.emotions[2].score",                                 # 4
+    "audio_features.emotion.emotions[3].score",                                 # 5
+    "audio_features.emotion.emotions[4].score",                                 # 6
+    "audio_features.emotion.emotions[5].score",                                 # 7
+    "audio_features.emotion.emotions[6].score",                                 # 8
+    "audio_features.nlp.sentiment.score",                                       # 9
+    "audio_features.nonverbal.basic_metrics.conversation.interruption_rate",    # 10
+    "audio_features.nonverbal.basic_metrics.conversation.num_speakers",         # 11
+    "audio_features.nonverbal.basic_metrics.conversation.overlap_duration",     # 12
+    "audio_features.nonverbal.basic_metrics.conversation.overlap_ratio",        # 13
+    "audio_features.nonverbal.basic_metrics.conversation.silence_duration",     # 14
+    "audio_features.nonverbal.basic_metrics.conversation.silence_ratio",       # 15
+    "audio_features.nonverbal.basic_metrics.conversation.total_interruptions",  # 16
+    "audio_features.nonverbal.basic_metrics.conversation.total_speaking_time",  # 17
+    "audio_features.window_duration",                                           # 18
+    "audio_features.window_end",                                                # 19
+    "audio_features.window_index",                                              # 20
+    "audio_features.window_start",                                              # 21
+    "robot_speed_features.avg_speed_cm_s",                                      # 22
+    "robot_speed_features.num_detections",                                      # 23
+    "robot_speed_features.window_end",                                          # 24
+    "robot_speed_features.window_index",                                        # 25
+    "robot_speed_features.window_start"
+]
+
+features_labels = [
+    "audio_features_emotion_emotions_0_score",
+    "audio_features_emotion_emotions_1_score",
+    "audio_features_emotion_emotions_2_score",
+    "audio_features_emotion_emotions_3_score",
+    "audio_features_emotion_emotions_4_score",
+    "audio_features_emotion_emotions_5_score",
+    "audio_features_emotion_emotions_6_score",
+    "audio_features_nlp_sentiment_score",
+    "audio_features_nonverbal_basic_metrics_conversation_interruption_rate",
+    "audio_features_nonverbal_basic_metrics_conversation_num_speakers",
+    "audio_features_nonverbal_basic_metrics_conversation_overlap_duration",
+    "audio_features_nonverbal_basic_metrics_conversation_overlap_ratio",
+    "audio_features_nonverbal_basic_metrics_conversation_silence_duration",
+    "audio_features_nonverbal_basic_metrics_conversation_silence_ratio",
+    "audio_features_nonverbal_basic_metrics_conversation_total_interruptions",
+    "audio_features_nonverbal_basic_metrics_conversation_total_speaking_time",
+    "audio_features_window_duration",
+
+    "robot_speed_features_avg_speed_cm_s",
+    "robot_speed_features_num_detections"
+]
+
+
 def get_by_path(obj, path):
     try:
         parts = path.replace("]", "").split(".")

@@ -57,7 +57,3 @@ def test_load():
     # Assuming test_save has already created the file
     loaded_data = load_cluster("test_cluster.pkl")
     print("Cluster Loaded")
-
-
-test_save()
-test_load()
