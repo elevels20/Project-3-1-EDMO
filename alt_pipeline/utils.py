@@ -19,7 +19,7 @@ sys.path.insert(0, str(project_root))
 
 # Import processors for direct function calls
 from src.python_services.emotion.processor import detect_emotion, get_processor as get_emotion_processor
-from src.python_services.nlp.processor import analyze_sentiment, get_processor as get_nlp_processor
+from src.python_services.nlp.processor import analyze_sentiment, get_processor as get_nlp_processor, get_simplar_nlp_features
 from src.python_services.nonverb_features.processor import (
     calculate_basic_metrics,
     calculate_pitch_features,
@@ -29,18 +29,10 @@ from src.python_services.nonverb_features.processor import (
 from src.python_services.asr.processor import transcribe
 from src.python_services.diarization.processor import diarize
 from src.python_services.robot_data.processor import parse_logs, extract_features
-
-# Service endpoints
-SERVICES = {
-    'asr': 'http://127.0.0.1:8001',
-    'diarization': 'http://127.0.0.1:8002',
-    'emotion': 'http://127.0.0.1:8003',
-    'nlp': 'http://127.0.0.1:8004',
-    'nonverb': 'http://127.0.0.1:8005',
-    'robot_data': 'http://127.0.0.1:8006',
-    'robot_speed': 'http://127.0.0.1:8007'
-}
-
+from src.python_services.robot_speed.app import (
+    compute_speed_for_window as compute_speed_for_window_service,
+    get_calibration_for_video
+)
 
 
 
@@ -79,7 +71,7 @@ def extract_robot_data_features(session_dir):
     
     return robot_interaction_features
 
-def run_asr_and_diarization(audio_path: str) -> Dict[str, Any]:
+def run_asr_and_diarization(audio_path: str, num_speakers: int = None, min_speakers: int = None, max_speakers: int = None) -> Dict[str, Any]:
     print(f"  Running ASR and diarization on full audio...")
 
     results = {}
@@ -91,10 +83,9 @@ def run_asr_and_diarization(audio_path: str) -> Dict[str, Any]:
     waveform, sr = librosa.load(audio_path, sr=16000, mono=True)
     waveform = torch.from_numpy(waveform).unsqueeze(0)  # (1, time)
 
-    results['diarization'] = diarize({
-        "waveform": waveform,
-        "sample_rate": sr
-    })
+    
+    diarization_input = {'waveform': waveform, 'sample_rate': sr}
+    results['diarization'] = diarize(diarization_input, num_speakers=num_speakers, min_speakers=min_speakers, max_speakers=max_speakers)
 
     return results
 """
@@ -170,6 +161,7 @@ def extract_features_for_window(window: np.ndarray, window_segments: Dict[str, A
         with ThreadPoolExecutor(max_workers=6) as executor:
             emotion_future = executor.submit(detect_emotion, full_text, processors["emotion_processor"])
             sentiment_future = executor.submit(analyze_sentiment, full_text, processors["nlp_processor"])
+            simple_nlp_future = executor.submit(get_simplar_nlp_features, full_text, processors["nlp_processor"])
             basic_future = executor.submit(calculate_basic_metrics, diarization_result, conv_length)
             pitch_future = executor.submit(calculate_pitch_features, diarization_result, window, sr)
             loudness_future = executor.submit(calculate_loudness_features, diarization_result, window, sr)
@@ -177,7 +169,7 @@ def extract_features_for_window(window: np.ndarray, window_segments: Dict[str, A
             
             # Gather results
             features['emotion'] = emotion_future.result()
-            features['nlp'] = {'sentiment': sentiment_future.result()}
+            features['nlp'] = {'sentiment': sentiment_future.result(), 'simple_features': simple_nlp_future.result()}
             features['nonverbal'] = {
                 'basic_metrics': basic_future.result(),
                 'pitch': pitch_future.result(),
@@ -192,13 +184,13 @@ def extract_features_for_window(window: np.ndarray, window_segments: Dict[str, A
     return features
 
 
-def extract_audio_features(audio_path: str, window_len: int, sr: int = 16000, max_workers: int = 4) -> str:
+def extract_audio_features(audio_path: str, window_len: int, *, num_speakers: int = None, min_speakers: int = None, max_speakers: int = None, sr: int = 16000, max_workers: int = 4) -> str:
     """Process windows in parallel."""
     print(f"Processing {audio_path}...")
     
     # Step 1: Check for cached ASR/diarization results
     audio_dir = os.path.dirname(audio_path)
-    asr_diar_cache = os.path.join(audio_dir, 'asr_diar.json')
+    asr_diar_cache = os.path.join(audio_dir, 'asr_diar.JSON')
     
     if os.path.exists(asr_diar_cache):
         print(f"  Loading cached ASR/diarization from {asr_diar_cache}...")
@@ -206,7 +198,7 @@ def extract_audio_features(audio_path: str, window_len: int, sr: int = 16000, ma
             full_results = json.load(f)
     else:
         print(f"  No cache found, running ASR and diarization...")
-        full_results = run_asr_and_diarization(audio_path)
+        full_results = run_asr_and_diarization(audio_path, num_speakers, min_speakers, max_speakers)
         
         # Save results to cache
         print(f"  Saving ASR/diarization to {asr_diar_cache}...")
@@ -277,24 +269,58 @@ def extract_audio_features(audio_path: str, window_len: int, sr: int = 16000, ma
     all_features.sort(key=lambda x: x['window_index'])
     return all_features
 
+def compute_speed_for_window(video_path: str, window_start: float, window_end: float) -> tuple[float, int]:
+    """Wrapper for speed computation service with calibration caching."""
+    return compute_speed_for_window_service(video_path, window_start, window_end)
 
-def compute_robot_winning_rate(video_path: str, window_start: float, window_end: float) -> dict:
+
+def batch_compute_speed_for_windows(video_path: str, windows: list) -> list:
     """
-    Call the robot speed service to compute a winning rate
-    for the given time window in the video.
+    Compute robot speed for multiple windows efficiently.
+    Pre-calibrates once, then processes all windows.
+    
+    Args:
+        video_path: Path to video file
+        windows: List of dicts with 'window_index', 'window_start', 'window_end'
+    
+    Returns:
+        List of speed feature dicts for each window
     """
-    payload = {
-        "video_path": video_path,
-        "window_start": window_start,
-        "window_end": window_end,
-    }
-    response = requests.post(
-        f"{SERVICES['robot_speed']}/winning_rate",
-        json=payload,
-        timeout=60,
-    )
-    response.raise_for_status()
-    return response.json()
+    if not windows:
+        return []
+    
+    # Pre-compute calibration once for this video (uses cache)
+    print(f"  Pre-calibrating video (if not cached)...")
+    calib = get_calibration_for_video(video_path, windows[0]['window_start'])
+    
+    if calib is None:
+        print(f"  WARNING: Could not calibrate video - returning NaN for all windows")
+        return [{
+            "window_index": w["window_index"],
+            "window_start": w["window_start"],
+            "window_end": w["window_end"],
+            "avg_speed_cm_s": np.nan,
+            "num_detections": 0,
+        } for w in windows]
+    
+    # Now process all windows (will use cached calibration)
+    results = []
+    for w in windows:
+        print(f"    Computing speed for window {w['window_index']}...")
+        speed, num_detections = compute_speed_for_window_service(
+            video_path,
+            w["window_start"],
+            w["window_end"]
+        )
+        results.append({
+            "window_index": w["window_index"],
+            "window_start": w["window_start"],
+            "window_end": w["window_end"],
+            "avg_speed_cm_s": speed,
+            "num_detections": num_detections,
+        })
+    
+    return results
 
 
 def signal_handler(sig, frame):

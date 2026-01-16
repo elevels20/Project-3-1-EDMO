@@ -7,7 +7,7 @@ import json
 
 from utils import ( signal_handler,
     extract_audio_features, find_session_directories,
-    extract_audio_segment, extract_robot_data_features, compute_robot_winning_rate )
+    extract_audio_segment, extract_robot_data_features, compute_speed_for_window )
 
 
 def main():
@@ -20,6 +20,9 @@ def main():
     parser.add_argument('--input', type=str, required=True, help="Folder path with raw audios")
     parser.add_argument('--output', type=str, required=True, help="Folder path for output files")
     parser.add_argument('--window-len', type=int, required=True, help="Length of audio windows in seconds")
+    parser.add_argument('--num-speakers', type=int, required=False, help="Number of speakers for diarization (optional)")
+    parser.add_argument('--min-speakers', type=int, required=False, help="Minimum number of speakers for diarization (optional)")
+    parser.add_argument('--max-speakers', type=int, required=False, help="Maximum number of speakers for diarization (optional)")
     args = parser.parse_args()
     
     # Create output directory
@@ -49,27 +52,21 @@ def main():
         # Video + audio session
         if has_video:
             list_videos = os.listdir(video_dir)
-            video_name = [f for f in list_videos if f.endswith(".mp4")][0].split(".")[0]
+            video_name = [f for f in list_videos if f.endswith(".MP4")][0].split(".")[0]
 
-            raw_wav = f"{raw_audio_dir}/{video_name}.wav"
+            raw_wav = f"{raw_audio_dir}/{video_name}.WAV"
             if not os.path.exists(raw_wav):
                 extract_audio_segment(
-                    f"{video_dir}/{video_name}.mp4",
+                    f"{video_dir}/{video_name}.MP4",
                     raw_wav,
                 )
-            
-            if not os.path.exists(f"{proc_audio_dir}/{video_name}.wav"):
-                subprocess.run(
-                    ['bash', 'src/data_pipeline/convert_audio.sh', '-o', proc_audio_dir, raw_wav],
-                    check=True
-            )
         # Audio only session
         else:
             print(f"{dir}: audio-only session (skipping video preprocessing)")
     
         # Convert all raw audio files
         for wav in os.listdir(raw_audio_dir):
-            if not wav.endswith(".wav"):
+            if not wav.endswith(".WAV"):
                 continue
 
             in_wav = f"{raw_audio_dir}/{wav}"
@@ -93,16 +90,24 @@ def main():
         print(f"Processing {dir}...")
         
         processed_audio_dir = f"{dir}/Audio/processed"
-        audio_name = os.listdir(processed_audio_dir)[0]
+        audio_files = [f for f in os.listdir(processed_audio_dir) if f.endswith('.wav')]
+        
+        if not audio_files:
+            print(f"Warning: No WAV files found in {processed_audio_dir}, skipping...")
+            continue
+            
+        audio_name = audio_files[0]
         audio_path = f"{processed_audio_dir}/{audio_name}"
 
         video_dir = f"{dir}/Videos/top_cam"
         has_video = os.path.exists(video_dir)
 
         if has_video:
-            video_path = f"{video_dir}/{audio_name.split('.')[0]}.mp4"
+            video_path = f"{video_dir}/{audio_name.split('.')[0]}.MP4"
+            print(f"  Found video: {video_path}")
         else:
             video_path = None
+            print(f"  No video found, proceeding with audio only")
         
          # Extract robot data features only if video exists
         if has_video:
@@ -113,45 +118,40 @@ def main():
             print(f"{dir}: audio-only session (skipping robot logs)")
         
         # Extract audio features
-        audio_features = extract_audio_features(audio_path, args.window_len)
+        if args.num_speakers:
+            print(f"  Using fixed number of speakers: {args.num_speakers}")
+            audio_features = extract_audio_features(audio_path, args.window_len, num_speakers=args.num_speakers)
+        elif args.min_speakers and args.max_speakers:
+            print(f"  Using speaker range: {args.min_speakers} to {args.max_speakers}")
+            audio_features = extract_audio_features(audio_path, args.window_len, min_speakers=args.min_speakers, max_speakers=args.max_speakers)
+        else:
+            print(f"  Using automatic speaker count")
+            audio_features = extract_audio_features(audio_path, args.window_len)
         print(f"Extracted audio features for {dir}...")
         
-        robot_speed_features = []
-        for w in audio_features:
-            if has_video:
-                '''
-                res = compute_robot_winning_rate(
-                    video_path, 
-                    w["window_start"], 
-                    w["window_end"]
-                )
-                robot_speed_features.append({
-                    "window_index": w["window_index"],
-                    "window_start": w["window_start"],
-                    "window_end": w["window_end"],
-                    "avg_speed_cm_s": res.get("avg_speed_cm_s"),
-                    "num_detections": res.get("num_detections"),
-                    "winning_rate": res.get("winning_rate")
-                })
-                '''
-                robot_speed_features.append({
-                    "window_index": w["window_index"],
-                    "window_start": w["window_start"],
-                    "window_end": w["window_end"],
-                    "avg_speed_cm_s": 0.0,
-                    "num_detections": 0.0,
-                    "winning_rate": 0.0
-                })
-            else:
-                # Audio-only session
-                robot_speed_features.append({
-                    "window_index": w["window_index"],
-                    "window_start": w["window_start"],
-                    "window_end": w["window_end"],
-                    "avg_speed_cm_s": None,
-                    "num_detections": None,
-                    "winning_rate": None,
-                })
+        # Extract robot speed features (batch processing for efficiency)
+        if has_video:
+            print(f"  Computing robot speed for all windows (batch mode)...")
+            from utils import batch_compute_speed_for_windows
+            
+            # Prepare window list for batch processing
+            window_list = [{
+                "window_index": w["window_index"],
+                "window_start": w["window_start"],
+                "window_end": w["window_end"]
+            } for w in audio_features]
+            
+            # Batch compute all windows with calibration caching
+            robot_speed_features = batch_compute_speed_for_windows(video_path, window_list)
+        else:
+            # Audio-only session
+            robot_speed_features = [{
+                "window_index": w["window_index"],
+                "window_start": w["window_start"],
+                "window_end": w["window_end"],
+                "avg_speed_cm_s": None,
+                "num_detections": None,
+            } for w in audio_features]
 
         print(f"Extracted robot speed features for {dir}...")
         
