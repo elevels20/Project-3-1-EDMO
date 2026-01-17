@@ -1,0 +1,3027 @@
+{
+  "session": "111414",
+  "base_window_length": 30,
+  "num_windows": 25,
+  "audio_features": [
+    {
+      "emotion": {
+        "emotions": [
+          {
+            "label": "neutral",
+            "score": 0.6771295368671417
+          },
+          {
+            "label": "fear",
+            "score": 0.1284460729220882
+          },
+          {
+            "label": "anger",
+            "score": 0.05255058640614152
+          },
+          {
+            "label": "disgust",
+            "score": 0.036116054048761725
+          },
+          {
+            "label": "sadness",
+            "score": 0.02151825139299035
+          },
+          {
+            "label": "joy",
+            "score": 0.06921784672886133
+          },
+          {
+            "label": "surprise",
+            "score": 0.01502163428813219
+          }
+        ],
+        "dominant_emotion": "neutral"
+      },
+      "nlp": {
+        "sentiment": {
+          "label": "Negative",
+          "score": 0.7544958293437958
+        },
+        "simple_features": {
+          "collaboration_ratio": 0.2,
+          "hedges (uncertainty)": 0,
+          "wh_questions (inquiry)": 1,
+          "yes_no_questions (confirmation)": 1,
+          "question_count": 2
+        }
+      },
+      "nonverbal": {
+        "basic_metrics": {
+          "speakers": {
+            "speaker_SPEAKER_03": {
+              "total_speaking_duration": 20.216249999999995,
+              "total_turns": 9,
+              "speech_ratio": 0.6325794244477689,
+              "mean_turn_duration": 2.2462499999999994,
+              "median_turn_duration": 0.4893749999999999,
+              "std_turn_duration": 3.5537665977452706,
+              "min_turn_duration": 0.01687500000000064,
+              "max_turn_duration": 9.601875,
+              "percentiles": {
+                "percentile_10": 0.09787500000000016,
+                "percentile_25": 0.2531249999999998,
+                "percentile_75": 0.7087500000000002,
+                "percentile_90": 8.400374999999999
+              },
+              "interruptions_made": 0,
+              "interruptions_received": 3,
+              "interrupted_by": {
+                "speaker_SPEAKER_01": 3
+              }
+            },
+            "speaker_SPEAKER_01": {
+              "total_speaking_duration": 2.6324999999999967,
+              "total_turns": 4,
+              "speech_ratio": 0.08237261286632042,
+              "mean_turn_duration": 0.6581249999999992,
+              "median_turn_duration": 0.3374999999999986,
+              "std_turn_duration": 0.565249530074993,
+              "min_turn_duration": 0.3206249999999997,
+              "max_turn_duration": 1.6368749999999999,
+              "percentiles": {
+                "percentile_10": 0.3206249999999997,
+                "percentile_25": 0.3206249999999997,
+                "percentile_75": 0.674999999999998,
+                "percentile_90": 1.2521249999999995
+              },
+              "interruptions_made": 3,
+              "interruptions_received": 0,
+              "interrupted_by": {
+                "speaker_SPEAKER_03": 0
+              }
+            }
+          },
+          "conversation": {
+            "num_speakers": 5,
+            "total_speaking_time": 22.848749999999992,
+            "overlap_duration": 2.2781249999999993,
+            "silence_duration": 11.387812500000006,
+            "overlap_ratio": 0.07128399190354658,
+            "silence_ratio": 0.3563319545894572,
+            "total_interruptions": 3,
+            "interruption_rate": 5.632315409662941
+          }
+        },
+        "pitch": [
+          {
+            "speaker": "speaker_SPEAKER_03",
+            "mean_f0": 132.15479283608576,
+            "std_f0": 18.665491387251148,
+            "cv_f0": 0.14123960990504772,
+            "skewness_f0": 0.6148361664316626,
+            "kurtosis_f0": -0.8787797368361971,
+            "min_f0": 103.67682866005948,
+            "max_f0": 179.47217146890208,
+            "range_f0": 75.79534280884259,
+            "normalized_range": 0.5735345739813846,
+            "voiced_ratio": 0.23247778874629813,
+            "total_frames": 2026,
+            "voiced_frames": 471
+          },
+          {
+            "speaker": "speaker_SPEAKER_01",
+            "mean_f0": 119.31986954177314,
+            "std_f0": 8.254641980915535,
+            "cv_f0": 0.06918078282029663,
+            "skewness_f0": 0.30338608701024705,
+            "kurtosis_f0": -1.4511018089171404,
+            "min_f0": 107.95475777855586,
+            "max_f0": 132.9078969330727,
+            "range_f0": 24.953139154516833,
+            "normalized_range": 0.20912811294837105,
+            "voiced_ratio": 0.13909774436090225,
+            "total_frames": 266,
+            "voiced_frames": 37
+          }
+        ],
+        "loudness": [
+          {
+            "speaker": "speaker_SPEAKER_03",
+            "mean_rms": 0.005926904268562794,
+            "std_rms": 0.0026088901795446873,
+            "num_segments": 9
+          },
+          {
+            "speaker": "speaker_SPEAKER_01",
+            "mean_rms": 0.005794883240014315,
+            "std_rms": 0.002237414475530386,
+            "num_segments": 4
+          }
+        ],
+        "tempo": [
+          {
+            "speaker": "speaker_SPEAKER_03",
+            "mean_tempo": 134.41051136363637,
+            "std_tempo": 21.05302806147386,
+            "min_tempo": 117.1875,
+            "max_tempo": 170.45454545454547,
+            "num_segments_analyzed": 4
+          },
+          {
+            "speaker": "speaker_SPEAKER_01",
+            "mean_tempo": 187.5,
+            "std_tempo": 0.0,
+            "min_tempo": 187.5,
+            "max_tempo": 187.5,
+            "num_segments_analyzed": 1
+          }
+        ]
+      },
+      "window_index": 0,
+      "window_start": 0.0,
+      "window_end": 31.95846875,
+      "window_duration": 31.95846875,
+      "base_window_len": 30
+    },
+    {
+      "emotion": {
+        "emotions": [
+          {
+            "label": "neutral",
+            "score": 0.5064211562275887
+          },
+          {
+            "label": "disgust",
+            "score": 0.10775279626250267
+          },
+          {
+            "label": "anger",
+            "score": 0.12413622532039881
+          },
+          {
+            "label": "surprise",
+            "score": 0.01959634106606245
+          },
+          {
+            "label": "joy",
+            "score": 0.008692847797647119
+          },
+          {
+            "label": "fear",
+            "score": 0.11219992861151695
+          },
+          {
+            "label": "sadness",
+            "score": 0.12120072031393647
+          }
+        ],
+        "dominant_emotion": "neutral"
+      },
+      "nlp": {
+        "sentiment": {
+          "label": "Positive",
+          "score": 0.5514618158340454
+        },
+        "simple_features": {
+          "collaboration_ratio": 0.0,
+          "hedges (uncertainty)": 2,
+          "wh_questions (inquiry)": 1,
+          "yes_no_questions (confirmation)": 1,
+          "question_count": 2
+        }
+      },
+      "nonverbal": {
+        "basic_metrics": {
+          "speakers": {
+            "speaker_SPEAKER_03": {
+              "total_speaking_duration": 5.366250000000008,
+              "total_turns": 9,
+              "speech_ratio": 0.14950634696756018,
+              "mean_turn_duration": 0.5962500000000008,
+              "median_turn_duration": 0.10125000000000028,
+              "std_turn_duration": 0.7166523738884855,
+              "min_turn_duration": 0.016874999999998863,
+              "max_turn_duration": 2.1768750000000026,
+              "percentiles": {
+                "percentile_10": 0.016874999999998863,
+                "percentile_25": 0.033749999999997726,
+                "percentile_75": 0.9787500000000051,
+                "percentile_90": 1.4343750000000015
+              },
+              "interruptions_made": 4,
+              "interruptions_received": 1,
+              "interrupted_by": {
+                "speaker_SPEAKER_01": 1,
+                "speaker_SPEAKER_02": 0
+              }
+            },
+            "speaker_SPEAKER_01": {
+              "total_speaking_duration": 22.4775,
+              "total_turns": 10,
+              "speech_ratio": 0.6262341325811002,
+              "mean_turn_duration": 2.24775,
+              "median_turn_duration": 0.7678125000000016,
+              "std_turn_duration": 3.1698311912860597,
+              "min_turn_duration": 0.016874999999998863,
+              "max_turn_duration": 9.601875,
+              "percentiles": {
+                "percentile_10": 0.10799999999999912,
+                "percentile_25": 0.18562499999999638,
+                "percentile_75": 2.079843750000002,
+                "percentile_90": 7.323749999999999
+              },
+              "interruptions_made": 1,
+              "interruptions_received": 4,
+              "interrupted_by": {
+                "speaker_SPEAKER_03": 4,
+                "speaker_SPEAKER_02": 0
+              }
+            },
+            "speaker_SPEAKER_02": {
+              "total_speaking_duration": 0.21937499999999943,
+              "total_turns": 1,
+              "speech_ratio": 0.006111894687353064,
+              "mean_turn_duration": 0.21937499999999943,
+              "median_turn_duration": 0.21937499999999943,
+              "std_turn_duration": 0.0,
+              "min_turn_duration": 0.21937499999999943,
+              "max_turn_duration": 0.21937499999999943,
+              "percentiles": {
+                "percentile_10": 0.21937499999999943,
+                "percentile_25": 0.21937499999999943,
+                "percentile_75": 0.21937499999999943,
+                "percentile_90": 0.21937499999999943
+              },
+              "interruptions_made": 0,
+              "interruptions_received": 0,
+              "interrupted_by": {
+                "speaker_SPEAKER_03": 0,
+                "speaker_SPEAKER_01": 0
+              }
+            }
+          },
+          "conversation": {
+            "num_speakers": 5,
+            "total_speaking_time": 28.063125000000007,
+            "overlap_duration": 3.375000000000007,
+            "silence_duration": 11.204999999999998,
+            "overlap_ratio": 0.09402914903620142,
+            "silence_ratio": 0.312176774800188,
+            "total_interruptions": 5,
+            "interruption_rate": 8.358146580995665
+          }
+        },
+        "pitch": [
+          {
+            "speaker": "speaker_SPEAKER_03",
+            "mean_f0": 167.45345704323654,
+            "std_f0": 0.0,
+            "cv_f0": 0.0,
+            "skewness_f0": null,
+            "kurtosis_f0": null,
+            "min_f0": 167.45345704323654,
+            "max_f0": 167.45345704323654,
+            "range_f0": 0.0,
+            "normalized_range": 0.0,
+            "voiced_ratio": 0.024691358024691357,
+            "total_frames": 81,
+            "voiced_frames": 2
+          },
+          {
+            "speaker": "speaker_SPEAKER_01",
+            "mean_f0": 156.70452144791764,
+            "std_f0": 6.166610267359149,
+            "cv_f0": 0.039351833695549655,
+            "skewness_f0": -1.378850388602658,
+            "kurtosis_f0": 1.4751525086185842,
+            "min_f0": 139.1936593344566,
+            "max_f0": 166.48899610038094,
+            "range_f0": 27.295336765924333,
+            "normalized_range": 0.17418346652490316,
+            "voiced_ratio": 0.9411764705882353,
+            "total_frames": 51,
+            "voiced_frames": 48
+          }
+        ],
+        "loudness": [
+          {
+            "speaker": "speaker_SPEAKER_03",
+            "mean_rms": 0.006881447974592447,
+            "std_rms": 0.002627418376505375,
+            "num_segments": 3
+          },
+          {
+            "speaker": "speaker_SPEAKER_01",
+            "mean_rms": 0.008109774440526962,
+            "std_rms": 0.003607956226915121,
+            "num_segments": 2
+          }
+        ],
+        "tempo": [
+          {
+            "speaker": "speaker_SPEAKER_03",
+            "mean_tempo": 312.5,
+            "std_tempo": 0.0,
+            "min_tempo": 312.5,
+            "max_tempo": 312.5,
+            "num_segments_analyzed": 1
+          },
+          {
+            "speaker": "speaker_SPEAKER_01",
+            "mean_tempo": 0.0,
+            "std_tempo": 0.0,
+            "min_tempo": 0.0,
+            "max_tempo": 0.0,
+            "num_segments_analyzed": 0
+          }
+        ]
+      },
+      "window_index": 1,
+      "window_start": 31.9584375,
+      "window_end": 67.85159375,
+      "window_duration": 35.893156250000004,
+      "base_window_len": 30
+    },
+    {
+      "emotion": {
+        "emotions": [
+          {
+            "label": "neutral",
+            "score": 0.8623685538768768
+          },
+          {
+            "label": "disgust",
+            "score": 0.0714030284434557
+          },
+          {
+            "label": "surprise",
+            "score": 0.03241734113544226
+          },
+          {
+            "label": "fear",
+            "score": 0.006613450008444488
+          },
+          {
+            "label": "anger",
+            "score": 0.008725495543330908
+          },
+          {
+            "label": "sadness",
+            "score": 0.013074684422463179
+          },
+          {
+            "label": "joy",
+            "score": 0.005397398897912353
+          }
+        ],
+        "dominant_emotion": "neutral"
+      },
+      "nlp": {
+        "sentiment": {
+          "label": "Negative",
+          "score": 0.6277523636817932
+        },
+        "simple_features": {
+          "collaboration_ratio": 0.0,
+          "hedges (uncertainty)": 2,
+          "wh_questions (inquiry)": 0,
+          "yes_no_questions (confirmation)": 1,
+          "question_count": 1
+        }
+      },
+      "nonverbal": {
+        "basic_metrics": {
+          "speakers": {
+            "speaker_SPEAKER_03": {
+              "total_speaking_duration": 28.95750000000001,
+              "total_turns": 4,
+              "speech_ratio": 0.898429319371728,
+              "mean_turn_duration": 7.239375000000003,
+              "median_turn_duration": 7.011562500000004,
+              "std_turn_duration": 2.5637507237322246,
+              "min_turn_duration": 4.21875,
+              "max_turn_duration": 10.715625000000003,
+              "percentiles": {
+                "percentile_10": 4.583250000000001,
+                "percentile_25": 5.130000000000003,
+                "percentile_75": 9.120937500000004,
+                "percentile_90": 10.077750000000004
+              },
+              "interruptions_made": 0,
+              "interruptions_received": 3,
+              "interrupted_by": {
+                "speaker_SPEAKER_01": 3
+              }
+            },
+            "speaker_SPEAKER_01": {
+              "total_speaking_duration": 3.1049999999999898,
+              "total_turns": 4,
+              "speech_ratio": 0.09633507853403109,
+              "mean_turn_duration": 0.7762499999999974,
+              "median_turn_duration": 0.7762499999999974,
+              "std_turn_duration": 0.19679462645103146,
+              "min_turn_duration": 0.5062499999999943,
+              "max_turn_duration": 1.0462500000000006,
+              "percentiles": {
+                "percentile_10": 0.5669999999999945,
+                "percentile_25": 0.6581249999999947,
+                "percentile_75": 0.8943750000000001,
+                "percentile_90": 0.9855000000000005
+              },
+              "interruptions_made": 3,
+              "interruptions_received": 0,
+              "interrupted_by": {
+                "speaker_SPEAKER_03": 0
+              }
+            }
+          },
+          "conversation": {
+            "num_speakers": 5,
+            "total_speaking_time": 32.0625,
+            "overlap_duration": 2.2612499999999898,
+            "silence_duration": 2.4299999999999926,
+            "overlap_ratio": 0.0701570680628269,
+            "silence_ratio": 0.07539267015706783,
+            "total_interruptions": 3,
+            "interruption_rate": 5.5846422338568935
+          }
+        },
+        "pitch": [],
+        "loudness": [],
+        "tempo": []
+      },
+      "window_index": 2,
+      "window_start": 67.8515625,
+      "window_end": 100.08284375000001,
+      "window_duration": 32.23128125000001,
+      "base_window_len": 30
+    },
+    {
+      "emotion": {
+        "emotions": [
+          {
+            "label": "neutral",
+            "score": 0.9429399967193604
+          },
+          {
+            "label": "surprise",
+            "score": 0.01603914424777031
+          },
+          {
+            "label": "disgust",
+            "score": 0.011829168535768986
+          },
+          {
+            "label": "joy",
+            "score": 0.010429642163217068
+          },
+          {
+            "label": "anger",
+            "score": 0.008041061460971832
+          },
+          {
+            "label": "fear",
+            "score": 0.006867882329970598
+          },
+          {
+            "label": "sadness",
+            "score": 0.003853069618344307
+          }
+        ],
+        "dominant_emotion": "neutral"
+      },
+      "nlp": {
+        "sentiment": {
+          "label": "Neutral",
+          "score": 0.6712241172790527
+        },
+        "simple_features": {
+          "collaboration_ratio": 3.0,
+          "hedges (uncertainty)": 0,
+          "wh_questions (inquiry)": 0,
+          "yes_no_questions (confirmation)": 0,
+          "question_count": 0
+        }
+      },
+      "nonverbal": {
+        "basic_metrics": {
+          "speakers": {
+            "speaker_SPEAKER_03": {
+              "total_speaking_duration": 0.8606249999999989,
+              "total_turns": 2,
+              "speech_ratio": 0.02696431194007927,
+              "mean_turn_duration": 0.43031249999999943,
+              "median_turn_duration": 0.43031249999999943,
+              "std_turn_duration": 0.37968750000000284,
+              "min_turn_duration": 0.05062499999999659,
+              "max_turn_duration": 0.8100000000000023,
+              "percentiles": {
+                "percentile_10": 0.12656249999999716,
+                "percentile_25": 0.240468749999998,
+                "percentile_75": 0.6201562500000009,
+                "percentile_90": 0.7340625000000017
+              },
+              "interruptions_made": 0,
+              "interruptions_received": 0,
+              "interrupted_by": {
+                "speaker_SPEAKER_00": 0,
+                "speaker_SPEAKER_01": 0
+              }
+            },
+            "speaker_SPEAKER_00": {
+              "total_speaking_duration": 11.964374999999976,
+              "total_turns": 7,
+              "speech_ratio": 0.3748568071669841,
+              "mean_turn_duration": 1.7091964285714252,
+              "median_turn_duration": 0.7425000000000068,
+              "std_turn_duration": 1.630904784020455,
+              "min_turn_duration": 0.40500000000000114,
+              "max_turn_duration": 5.41687499999999,
+              "percentiles": {
+                "percentile_10": 0.5771249999999981,
+                "percentile_25": 0.7003124999999955,
+                "percentile_75": 1.9996874999999932,
+                "percentile_90": 3.4424999999999963
+              },
+              "interruptions_made": 0,
+              "interruptions_received": 1,
+              "interrupted_by": {
+                "speaker_SPEAKER_03": 0,
+                "speaker_SPEAKER_01": 1
+              }
+            },
+            "speaker_SPEAKER_01": {
+              "total_speaking_duration": 0.15187500000000398,
+              "total_turns": 1,
+              "speech_ratio": 0.004758407989425884,
+              "mean_turn_duration": 0.15187500000000398,
+              "median_turn_duration": 0.15187500000000398,
+              "std_turn_duration": 0.0,
+              "min_turn_duration": 0.15187500000000398,
+              "max_turn_duration": 0.15187500000000398,
+              "percentiles": {
+                "percentile_10": 0.15187500000000398,
+                "percentile_25": 0.15187500000000398,
+                "percentile_75": 0.15187500000000398,
+                "percentile_90": 0.15187500000000398
+              },
+              "interruptions_made": 1,
+              "interruptions_received": 0,
+              "interrupted_by": {
+                "speaker_SPEAKER_03": 0,
+                "speaker_SPEAKER_00": 0
+              }
+            }
+          },
+          "conversation": {
+            "num_speakers": 5,
+            "total_speaking_time": 12.976874999999978,
+            "overlap_duration": 0.15187500000000398,
+            "silence_duration": 19.092187500000026,
+            "overlap_ratio": 0.004758407989425884,
+            "silence_ratio": 0.5981788808929366,
+            "total_interruptions": 1,
+            "interruption_rate": 1.8798648847114112
+          }
+        },
+        "pitch": [],
+        "loudness": [],
+        "tempo": []
+      },
+      "window_index": 3,
+      "window_start": 100.0828125,
+      "window_end": 132.0,
+      "window_duration": 31.917187499999997,
+      "base_window_len": 30
+    },
+    {
+      "emotion": {
+        "emotions": [
+          {
+            "label": "neutral",
+            "score": 0.8384894132614136
+          },
+          {
+            "label": "fear",
+            "score": 0.054879382252693176
+          },
+          {
+            "label": "disgust",
+            "score": 0.05403788015246391
+          },
+          {
+            "label": "anger",
+            "score": 0.022329680621623993
+          },
+          {
+            "label": "sadness",
+            "score": 0.015073461458086967
+          },
+          {
+            "label": "joy",
+            "score": 0.007738800719380379
+          },
+          {
+            "label": "surprise",
+            "score": 0.007451415527611971
+          }
+        ],
+        "dominant_emotion": "neutral"
+      },
+      "nlp": {
+        "sentiment": {
+          "label": "Neutral",
+          "score": 0.8883075714111328
+        },
+        "simple_features": {
+          "collaboration_ratio": 1.0,
+          "hedges (uncertainty)": 0,
+          "wh_questions (inquiry)": 0,
+          "yes_no_questions (confirmation)": 0,
+          "question_count": 0
+        }
+      },
+      "nonverbal": {
+        "basic_metrics": {
+          "speakers": {
+            "speaker_SPEAKER_00": {
+              "total_speaking_duration": 4.201875000000001,
+              "total_turns": 5,
+              "speech_ratio": 0.14006250000000003,
+              "mean_turn_duration": 0.8403750000000002,
+              "median_turn_duration": 0.7087500000000091,
+              "std_turn_duration": 0.5132219914423041,
+              "min_turn_duration": 0.06749999999999545,
+              "max_turn_duration": 1.434375000000017,
+              "percentiles": {
+                "percentile_10": 0.2834999999999923,
+                "percentile_25": 0.6074999999999875,
+                "percentile_75": 1.383749999999992,
+                "percentile_90": 1.414125000000007
+              },
+              "interruptions_made": 0,
+              "interruptions_received": 0,
+              "interrupted_by": {}
+            }
+          },
+          "conversation": {
+            "num_speakers": 5,
+            "total_speaking_time": 4.201875000000001,
+            "overlap_duration": 0.0,
+            "silence_duration": 25.798125,
+            "overlap_ratio": 0.0,
+            "silence_ratio": 0.8599374999999999,
+            "total_interruptions": 0,
+            "interruption_rate": 0.0
+          }
+        },
+        "pitch": [],
+        "loudness": [],
+        "tempo": []
+      },
+      "window_index": 4,
+      "window_start": 132.0,
+      "window_end": 162.0,
+      "window_duration": 30.0,
+      "base_window_len": 30
+    },
+    {
+      "emotion": {
+        "emotions": [
+          {
+            "label": "neutral",
+            "score": 0.6009941697120667
+          },
+          {
+            "label": "sadness",
+            "score": 0.1289120316505432
+          },
+          {
+            "label": "disgust",
+            "score": 0.07169155031442642
+          },
+          {
+            "label": "surprise",
+            "score": 0.0666351318359375
+          },
+          {
+            "label": "joy",
+            "score": 0.060589615255594254
+          },
+          {
+            "label": "anger",
+            "score": 0.040000416338443756
+          },
+          {
+            "label": "fear",
+            "score": 0.0311769787222147
+          }
+        ],
+        "dominant_emotion": "neutral"
+      },
+      "nlp": {
+        "sentiment": {
+          "label": "Neutral",
+          "score": 0.900560736656189
+        },
+        "simple_features": {
+          "collaboration_ratio": "Neutral",
+          "hedges (uncertainty)": 0,
+          "wh_questions (inquiry)": 0,
+          "yes_no_questions (confirmation)": 0,
+          "question_count": 0
+        }
+      },
+      "nonverbal": {
+        "basic_metrics": {
+          "speakers": {
+            "speaker_SPEAKER_02": {
+              "total_speaking_duration": 10.361249999999956,
+              "total_turns": 9,
+              "speech_ratio": 0.3337258809674775,
+              "mean_turn_duration": 1.151249999999995,
+              "median_turn_duration": 1.214999999999975,
+              "std_turn_duration": 0.6835603027531701,
+              "min_turn_duration": 0.25312500000001137,
+              "max_turn_duration": 2.1431249999999977,
+              "percentiles": {
+                "percentile_10": 0.3341249999999832,
+                "percentile_25": 0.6074999999999875,
+                "percentile_75": 1.6875,
+                "percentile_90": 2.1026250000000006
+              },
+              "interruptions_made": 0,
+              "interruptions_received": 0,
+              "interrupted_by": {}
+            }
+          },
+          "conversation": {
+            "num_speakers": 5,
+            "total_speaking_time": 10.361249999999956,
+            "overlap_duration": 0.0,
+            "silence_duration": 20.685937500000044,
+            "overlap_ratio": 0.0,
+            "silence_ratio": 0.6662741190325225,
+            "total_interruptions": 0,
+            "interruption_rate": 0.0
+          }
+        },
+        "pitch": [],
+        "loudness": [],
+        "tempo": []
+      },
+      "window_index": 5,
+      "window_start": 162.0,
+      "window_end": 193.04721875,
+      "window_duration": 31.047218750000013,
+      "base_window_len": 30
+    },
+    {
+      "emotion": {
+        "emotions": [
+          {
+            "label": "neutral",
+            "score": 0.9058200120925903
+          },
+          {
+            "label": "joy",
+            "score": 0.03489469736814499
+          },
+          {
+            "label": "disgust",
+            "score": 0.025640519335865974
+          },
+          {
+            "label": "surprise",
+            "score": 0.010967104695737362
+          },
+          {
+            "label": "anger",
+            "score": 0.010862461291253567
+          },
+          {
+            "label": "sadness",
+            "score": 0.007411603350192308
+          },
+          {
+            "label": "fear",
+            "score": 0.004403628408908844
+          }
+        ],
+        "dominant_emotion": "neutral"
+      },
+      "nlp": {
+        "sentiment": {
+          "label": "Positive",
+          "score": 0.7207632064819336
+        },
+        "simple_features": {
+          "collaboration_ratio": 1.0,
+          "hedges (uncertainty)": 0,
+          "wh_questions (inquiry)": 0,
+          "yes_no_questions (confirmation)": 0,
+          "question_count": 0
+        }
+      },
+      "nonverbal": {
+        "basic_metrics": {
+          "speakers": {
+            "speaker_SPEAKER_00": {
+              "total_speaking_duration": 12.150000000000063,
+              "total_turns": 12,
+              "speech_ratio": 0.3687090441824977,
+              "mean_turn_duration": 1.0125000000000053,
+              "median_turn_duration": 0.7171875000000085,
+              "std_turn_duration": 0.8629655672809278,
+              "min_turn_duration": 0.11812500000002046,
+              "max_turn_duration": 3.0037499999999966,
+              "percentiles": {
+                "percentile_10": 0.19743750000001514,
+                "percentile_25": 0.35437500000000455,
+                "percentile_75": 1.4301562500000031,
+                "percentile_90": 2.065500000000003
+              },
+              "interruptions_made": 0,
+              "interruptions_received": 0,
+              "interrupted_by": {}
+            }
+          },
+          "conversation": {
+            "num_speakers": 5,
+            "total_speaking_time": 12.150000000000063,
+            "overlap_duration": 0.0,
+            "silence_duration": 20.802812499999938,
+            "overlap_ratio": 0.0,
+            "silence_ratio": 0.6312909558175023,
+            "total_interruptions": 0,
+            "interruption_rate": 0.0
+          }
+        },
+        "pitch": [],
+        "loudness": [],
+        "tempo": []
+      },
+      "window_index": 6,
+      "window_start": 193.0471875,
+      "window_end": 226.0,
+      "window_duration": 32.95281249999999,
+      "base_window_len": 30
+    },
+    {
+      "emotion": {
+        "emotions": [
+          {
+            "label": "neutral",
+            "score": 0.5796698927879333
+          },
+          {
+            "label": "disgust",
+            "score": 0.2191152721643448
+          },
+          {
+            "label": "joy",
+            "score": 0.14562039077281952
+          },
+          {
+            "label": "sadness",
+            "score": 0.021519944071769714
+          },
+          {
+            "label": "anger",
+            "score": 0.021467994898557663
+          },
+          {
+            "label": "surprise",
+            "score": 0.010290662758052349
+          },
+          {
+            "label": "fear",
+            "score": 0.0023157778196036816
+          }
+        ],
+        "dominant_emotion": "neutral"
+      },
+      "nlp": {
+        "sentiment": {
+          "label": "Neutral",
+          "score": 0.9226751327514648
+        },
+        "simple_features": {
+          "collaboration_ratio": "Neutral",
+          "hedges (uncertainty)": 0,
+          "wh_questions (inquiry)": 0,
+          "yes_no_questions (confirmation)": 0,
+          "question_count": 0
+        }
+      },
+      "nonverbal": {
+        "basic_metrics": {
+          "speakers": {
+            "speaker_SPEAKER_00": {
+              "total_speaking_duration": 18.191250000000025,
+              "total_turns": 11,
+              "speech_ratio": 0.6063750000000009,
+              "mean_turn_duration": 1.6537500000000023,
+              "median_turn_duration": 0.8268750000000011,
+              "std_turn_duration": 1.8232100889390435,
+              "min_turn_duration": 0.27000000000001023,
+              "max_turn_duration": 6.395625000000024,
+              "percentiles": {
+                "percentile_10": 0.35437500000000455,
+                "percentile_25": 0.5484375000000057,
+                "percentile_75": 1.7971874999999926,
+                "percentile_90": 3.965625000000017
+              },
+              "interruptions_made": 0,
+              "interruptions_received": 0,
+              "interrupted_by": {}
+            }
+          },
+          "conversation": {
+            "num_speakers": 5,
+            "total_speaking_time": 18.191250000000025,
+            "overlap_duration": 0.0,
+            "silence_duration": 11.808749999999975,
+            "overlap_ratio": 0.0,
+            "silence_ratio": 0.39362499999999917,
+            "total_interruptions": 0,
+            "interruption_rate": 0.0
+          }
+        },
+        "pitch": [],
+        "loudness": [],
+        "tempo": []
+      },
+      "window_index": 7,
+      "window_start": 226.0,
+      "window_end": 256.0,
+      "window_duration": 30.0,
+      "base_window_len": 30
+    },
+    {
+      "emotion": {
+        "emotions": [
+          {
+            "label": "neutral",
+            "score": 0.6835906505584717
+          },
+          {
+            "label": "anger",
+            "score": 0.10560590028762817
+          },
+          {
+            "label": "disgust",
+            "score": 0.0832953229546547
+          },
+          {
+            "label": "joy",
+            "score": 0.05462354049086571
+          },
+          {
+            "label": "fear",
+            "score": 0.03666180372238159
+          },
+          {
+            "label": "sadness",
+            "score": 0.02825709618628025
+          },
+          {
+            "label": "surprise",
+            "score": 0.00796565506607294
+          }
+        ],
+        "dominant_emotion": "neutral"
+      },
+      "nlp": {
+        "sentiment": {
+          "label": "Negative",
+          "score": 0.6267229318618774
+        },
+        "simple_features": {
+          "collaboration_ratio": "Neutral",
+          "hedges (uncertainty)": 0,
+          "wh_questions (inquiry)": 0,
+          "yes_no_questions (confirmation)": 0,
+          "question_count": 0
+        }
+      },
+      "nonverbal": {
+        "basic_metrics": {
+          "speakers": {},
+          "conversation": {
+            "num_speakers": 5,
+            "total_speaking_time": 0.0,
+            "overlap_duration": 0.0,
+            "silence_duration": 30.0,
+            "overlap_ratio": 0.0,
+            "silence_ratio": 1.0,
+            "total_interruptions": 0,
+            "interruption_rate": 0.0
+          }
+        },
+        "pitch": [],
+        "loudness": [],
+        "tempo": []
+      },
+      "window_index": 8,
+      "window_start": 256.0,
+      "window_end": 286.0,
+      "window_duration": 30.0,
+      "base_window_len": 30
+    },
+    {
+      "emotion": {
+        "emotions": [
+          {
+            "label": "anger",
+            "score": 0.2818901836872101
+          },
+          {
+            "label": "disgust",
+            "score": 0.2675458788871765
+          },
+          {
+            "label": "fear",
+            "score": 0.1883326917886734
+          },
+          {
+            "label": "neutral",
+            "score": 0.18595223128795624
+          },
+          {
+            "label": "surprise",
+            "score": 0.037953268736600876
+          },
+          {
+            "label": "sadness",
+            "score": 0.030319318175315857
+          },
+          {
+            "label": "joy",
+            "score": 0.00800634641200304
+          }
+        ],
+        "dominant_emotion": "anger"
+      },
+      "nlp": {
+        "sentiment": {
+          "label": "Negative",
+          "score": 0.8116098642349243
+        },
+        "simple_features": {
+          "collaboration_ratio": 0.0,
+          "hedges (uncertainty)": 0,
+          "wh_questions (inquiry)": 1,
+          "yes_no_questions (confirmation)": 0,
+          "question_count": 1
+        }
+      },
+      "nonverbal": {
+        "basic_metrics": {
+          "speakers": {
+            "speaker_SPEAKER_00": {
+              "total_speaking_duration": 2.986874999999941,
+              "total_turns": 2,
+              "speech_ratio": 0.09753757921483995,
+              "mean_turn_duration": 1.4934374999999704,
+              "median_turn_duration": 1.4934374999999704,
+              "std_turn_duration": 1.0546875,
+              "min_turn_duration": 0.43874999999997044,
+              "max_turn_duration": 2.5481249999999704,
+              "percentiles": {
+                "percentile_10": 0.6496874999999704,
+                "percentile_25": 0.9660937499999704,
+                "percentile_75": 2.0207812499999704,
+                "percentile_90": 2.3371874999999704
+              },
+              "interruptions_made": 0,
+              "interruptions_received": 0,
+              "interrupted_by": {}
+            }
+          },
+          "conversation": {
+            "num_speakers": 5,
+            "total_speaking_time": 2.986874999999941,
+            "overlap_duration": 0.0,
+            "silence_duration": 27.635937500000058,
+            "overlap_ratio": 0.0,
+            "silence_ratio": 0.90246242078516,
+            "total_interruptions": 0,
+            "interruption_rate": 0.0
+          }
+        },
+        "pitch": [],
+        "loudness": [],
+        "tempo": []
+      },
+      "window_index": 9,
+      "window_start": 286.0,
+      "window_end": 316.62284375,
+      "window_duration": 30.622843750000015,
+      "base_window_len": 30
+    },
+    {
+      "emotion": {
+        "emotions": [
+          {
+            "label": "neutral",
+            "score": 0.39651837944984436
+          },
+          {
+            "label": "anger",
+            "score": 0.36430343985557556
+          },
+          {
+            "label": "disgust",
+            "score": 0.11492828279733658
+          },
+          {
+            "label": "fear",
+            "score": 0.08248434960842133
+          },
+          {
+            "label": "sadness",
+            "score": 0.028995824977755547
+          },
+          {
+            "label": "surprise",
+            "score": 0.009033916518092155
+          },
+          {
+            "label": "joy",
+            "score": 0.0037358130794018507
+          }
+        ],
+        "dominant_emotion": "neutral"
+      },
+      "nlp": {
+        "sentiment": {
+          "label": "Neutral",
+          "score": 0.5680391192436218
+        },
+        "simple_features": {
+          "collaboration_ratio": "Neutral",
+          "hedges (uncertainty)": 0,
+          "wh_questions (inquiry)": 1,
+          "yes_no_questions (confirmation)": 0,
+          "question_count": 1
+        }
+      },
+      "nonverbal": {
+        "basic_metrics": {
+          "speakers": {
+            "speaker_SPEAKER_04": {
+              "total_speaking_duration": 5.450625000000002,
+              "total_turns": 4,
+              "speech_ratio": 0.17180851063829794,
+              "mean_turn_duration": 1.3626562500000006,
+              "median_turn_duration": 1.4934374999999989,
+              "std_turn_duration": 0.7824046935520076,
+              "min_turn_duration": 0.2699999999999818,
+              "max_turn_duration": 2.1937500000000227,
+              "percentiles": {
+                "percentile_10": 0.48262499999998454,
+                "percentile_25": 0.8015624999999886,
+                "percentile_75": 2.054531250000011,
+                "percentile_90": 2.138062500000018
+              },
+              "interruptions_made": 0,
+              "interruptions_received": 0,
+              "interrupted_by": {
+                "speaker_SPEAKER_02": 0,
+                "speaker_SPEAKER_00": 0
+              }
+            },
+            "speaker_SPEAKER_02": {
+              "total_speaking_duration": 0.5737499999999613,
+              "total_turns": 3,
+              "speech_ratio": 0.018085106382977504,
+              "mean_turn_duration": 0.19124999999998712,
+              "median_turn_duration": 0.08437500000002274,
+              "std_turn_duration": 0.20077389334770554,
+              "min_turn_duration": 0.01687499999997044,
+              "max_turn_duration": 0.47249999999996817,
+              "percentiles": {
+                "percentile_10": 0.030374999999980903,
+                "percentile_25": 0.05062499999999659,
+                "percentile_75": 0.27843749999999545,
+                "percentile_90": 0.3948749999999791
+              },
+              "interruptions_made": 0,
+              "interruptions_received": 0,
+              "interrupted_by": {
+                "speaker_SPEAKER_04": 0,
+                "speaker_SPEAKER_00": 0
+              }
+            },
+            "speaker_SPEAKER_00": {
+              "total_speaking_duration": 4.691250000000025,
+              "total_turns": 3,
+              "speech_ratio": 0.14787234042553268,
+              "mean_turn_duration": 1.5637500000000084,
+              "median_turn_duration": 0.4556249999999977,
+              "std_turn_duration": 1.5910499186857847,
+              "min_turn_duration": 0.421875,
+              "max_turn_duration": 3.8137500000000273,
+              "percentiles": {
+                "percentile_10": 0.42862499999999953,
+                "percentile_25": 0.43874999999999886,
+                "percentile_75": 2.1346875000000125,
+                "percentile_90": 3.1421250000000214
+              },
+              "interruptions_made": 0,
+              "interruptions_received": 0,
+              "interrupted_by": {
+                "speaker_SPEAKER_04": 0,
+                "speaker_SPEAKER_02": 0
+              }
+            }
+          },
+          "conversation": {
+            "num_speakers": 5,
+            "total_speaking_time": 10.715624999999989,
+            "overlap_duration": 0.0,
+            "silence_duration": 21.009375000000013,
+            "overlap_ratio": 0.0,
+            "silence_ratio": 0.6622340425531918,
+            "total_interruptions": 0,
+            "interruption_rate": 0.0
+          }
+        },
+        "pitch": [],
+        "loudness": [],
+        "tempo": []
+      },
+      "window_index": 10,
+      "window_start": 316.6228125,
+      "window_end": 348.34784375000004,
+      "window_duration": 31.72503125000003,
+      "base_window_len": 30
+    },
+    {
+      "emotion": {
+        "emotions": [
+          {
+            "label": "neutral",
+            "score": 0.3170807212591171
+          },
+          {
+            "label": "anger",
+            "score": 0.11255832808092237
+          },
+          {
+            "label": "disgust",
+            "score": 0.09941279888153076
+          },
+          {
+            "label": "surprise",
+            "score": 0.43422599136829376
+          },
+          {
+            "label": "sadness",
+            "score": 0.021975243464112282
+          },
+          {
+            "label": "fear",
+            "score": 0.011375744361430407
+          },
+          {
+            "label": "joy",
+            "score": 0.003371186787262559
+          }
+        ],
+        "dominant_emotion": "surprise"
+      },
+      "nlp": {
+        "sentiment": {
+          "label": "Neutral",
+          "score": 0.6936333179473877
+        },
+        "simple_features": {
+          "collaboration_ratio": 0.2,
+          "hedges (uncertainty)": 5,
+          "wh_questions (inquiry)": 0,
+          "yes_no_questions (confirmation)": 1,
+          "question_count": 1
+        }
+      },
+      "nonverbal": {
+        "basic_metrics": {
+          "speakers": {
+            "speaker_SPEAKER_00": {
+              "total_speaking_duration": 16.537499999999966,
+              "total_turns": 6,
+              "speech_ratio": 0.5224757372614441,
+              "mean_turn_duration": 2.7562499999999943,
+              "median_turn_duration": 2.438437499999992,
+              "std_turn_duration": 2.3944998009761833,
+              "min_turn_duration": 0.4556249999999977,
+              "max_turn_duration": 7.762499999999989,
+              "percentiles": {
+                "percentile_10": 0.6328125,
+                "percentile_25": 1.1812500000000057,
+                "percentile_75": 2.619843749999987,
+                "percentile_90": 5.197499999999991
+              },
+              "interruptions_made": 0,
+              "interruptions_received": 0,
+              "interrupted_by": {
+                "speaker_SPEAKER_04": 0
+              }
+            },
+            "speaker_SPEAKER_04": {
+              "total_speaking_duration": 5.349375000000009,
+              "total_turns": 4,
+              "speech_ratio": 0.16900490684885552,
+              "mean_turn_duration": 1.3373437500000023,
+              "median_turn_duration": 1.3331249999999955,
+              "std_turn_duration": 0.5696874785723905,
+              "min_turn_duration": 0.7593750000000341,
+              "max_turn_duration": 1.923749999999984,
+              "percentiles": {
+                "percentile_10": 0.7644375000000252,
+                "percentile_25": 0.7720312500000119,
+                "percentile_75": 1.8984374999999858,
+                "percentile_90": 1.9136249999999848
+              },
+              "interruptions_made": 0,
+              "interruptions_received": 0,
+              "interrupted_by": {
+                "speaker_SPEAKER_00": 0
+              }
+            }
+          },
+          "conversation": {
+            "num_speakers": 5,
+            "total_speaking_time": 21.886874999999975,
+            "overlap_duration": 0.0,
+            "silence_duration": 9.765312500000025,
+            "overlap_ratio": 0.0,
+            "silence_ratio": 0.30851935588970036,
+            "total_interruptions": 0,
+            "interruption_rate": 0.0
+          }
+        },
+        "pitch": [],
+        "loudness": [],
+        "tempo": []
+      },
+      "window_index": 11,
+      "window_start": 348.3478125,
+      "window_end": 380.0,
+      "window_duration": 31.652187500000025,
+      "base_window_len": 30
+    },
+    {
+      "emotion": {
+        "emotions": [
+          {
+            "label": "disgust",
+            "score": 0.32567790150642395
+          },
+          {
+            "label": "neutral",
+            "score": 0.2552505135536194
+          },
+          {
+            "label": "surprise",
+            "score": 0.16336363554000854
+          },
+          {
+            "label": "fear",
+            "score": 0.1264583170413971
+          },
+          {
+            "label": "sadness",
+            "score": 0.0724245086312294
+          },
+          {
+            "label": "anger",
+            "score": 0.051237061619758606
+          },
+          {
+            "label": "joy",
+            "score": 0.005588103085756302
+          }
+        ],
+        "dominant_emotion": "disgust"
+      },
+      "nlp": {
+        "sentiment": {
+          "label": "Neutral",
+          "score": 0.6317142248153687
+        },
+        "simple_features": {
+          "collaboration_ratio": 0.0,
+          "hedges (uncertainty)": 9,
+          "wh_questions (inquiry)": 0,
+          "yes_no_questions (confirmation)": 0,
+          "question_count": 0
+        }
+      },
+      "nonverbal": {
+        "basic_metrics": {
+          "speakers": {
+            "speaker_SPEAKER_04": {
+              "total_speaking_duration": 5.669999999999959,
+              "total_turns": 5,
+              "speech_ratio": 0.18899999999999864,
+              "mean_turn_duration": 1.133999999999992,
+              "median_turn_duration": 0.9618749999999636,
+              "std_turn_duration": 0.5088756908617206,
+              "min_turn_duration": 0.40500000000002956,
+              "max_turn_duration": 1.923749999999984,
+              "percentiles": {
+                "percentile_10": 0.6277500000000031,
+                "percentile_25": 0.9618749999999636,
+                "percentile_75": 1.4175000000000182,
+                "percentile_90": 1.7212499999999977
+              },
+              "interruptions_made": 0,
+              "interruptions_received": 1,
+              "interrupted_by": {
+                "speaker_SPEAKER_00": 1
+              }
+            },
+            "speaker_SPEAKER_00": {
+              "total_speaking_duration": 0.16874999999998863,
+              "total_turns": 1,
+              "speech_ratio": 0.005624999999999621,
+              "mean_turn_duration": 0.16874999999998863,
+              "median_turn_duration": 0.16874999999998863,
+              "std_turn_duration": 0.0,
+              "min_turn_duration": 0.16874999999998863,
+              "max_turn_duration": 0.16874999999998863,
+              "percentiles": {
+                "percentile_10": 0.16874999999998863,
+                "percentile_25": 0.16874999999998863,
+                "percentile_75": 0.16874999999998863,
+                "percentile_90": 0.16874999999998863
+              },
+              "interruptions_made": 1,
+              "interruptions_received": 0,
+              "interrupted_by": {
+                "speaker_SPEAKER_04": 0
+              }
+            }
+          },
+          "conversation": {
+            "num_speakers": 5,
+            "total_speaking_time": 5.838749999999948,
+            "overlap_duration": 0.16874999999998863,
+            "silence_duration": 24.33000000000004,
+            "overlap_ratio": 0.005624999999999621,
+            "silence_ratio": 0.8110000000000014,
+            "total_interruptions": 1,
+            "interruption_rate": 2.0
+          }
+        },
+        "pitch": [],
+        "loudness": [],
+        "tempo": []
+      },
+      "window_index": 12,
+      "window_start": 380.0,
+      "window_end": 410.0,
+      "window_duration": 30.0,
+      "base_window_len": 30
+    },
+    {
+      "emotion": {
+        "emotions": [
+          {
+            "label": "neutral",
+            "score": 0.7144578695297241
+          },
+          {
+            "label": "disgust",
+            "score": 0.12187979370355606
+          },
+          {
+            "label": "anger",
+            "score": 0.04665123671293259
+          },
+          {
+            "label": "sadness",
+            "score": 0.04620110243558884
+          },
+          {
+            "label": "fear",
+            "score": 0.03908355534076691
+          },
+          {
+            "label": "surprise",
+            "score": 0.019057441502809525
+          },
+          {
+            "label": "joy",
+            "score": 0.012669001705944538
+          }
+        ],
+        "dominant_emotion": "neutral"
+      },
+      "nlp": {
+        "sentiment": {
+          "label": "Negative",
+          "score": 0.395117849111557
+        },
+        "simple_features": {
+          "collaboration_ratio": 0.5,
+          "hedges (uncertainty)": 2,
+          "wh_questions (inquiry)": 0,
+          "yes_no_questions (confirmation)": 0,
+          "question_count": 0
+        }
+      },
+      "nonverbal": {
+        "basic_metrics": {
+          "speakers": {
+            "speaker_SPEAKER_04": {
+              "total_speaking_duration": 1.5356249999999818,
+              "total_turns": 2,
+              "speech_ratio": 0.05118749999999939,
+              "mean_turn_duration": 0.7678124999999909,
+              "median_turn_duration": 0.7678124999999909,
+              "std_turn_duration": 0.5653125000000045,
+              "min_turn_duration": 0.20249999999998636,
+              "max_turn_duration": 1.3331249999999955,
+              "percentiles": {
+                "percentile_10": 0.31556249999998726,
+                "percentile_25": 0.48515624999998863,
+                "percentile_75": 1.0504687499999932,
+                "percentile_90": 1.2200624999999945
+              },
+              "interruptions_made": 0,
+              "interruptions_received": 0,
+              "interrupted_by": {}
+            }
+          },
+          "conversation": {
+            "num_speakers": 5,
+            "total_speaking_time": 1.5356249999999818,
+            "overlap_duration": 0.0,
+            "silence_duration": 28.464375000000018,
+            "overlap_ratio": 0.0,
+            "silence_ratio": 0.9488125000000006,
+            "total_interruptions": 0,
+            "interruption_rate": 0.0
+          }
+        },
+        "pitch": [],
+        "loudness": [],
+        "tempo": []
+      },
+      "window_index": 13,
+      "window_start": 410.0,
+      "window_end": 440.0,
+      "window_duration": 30.0,
+      "base_window_len": 30
+    },
+    {
+      "emotion": {
+        "emotions": [
+          {
+            "label": "neutral",
+            "score": 0.8266158699989319
+          },
+          {
+            "label": "disgust",
+            "score": 0.07089661806821823
+          },
+          {
+            "label": "sadness",
+            "score": 0.05627677962183952
+          },
+          {
+            "label": "anger",
+            "score": 0.020814010873436928
+          },
+          {
+            "label": "surprise",
+            "score": 0.01914110593497753
+          },
+          {
+            "label": "joy",
+            "score": 0.003646624041721225
+          },
+          {
+            "label": "fear",
+            "score": 0.002609034301713109
+          }
+        ],
+        "dominant_emotion": "neutral"
+      },
+      "nlp": {
+        "sentiment": {
+          "label": "Neutral",
+          "score": 0.3234435021877289
+        },
+        "simple_features": {
+          "collaboration_ratio": 0.0,
+          "hedges (uncertainty)": 0,
+          "wh_questions (inquiry)": 0,
+          "yes_no_questions (confirmation)": 1,
+          "question_count": 1
+        }
+      },
+      "nonverbal": {
+        "basic_metrics": {
+          "speakers": {
+            "speaker_SPEAKER_04": {
+              "total_speaking_duration": 12.082500000000095,
+              "total_turns": 8,
+              "speech_ratio": 0.40275000000000316,
+              "mean_turn_duration": 1.510312500000012,
+              "median_turn_duration": 1.316250000000025,
+              "std_turn_duration": 1.0045941344642724,
+              "min_turn_duration": 0.01687499999997044,
+              "max_turn_duration": 3.105000000000018,
+              "percentiles": {
+                "percentile_10": 0.4303125000000023,
+                "percentile_25": 0.7340625000000074,
+                "percentile_75": 2.4342187500000136,
+                "percentile_90": 2.7151875000000243
+              },
+              "interruptions_made": 0,
+              "interruptions_received": 2,
+              "interrupted_by": {
+                "speaker_SPEAKER_00": 2
+              }
+            },
+            "speaker_SPEAKER_00": {
+              "total_speaking_duration": 1.9406249999999545,
+              "total_turns": 2,
+              "speech_ratio": 0.06468749999999848,
+              "mean_turn_duration": 0.9703124999999773,
+              "median_turn_duration": 0.9703124999999773,
+              "std_turn_duration": 0.14343750000000455,
+              "min_turn_duration": 0.8268749999999727,
+              "max_turn_duration": 1.1137499999999818,
+              "percentiles": {
+                "percentile_10": 0.8555624999999736,
+                "percentile_25": 0.898593749999975,
+                "percentile_75": 1.0420312499999795,
+                "percentile_90": 1.085062499999981
+              },
+              "interruptions_made": 2,
+              "interruptions_received": 0,
+              "interrupted_by": {
+                "speaker_SPEAKER_04": 0
+              }
+            }
+          },
+          "conversation": {
+            "num_speakers": 5,
+            "total_speaking_time": 14.02312500000005,
+            "overlap_duration": 1.9406249999999545,
+            "silence_duration": 17.917499999999905,
+            "overlap_ratio": 0.06468749999999848,
+            "silence_ratio": 0.5972499999999968,
+            "total_interruptions": 2,
+            "interruption_rate": 4.0
+          }
+        },
+        "pitch": [],
+        "loudness": [],
+        "tempo": []
+      },
+      "window_index": 14,
+      "window_start": 440.0,
+      "window_end": 470.0,
+      "window_duration": 30.0,
+      "base_window_len": 30
+    },
+    {
+      "emotion": {
+        "emotions": [
+          {
+            "label": "neutral",
+            "score": 0.9213635921478271
+          },
+          {
+            "label": "surprise",
+            "score": 0.024667009711265564
+          },
+          {
+            "label": "disgust",
+            "score": 0.023467907682061195
+          },
+          {
+            "label": "fear",
+            "score": 0.011317196302115917
+          },
+          {
+            "label": "anger",
+            "score": 0.00933526735752821
+          },
+          {
+            "label": "sadness",
+            "score": 0.0063770245760679245
+          },
+          {
+            "label": "joy",
+            "score": 0.003472099779173732
+          }
+        ],
+        "dominant_emotion": "neutral"
+      },
+      "nlp": {
+        "sentiment": {
+          "label": "Positive",
+          "score": 0.49717211723327637
+        },
+        "simple_features": {
+          "collaboration_ratio": 0.0,
+          "hedges (uncertainty)": 0,
+          "wh_questions (inquiry)": 0,
+          "yes_no_questions (confirmation)": 1,
+          "question_count": 1
+        }
+      },
+      "nonverbal": {
+        "basic_metrics": {
+          "speakers": {
+            "speaker_SPEAKER_00": {
+              "total_speaking_duration": 4.455000000000041,
+              "total_turns": 4,
+              "speech_ratio": 0.14850000000000135,
+              "mean_turn_duration": 1.1137500000000102,
+              "median_turn_duration": 0.8437500000000284,
+              "std_turn_duration": 0.6085537735586701,
+              "min_turn_duration": 0.6243749999999864,
+              "max_turn_duration": 2.1431249999999977,
+              "percentiles": {
+                "percentile_10": 0.6496874999999932,
+                "percentile_25": 0.6876562500000034,
+                "percentile_75": 1.2698437500000352,
+                "percentile_90": 1.793812500000013
+              },
+              "interruptions_made": 0,
+              "interruptions_received": 0,
+              "interrupted_by": {
+                "speaker_SPEAKER_04": 0
+              }
+            },
+            "speaker_SPEAKER_04": {
+              "total_speaking_duration": 0.23624999999998408,
+              "total_turns": 2,
+              "speech_ratio": 0.00787499999999947,
+              "mean_turn_duration": 0.11812499999999204,
+              "median_turn_duration": 0.11812499999999204,
+              "std_turn_duration": 0.1012500000000216,
+              "min_turn_duration": 0.01687499999997044,
+              "max_turn_duration": 0.21937500000001364,
+              "percentiles": {
+                "percentile_10": 0.03712499999997476,
+                "percentile_25": 0.06749999999998124,
+                "percentile_75": 0.16875000000000284,
+                "percentile_90": 0.19912500000000932
+              },
+              "interruptions_made": 0,
+              "interruptions_received": 0,
+              "interrupted_by": {
+                "speaker_SPEAKER_00": 0
+              }
+            }
+          },
+          "conversation": {
+            "num_speakers": 5,
+            "total_speaking_time": 4.691250000000025,
+            "overlap_duration": 0.0,
+            "silence_duration": 25.308749999999975,
+            "overlap_ratio": 0.0,
+            "silence_ratio": 0.8436249999999992,
+            "total_interruptions": 0,
+            "interruption_rate": 0.0
+          }
+        },
+        "pitch": [],
+        "loudness": [],
+        "tempo": []
+      },
+      "window_index": 15,
+      "window_start": 470.0,
+      "window_end": 500.0,
+      "window_duration": 30.0,
+      "base_window_len": 30
+    },
+    {
+      "emotion": {
+        "emotions": [
+          {
+            "label": "neutral",
+            "score": 0.8801311254501343
+          },
+          {
+            "label": "surprise",
+            "score": 0.061953093856573105
+          },
+          {
+            "label": "anger",
+            "score": 0.023546002805233
+          },
+          {
+            "label": "disgust",
+            "score": 0.020089121535420418
+          },
+          {
+            "label": "fear",
+            "score": 0.008675864897668362
+          },
+          {
+            "label": "sadness",
+            "score": 0.0033159602899104357
+          },
+          {
+            "label": "joy",
+            "score": 0.0022888670209795237
+          }
+        ],
+        "dominant_emotion": "neutral"
+      },
+      "nlp": {
+        "sentiment": {
+          "label": "Neutral",
+          "score": 0.9278085231781006
+        },
+        "simple_features": {
+          "collaboration_ratio": "Neutral",
+          "hedges (uncertainty)": 0,
+          "wh_questions (inquiry)": 4,
+          "yes_no_questions (confirmation)": 0,
+          "question_count": 4
+        }
+      },
+      "nonverbal": {
+        "basic_metrics": {
+          "speakers": {
+            "speaker_SPEAKER_00": {
+              "total_speaking_duration": 5.5012500000003115,
+              "total_turns": 4,
+              "speech_ratio": 0.17183183828052004,
+              "mean_turn_duration": 1.3753125000000779,
+              "median_turn_duration": 1.3162500000000819,
+              "std_turn_duration": 0.552060150849694,
+              "min_turn_duration": 0.6581250000001546,
+              "max_turn_duration": 2.210624999999993,
+              "percentiles": {
+                "percentile_10": 0.8555625000001328,
+                "percentile_25": 1.1517187500001,
+                "percentile_75": 1.5398437500000597,
+                "percentile_90": 1.9423125000000199
+              },
+              "interruptions_made": 0,
+              "interruptions_received": 0,
+              "interrupted_by": {
+                "speaker_SPEAKER_04": 0
+              }
+            },
+            "speaker_SPEAKER_04": {
+              "total_speaking_duration": 10.749375000000157,
+              "total_turns": 9,
+              "speech_ratio": 0.33575730363400813,
+              "mean_turn_duration": 1.1943750000000175,
+              "median_turn_duration": 1.0125000000000455,
+              "std_turn_duration": 0.8219731405282904,
+              "min_turn_duration": 0.21937500000012733,
+              "max_turn_duration": 2.7337499999999864,
+              "percentiles": {
+                "percentile_10": 0.3138750000000982,
+                "percentile_25": 0.5737499999999613,
+                "percentile_75": 1.5356249999999818,
+                "percentile_90": 2.436749999999961
+              },
+              "interruptions_made": 0,
+              "interruptions_received": 0,
+              "interrupted_by": {
+                "speaker_SPEAKER_00": 0
+              }
+            }
+          },
+          "conversation": {
+            "num_speakers": 5,
+            "total_speaking_time": 16.25062500000047,
+            "overlap_duration": 0.0,
+            "silence_duration": 15.764687499999532,
+            "overlap_ratio": 0.0,
+            "silence_ratio": 0.4924108580854718,
+            "total_interruptions": 0,
+            "interruption_rate": 0.0
+          }
+        },
+        "pitch": [],
+        "loudness": [],
+        "tempo": []
+      },
+      "window_index": 16,
+      "window_start": 500.0,
+      "window_end": 532.01534375,
+      "window_duration": 32.015343750000056,
+      "base_window_len": 30
+    },
+    {
+      "emotion": {
+        "emotions": [
+          {
+            "label": "neutral",
+            "score": 0.6333494186401367
+          },
+          {
+            "label": "disgust",
+            "score": 0.1768149733543396
+          },
+          {
+            "label": "anger",
+            "score": 0.15679048001766205
+          },
+          {
+            "label": "sadness",
+            "score": 0.01313389465212822
+          },
+          {
+            "label": "surprise",
+            "score": 0.011024109087884426
+          },
+          {
+            "label": "fear",
+            "score": 0.0067676822654902935
+          },
+          {
+            "label": "joy",
+            "score": 0.0021194557193666697
+          }
+        ],
+        "dominant_emotion": "neutral"
+      },
+      "nlp": {
+        "sentiment": {
+          "label": "Neutral",
+          "score": 0.5530349016189575
+        },
+        "simple_features": {
+          "collaboration_ratio": 1.0,
+          "hedges (uncertainty)": 1,
+          "wh_questions (inquiry)": 1,
+          "yes_no_questions (confirmation)": 0,
+          "question_count": 1
+        }
+      },
+      "nonverbal": {
+        "basic_metrics": {
+          "speakers": {
+            "speaker_SPEAKER_00": {
+              "total_speaking_duration": 8.690625000000182,
+              "total_turns": 8,
+              "speech_ratio": 0.2729065876372686,
+              "mean_turn_duration": 1.0863281250000227,
+              "median_turn_duration": 1.1475000000000364,
+              "std_turn_duration": 0.6245994370691621,
+              "min_turn_duration": 0.3037500000000364,
+              "max_turn_duration": 2.176875000000109,
+              "percentiles": {
+                "percentile_10": 0.3155625000000555,
+                "percentile_25": 0.5104687500000296,
+                "percentile_75": 1.404843749999884,
+                "percentile_90": 1.8579375000000709
+              },
+              "interruptions_made": 0,
+              "interruptions_received": 0,
+              "interrupted_by": {
+                "speaker_SPEAKER_04": 0,
+                "speaker_SPEAKER_02": 0
+              }
+            },
+            "speaker_SPEAKER_04": {
+              "total_speaking_duration": 2.5987499999998818,
+              "total_turns": 4,
+              "speech_ratio": 0.08160701843910015,
+              "mean_turn_duration": 0.6496874999999704,
+              "median_turn_duration": 0.4978125000000091,
+              "std_turn_duration": 0.49119006075174615,
+              "min_turn_duration": 0.20249999999987267,
+              "max_turn_duration": 1.400624999999991,
+              "percentiles": {
+                "percentile_10": 0.20756249999988086,
+                "percentile_25": 0.21515624999989313,
+                "percentile_75": 0.9323437500000864,
+                "percentile_90": 1.213312500000029
+              },
+              "interruptions_made": 0,
+              "interruptions_received": 0,
+              "interrupted_by": {
+                "speaker_SPEAKER_00": 0,
+                "speaker_SPEAKER_02": 0
+              }
+            },
+            "speaker_SPEAKER_02": {
+              "total_speaking_duration": 2.2950000000000728,
+              "total_turns": 1,
+              "speech_ratio": 0.0720685357644057,
+              "mean_turn_duration": 2.2950000000000728,
+              "median_turn_duration": 2.2950000000000728,
+              "std_turn_duration": 0.0,
+              "min_turn_duration": 2.2950000000000728,
+              "max_turn_duration": 2.2950000000000728,
+              "percentiles": {
+                "percentile_10": 2.2950000000000728,
+                "percentile_25": 2.2950000000000728,
+                "percentile_75": 2.2950000000000728,
+                "percentile_90": 2.2950000000000728
+              },
+              "interruptions_made": 0,
+              "interruptions_received": 0,
+              "interrupted_by": {
+                "speaker_SPEAKER_00": 0,
+                "speaker_SPEAKER_04": 0
+              }
+            }
+          },
+          "conversation": {
+            "num_speakers": 5,
+            "total_speaking_time": 13.584375000000136,
+            "overlap_duration": 0.0,
+            "silence_duration": 18.260312499999863,
+            "overlap_ratio": 0.0,
+            "silence_ratio": 0.5734178581592255,
+            "total_interruptions": 0,
+            "interruption_rate": 0.0
+          }
+        },
+        "pitch": [],
+        "loudness": [],
+        "tempo": []
+      },
+      "window_index": 17,
+      "window_start": 532.0153125,
+      "window_end": 563.86,
+      "window_duration": 31.844687499999964,
+      "base_window_len": 30
+    },
+    {
+      "emotion": {
+        "emotions": [
+          {
+            "label": "neutral",
+            "score": 0.9315093755722046
+          },
+          {
+            "label": "disgust",
+            "score": 0.02268628403544426
+          },
+          {
+            "label": "anger",
+            "score": 0.019382506608963013
+          },
+          {
+            "label": "surprise",
+            "score": 0.015093063935637474
+          },
+          {
+            "label": "fear",
+            "score": 0.004845283459872007
+          },
+          {
+            "label": "sadness",
+            "score": 0.004143548663705587
+          },
+          {
+            "label": "joy",
+            "score": 0.002339924219995737
+          }
+        ],
+        "dominant_emotion": "neutral"
+      },
+      "nlp": {
+        "sentiment": {
+          "label": "Negative",
+          "score": 0.8484982848167419
+        },
+        "simple_features": {
+          "collaboration_ratio": "Infinite (All Group)",
+          "hedges (uncertainty)": 0,
+          "wh_questions (inquiry)": 0,
+          "yes_no_questions (confirmation)": 0,
+          "question_count": 0
+        }
+      },
+      "nonverbal": {
+        "basic_metrics": {
+          "speakers": {
+            "speaker_SPEAKER_00": {
+              "total_speaking_duration": 10.934999999999945,
+              "total_turns": 7,
+              "speech_ratio": 0.36449999999999816,
+              "mean_turn_duration": 1.5621428571428493,
+              "median_turn_duration": 0.6749999999999545,
+              "std_turn_duration": 2.2408986522755243,
+              "min_turn_duration": 0.016875000000027285,
+              "max_turn_duration": 6.817499999999882,
+              "percentiles": {
+                "percentile_10": 0.027000000000043656,
+                "percentile_25": 0.17718749999994543,
+                "percentile_75": 1.5356250000000955,
+                "percentile_90": 3.942000000000009
+              },
+              "interruptions_made": 0,
+              "interruptions_received": 1,
+              "interrupted_by": {
+                "speaker_SPEAKER_04": 1,
+                "speaker_SPEAKER_01": 0
+              }
+            },
+            "speaker_SPEAKER_04": {
+              "total_speaking_duration": 3.763125000000173,
+              "total_turns": 1,
+              "speech_ratio": 0.12543750000000575,
+              "mean_turn_duration": 3.763125000000173,
+              "median_turn_duration": 3.763125000000173,
+              "std_turn_duration": 0.0,
+              "min_turn_duration": 3.763125000000173,
+              "max_turn_duration": 3.763125000000173,
+              "percentiles": {
+                "percentile_10": 3.763125000000173,
+                "percentile_25": 3.763125000000173,
+                "percentile_75": 3.763125000000173,
+                "percentile_90": 3.763125000000173
+              },
+              "interruptions_made": 1,
+              "interruptions_received": 0,
+              "interrupted_by": {
+                "speaker_SPEAKER_00": 0,
+                "speaker_SPEAKER_01": 0
+              }
+            },
+            "speaker_SPEAKER_01": {
+              "total_speaking_duration": 2.1093750000002274,
+              "total_turns": 4,
+              "speech_ratio": 0.07031250000000758,
+              "mean_turn_duration": 0.5273437500000568,
+              "median_turn_duration": 0.27843749999999545,
+              "std_turn_duration": 0.5998789550753063,
+              "min_turn_duration": 0.03375000000005457,
+              "max_turn_duration": 1.518750000000182,
+              "percentiles": {
+                "percentile_10": 0.04387500000007094,
+                "percentile_25": 0.0590625000000955,
+                "percentile_75": 0.7467187499999568,
+                "percentile_90": 1.209937500000092
+              },
+              "interruptions_made": 0,
+              "interruptions_received": 0,
+              "interrupted_by": {
+                "speaker_SPEAKER_00": 0,
+                "speaker_SPEAKER_04": 0
+              }
+            }
+          },
+          "conversation": {
+            "num_speakers": 5,
+            "total_speaking_time": 16.807500000000346,
+            "overlap_duration": 1.4512500000000728,
+            "silence_duration": 14.643749999999727,
+            "overlap_ratio": 0.04837500000000242,
+            "silence_ratio": 0.4881249999999909,
+            "total_interruptions": 1,
+            "interruption_rate": 2.0
+          }
+        },
+        "pitch": [],
+        "loudness": [],
+        "tempo": []
+      },
+      "window_index": 18,
+      "window_start": 563.86,
+      "window_end": 593.86,
+      "window_duration": 30.0,
+      "base_window_len": 30
+    },
+    {
+      "emotion": {
+        "emotions": [
+          {
+            "label": "neutral",
+            "score": 0.7586206793785095
+          },
+          {
+            "label": "disgust",
+            "score": 0.0807938426733017
+          },
+          {
+            "label": "surprise",
+            "score": 0.07920611649751663
+          },
+          {
+            "label": "anger",
+            "score": 0.06858201324939728
+          },
+          {
+            "label": "fear",
+            "score": 0.006210590247064829
+          },
+          {
+            "label": "sadness",
+            "score": 0.0038583308923989534
+          },
+          {
+            "label": "joy",
+            "score": 0.0027285427786409855
+          }
+        ],
+        "dominant_emotion": "neutral"
+      },
+      "nlp": {
+        "sentiment": {
+          "label": "Neutral",
+          "score": 0.9213938117027283
+        },
+        "simple_features": {
+          "collaboration_ratio": "Neutral",
+          "hedges (uncertainty)": 0,
+          "wh_questions (inquiry)": 3,
+          "yes_no_questions (confirmation)": 0,
+          "question_count": 3
+        }
+      },
+      "nonverbal": {
+        "basic_metrics": {
+          "speakers": {
+            "speaker_SPEAKER_00": {
+              "total_speaking_duration": 9.568125000000009,
+              "total_turns": 4,
+              "speech_ratio": 0.31567877431926705,
+              "mean_turn_duration": 2.3920312500000023,
+              "median_turn_duration": 2.0925000000000864,
+              "std_turn_duration": 0.9892676401596782,
+              "min_turn_duration": 1.3668749999999363,
+              "max_turn_duration": 4.0162499999999,
+              "percentiles": {
+                "percentile_10": 1.53900000000001,
+                "percentile_25": 1.7971875000001205,
+                "percentile_75": 2.687343749999968,
+                "percentile_90": 3.4846874999999278
+              },
+              "interruptions_made": 0,
+              "interruptions_received": 1,
+              "interrupted_by": {
+                "speaker_SPEAKER_04": 1
+              }
+            },
+            "speaker_SPEAKER_04": {
+              "total_speaking_duration": 4.336875000000191,
+              "total_turns": 3,
+              "speech_ratio": 0.14308544091720482,
+              "mean_turn_duration": 1.4456250000000637,
+              "median_turn_duration": 1.0968749999999545,
+              "std_turn_duration": 0.8363298728671756,
+              "min_turn_duration": 0.6412500000001273,
+              "max_turn_duration": 2.598750000000109,
+              "percentiles": {
+                "percentile_10": 0.7323750000000928,
+                "percentile_25": 0.8690625000000409,
+                "percentile_75": 1.8478125000000318,
+                "percentile_90": 2.298375000000078
+              },
+              "interruptions_made": 1,
+              "interruptions_received": 0,
+              "interrupted_by": {
+                "speaker_SPEAKER_00": 0
+              }
+            }
+          },
+          "conversation": {
+            "num_speakers": 5,
+            "total_speaking_time": 13.9050000000002,
+            "overlap_duration": 0.6412500000001273,
+            "silence_duration": 17.045937499999926,
+            "overlap_ratio": 0.021156602158967405,
+            "silence_ratio": 0.5623923869224956,
+            "total_interruptions": 1,
+            "interruption_rate": 1.9795651142889545
+          }
+        },
+        "pitch": [],
+        "loudness": [],
+        "tempo": []
+      },
+      "window_index": 19,
+      "window_start": 593.86,
+      "window_end": 624.1697187500001,
+      "window_duration": 30.309718750000116,
+      "base_window_len": 30
+    },
+    {
+      "emotion": {
+        "emotions": [
+          {
+            "label": "neutral",
+            "score": 0.8490701913833618
+          },
+          {
+            "label": "disgust",
+            "score": 0.0725223571062088
+          },
+          {
+            "label": "anger",
+            "score": 0.04205404222011566
+          },
+          {
+            "label": "surprise",
+            "score": 0.021465780213475227
+          },
+          {
+            "label": "sadness",
+            "score": 0.006434217095375061
+          },
+          {
+            "label": "fear",
+            "score": 0.005171683616936207
+          },
+          {
+            "label": "joy",
+            "score": 0.0032816727180033922
+          }
+        ],
+        "dominant_emotion": "neutral"
+      },
+      "nlp": {
+        "sentiment": {
+          "label": "Neutral",
+          "score": 0.8543944358825684
+        },
+        "simple_features": {
+          "collaboration_ratio": 0.0,
+          "hedges (uncertainty)": 0,
+          "wh_questions (inquiry)": 0,
+          "yes_no_questions (confirmation)": 0,
+          "question_count": 0
+        }
+      },
+      "nonverbal": {
+        "basic_metrics": {
+          "speakers": {
+            "speaker_SPEAKER_04": {
+              "total_speaking_duration": 2.9362499999999727,
+              "total_turns": 2,
+              "speech_ratio": 0.09787499999999909,
+              "mean_turn_duration": 1.4681249999999864,
+              "median_turn_duration": 1.4681249999999864,
+              "std_turn_duration": 0.9112499999999955,
+              "min_turn_duration": 0.5568749999999909,
+              "max_turn_duration": 2.379374999999982,
+              "percentiles": {
+                "percentile_10": 0.73912499999999,
+                "percentile_25": 1.0124999999999886,
+                "percentile_75": 1.923749999999984,
+                "percentile_90": 2.197124999999983
+              },
+              "interruptions_made": 0,
+              "interruptions_received": 0,
+              "interrupted_by": {
+                "speaker_SPEAKER_00": 0
+              }
+            },
+            "speaker_SPEAKER_00": {
+              "total_speaking_duration": 12.420000000000073,
+              "total_turns": 4,
+              "speech_ratio": 0.4140000000000024,
+              "mean_turn_duration": 3.105000000000018,
+              "median_turn_duration": 3.839062500000068,
+              "std_turn_duration": 1.6472368554074737,
+              "min_turn_duration": 0.35437499999989086,
+              "max_turn_duration": 4.3875000000000455,
+              "percentiles": {
+                "percentile_10": 1.240312499999959,
+                "percentile_25": 2.5692187500000614,
+                "percentile_75": 4.374843750000025,
+                "percentile_90": 4.382437500000037
+              },
+              "interruptions_made": 0,
+              "interruptions_received": 0,
+              "interrupted_by": {
+                "speaker_SPEAKER_04": 0
+              }
+            }
+          },
+          "conversation": {
+            "num_speakers": 5,
+            "total_speaking_time": 15.356250000000045,
+            "overlap_duration": 0.0,
+            "silence_duration": 14.643749999999955,
+            "overlap_ratio": 0.0,
+            "silence_ratio": 0.4881249999999985,
+            "total_interruptions": 0,
+            "interruption_rate": 0.0
+          }
+        },
+        "pitch": [],
+        "loudness": [],
+        "tempo": []
+      },
+      "window_index": 20,
+      "window_start": 624.1696875,
+      "window_end": 654.1696875,
+      "window_duration": 30.0,
+      "base_window_len": 30
+    },
+    {
+      "emotion": {
+        "emotions": [
+          {
+            "label": "neutral",
+            "score": 0.9475480914115906
+          },
+          {
+            "label": "surprise",
+            "score": 0.02231106348335743
+          },
+          {
+            "label": "joy",
+            "score": 0.012727642431855202
+          },
+          {
+            "label": "anger",
+            "score": 0.005919283721596003
+          },
+          {
+            "label": "fear",
+            "score": 0.004460982978343964
+          },
+          {
+            "label": "disgust",
+            "score": 0.004273137543350458
+          },
+          {
+            "label": "sadness",
+            "score": 0.002759828930720687
+          }
+        ],
+        "dominant_emotion": "neutral"
+      },
+      "nlp": {
+        "sentiment": {
+          "label": "Neutral",
+          "score": 0.4788205325603485
+        },
+        "simple_features": {
+          "collaboration_ratio": "Neutral",
+          "hedges (uncertainty)": 0,
+          "wh_questions (inquiry)": 0,
+          "yes_no_questions (confirmation)": 0,
+          "question_count": 0
+        }
+      },
+      "nonverbal": {
+        "basic_metrics": {
+          "speakers": {
+            "speaker_SPEAKER_04": {
+              "total_speaking_duration": 4.083750000000009,
+              "total_turns": 3,
+              "speech_ratio": 0.13465224111282875,
+              "mean_turn_duration": 1.361250000000003,
+              "median_turn_duration": 1.2487499999999727,
+              "std_turn_duration": 0.2736086964079004,
+              "min_turn_duration": 1.0968749999999545,
+              "max_turn_duration": 1.7381250000000819,
+              "percentiles": {
+                "percentile_10": 1.1272499999999581,
+                "percentile_25": 1.1728124999999636,
+                "percentile_75": 1.4934375000000273,
+                "percentile_90": 1.64025000000006
+              },
+              "interruptions_made": 0,
+              "interruptions_received": 0,
+              "interrupted_by": {}
+            }
+          },
+          "conversation": {
+            "num_speakers": 5,
+            "total_speaking_time": 4.083750000000009,
+            "overlap_duration": 0.0,
+            "silence_duration": 26.24437499999999,
+            "overlap_ratio": 0.0,
+            "silence_ratio": 0.8653477588871713,
+            "total_interruptions": 0,
+            "interruption_rate": 0.0
+          }
+        },
+        "pitch": [],
+        "loudness": [],
+        "tempo": []
+      },
+      "window_index": 21,
+      "window_start": 654.1696875,
+      "window_end": 684.4978437500001,
+      "window_duration": 30.32815625000012,
+      "base_window_len": 30
+    },
+    {
+      "emotion": {
+        "emotions": [
+          {
+            "label": "neutral",
+            "score": 0.9517531991004944
+          },
+          {
+            "label": "surprise",
+            "score": 0.02556232549250126
+          },
+          {
+            "label": "anger",
+            "score": 0.0076834335923194885
+          },
+          {
+            "label": "disgust",
+            "score": 0.006803906988352537
+          },
+          {
+            "label": "sadness",
+            "score": 0.003603987395763397
+          },
+          {
+            "label": "joy",
+            "score": 0.003355395747348666
+          },
+          {
+            "label": "fear",
+            "score": 0.0012377979001030326
+          }
+        ],
+        "dominant_emotion": "neutral"
+      },
+      "nlp": {
+        "sentiment": {
+          "label": "Neutral",
+          "score": 0.8656575679779053
+        },
+        "simple_features": {
+          "collaboration_ratio": 0.0,
+          "hedges (uncertainty)": 0,
+          "wh_questions (inquiry)": 0,
+          "yes_no_questions (confirmation)": 0,
+          "question_count": 0
+        }
+      },
+      "nonverbal": {
+        "basic_metrics": {
+          "speakers": {
+            "speaker_SPEAKER_04": {
+              "total_speaking_duration": 1.7549999999996544,
+              "total_turns": 3,
+              "speech_ratio": 0.05849999999998848,
+              "mean_turn_duration": 0.5849999999998848,
+              "median_turn_duration": 0.6243749999998727,
+              "std_turn_duration": 0.4349110900517997,
+              "min_turn_duration": 0.033749999999827196,
+              "max_turn_duration": 1.0968749999999545,
+              "percentiles": {
+                "percentile_10": 0.15187499999983628,
+                "percentile_25": 0.32906249999984993,
+                "percentile_75": 0.8606249999999136,
+                "percentile_90": 1.002374999999938
+              },
+              "interruptions_made": 1,
+              "interruptions_received": 0,
+              "interrupted_by": {
+                "speaker_SPEAKER_00": 0
+              }
+            },
+            "speaker_SPEAKER_00": {
+              "total_speaking_duration": 6.648750000000064,
+              "total_turns": 3,
+              "speech_ratio": 0.22162500000000213,
+              "mean_turn_duration": 2.2162500000000214,
+              "median_turn_duration": 1.552500000000009,
+              "std_turn_duration": 1.1224377070688434,
+              "min_turn_duration": 1.2993750000000546,
+              "max_turn_duration": 3.796875,
+              "percentiles": {
+                "percentile_10": 1.3500000000000454,
+                "percentile_25": 1.4259375000000318,
+                "percentile_75": 2.6746875000000045,
+                "percentile_90": 3.348000000000002
+              },
+              "interruptions_made": 0,
+              "interruptions_received": 1,
+              "interrupted_by": {
+                "speaker_SPEAKER_04": 1
+              }
+            }
+          },
+          "conversation": {
+            "num_speakers": 5,
+            "total_speaking_time": 8.403749999999718,
+            "overlap_duration": 0.033749999999827196,
+            "silence_duration": 21.63000000000011,
+            "overlap_ratio": 0.0011249999999942398,
+            "silence_ratio": 0.7210000000000036,
+            "total_interruptions": 1,
+            "interruption_rate": 2.0
+          }
+        },
+        "pitch": [],
+        "loudness": [],
+        "tempo": []
+      },
+      "window_index": 22,
+      "window_start": 684.4978125,
+      "window_end": 714.4978125,
+      "window_duration": 30.0,
+      "base_window_len": 30
+    },
+    {
+      "emotion": {
+        "emotions": [
+          {
+            "label": "neutral",
+            "score": 0.967011034488678
+          },
+          {
+            "label": "surprise",
+            "score": 0.007822447456419468
+          },
+          {
+            "label": "joy",
+            "score": 0.007697723340243101
+          },
+          {
+            "label": "disgust",
+            "score": 0.0063964794389903545
+          },
+          {
+            "label": "anger",
+            "score": 0.0054738083854317665
+          },
+          {
+            "label": "sadness",
+            "score": 0.004523314069956541
+          },
+          {
+            "label": "fear",
+            "score": 0.0010751433437690139
+          }
+        ],
+        "dominant_emotion": "neutral"
+      },
+      "nlp": {
+        "sentiment": {
+          "label": "Neutral",
+          "score": 0.7584115862846375
+        },
+        "simple_features": {
+          "collaboration_ratio": 0.0,
+          "hedges (uncertainty)": 0,
+          "wh_questions (inquiry)": 0,
+          "yes_no_questions (confirmation)": 0,
+          "question_count": 0
+        }
+      },
+      "nonverbal": {
+        "basic_metrics": {
+          "speakers": {
+            "speaker_SPEAKER_02": {
+              "total_speaking_duration": 5.028750000000173,
+              "total_turns": 3,
+              "speech_ratio": 0.16762500000000577,
+              "mean_turn_duration": 1.6762500000000575,
+              "median_turn_duration": 1.7718750000001364,
+              "std_turn_duration": 0.2637159338189125,
+              "min_turn_duration": 1.3162500000000819,
+              "max_turn_duration": 1.9406249999999545,
+              "percentiles": {
+                "percentile_10": 1.4073750000000929,
+                "percentile_25": 1.5440625000001091,
+                "percentile_75": 1.8562500000000455,
+                "percentile_90": 1.906874999999991
+              },
+              "interruptions_made": 0,
+              "interruptions_received": 0,
+              "interrupted_by": {}
+            }
+          },
+          "conversation": {
+            "num_speakers": 5,
+            "total_speaking_time": 5.028750000000173,
+            "overlap_duration": 0.0,
+            "silence_duration": 24.971249999999827,
+            "overlap_ratio": 0.0,
+            "silence_ratio": 0.8323749999999942,
+            "total_interruptions": 0,
+            "interruption_rate": 0.0
+          }
+        },
+        "pitch": [],
+        "loudness": [],
+        "tempo": []
+      },
+      "window_index": 23,
+      "window_start": 714.4978125,
+      "window_end": 744.4978125,
+      "window_duration": 30.0,
+      "base_window_len": 30
+    },
+    {
+      "emotion": {
+        "emotions": [
+          {
+            "label": "joy",
+            "score": 0.8186855316162109
+          },
+          {
+            "label": "neutral",
+            "score": 0.10063710808753967
+          },
+          {
+            "label": "surprise",
+            "score": 0.06410905718803406
+          },
+          {
+            "label": "anger",
+            "score": 0.008709282614290714
+          },
+          {
+            "label": "sadness",
+            "score": 0.004935847595334053
+          },
+          {
+            "label": "disgust",
+            "score": 0.0020253723487257957
+          },
+          {
+            "label": "fear",
+            "score": 0.0008977641118690372
+          }
+        ],
+        "dominant_emotion": "joy"
+      },
+      "nlp": {
+        "sentiment": {
+          "label": "Negative",
+          "score": 0.4291578233242035
+        },
+        "simple_features": {
+          "collaboration_ratio": "Neutral",
+          "hedges (uncertainty)": 0,
+          "wh_questions (inquiry)": 0,
+          "yes_no_questions (confirmation)": 0,
+          "question_count": 0
+        }
+      },
+      "nonverbal": {
+        "basic_metrics": {
+          "speakers": {},
+          "conversation": {
+            "num_speakers": 5,
+            "total_speaking_time": 0.0,
+            "overlap_duration": 0.0,
+            "silence_duration": 9.272875,
+            "overlap_ratio": 0.0,
+            "silence_ratio": 1.0,
+            "total_interruptions": 0,
+            "interruption_rate": 0.0
+          }
+        },
+        "pitch": [],
+        "loudness": [],
+        "tempo": []
+      },
+      "window_index": 24,
+      "window_start": 744.4978125,
+      "window_end": 753.7706875,
+      "window_duration": 9.272874999999999,
+      "base_window_len": 30
+    }
+  ],
+  "robot_data_features": {
+    "total_time_s": 1868.929911,
+    "num_events": 48801,
+    "inter_event_mean_s": 0.03829774407786885,
+    "inter_event_std_s": 1.249557443585393,
+    "A_control_frac": 0.008627955443964212,
+    "A_event_count": 3,
+    "A_event_rate_per_s": 0.0016051966327591191,
+    "B_control_frac": 0.0013537811049565904,
+    "B_event_count": 3,
+    "B_event_rate_per_s": 0.0016051966327591191,
+    "C_control_frac": 0.001199695069784775,
+    "C_event_count": 3,
+    "C_event_rate_per_s": 0.0016051966327591191,
+    "D_control_frac": 0.9776064887432796,
+    "D_event_count": 3,
+    "D_event_rate_per_s": 0.0016051966327591191,
+    "action_entropy_bits": 0.1331040411999894,
+    "control_balance_index": 788.1516823024922,
+    "reaction_time_mean_s": 0.0
+  },
+  "robot_speed_features": [
+    {
+      "window_index": 0,
+      "window_start": 0.0,
+      "window_end": 31.95846875,
+      "avg_speed_cm_s": 2.3671765781470007,
+      "num_detections": 638
+    },
+    {
+      "window_index": 1,
+      "window_start": 31.9584375,
+      "window_end": 67.85159375,
+      "avg_speed_cm_s": 1.2526554411378865,
+      "num_detections": 717
+    },
+    {
+      "window_index": 2,
+      "window_start": 67.8515625,
+      "window_end": 100.08284375000001,
+      "avg_speed_cm_s": 1.0602173243967763,
+      "num_detections": 644
+    },
+    {
+      "window_index": 3,
+      "window_start": 100.0828125,
+      "window_end": 132.0,
+      "avg_speed_cm_s": 1.9432525653134316,
+      "num_detections": 638
+    },
+    {
+      "window_index": 4,
+      "window_start": 132.0,
+      "window_end": 162.0,
+      "avg_speed_cm_s": 0.5820579375070294,
+      "num_detections": 599
+    },
+    {
+      "window_index": 5,
+      "window_start": 162.0,
+      "window_end": 193.04721875,
+      "avg_speed_cm_s": 1.391245130450519,
+      "num_detections": 620
+    },
+    {
+      "window_index": 6,
+      "window_start": 193.0471875,
+      "window_end": 226.0,
+      "avg_speed_cm_s": 0.9456599929505252,
+      "num_detections": 658
+    },
+    {
+      "window_index": 7,
+      "window_start": 226.0,
+      "window_end": 256.0,
+      "avg_speed_cm_s": 0.8823113053569751,
+      "num_detections": 599
+    },
+    {
+      "window_index": 8,
+      "window_start": 256.0,
+      "window_end": 286.0,
+      "avg_speed_cm_s": 2.935073417349001,
+      "num_detections": 599
+    },
+    {
+      "window_index": 9,
+      "window_start": 286.0,
+      "window_end": 316.62284375,
+      "avg_speed_cm_s": 8.535702323704479,
+      "num_detections": 612
+    },
+    {
+      "window_index": 10,
+      "window_start": 316.6228125,
+      "window_end": 348.34784375000004,
+      "avg_speed_cm_s": 2.3162435776443218,
+      "num_detections": 634
+    },
+    {
+      "window_index": 11,
+      "window_start": 348.3478125,
+      "window_end": 380.0,
+      "avg_speed_cm_s": 2.5417965525867996,
+      "num_detections": 632
+    },
+    {
+      "window_index": 12,
+      "window_start": 380.0,
+      "window_end": 410.0,
+      "avg_speed_cm_s": 6.6505639287950595,
+      "num_detections": 599
+    },
+    {
+      "window_index": 13,
+      "window_start": 410.0,
+      "window_end": 440.0,
+      "avg_speed_cm_s": 8.267709705631718,
+      "num_detections": 599
+    },
+    {
+      "window_index": 14,
+      "window_start": 440.0,
+      "window_end": 470.0,
+      "avg_speed_cm_s": 6.713107800650841,
+      "num_detections": 599
+    },
+    {
+      "window_index": 15,
+      "window_start": 470.0,
+      "window_end": 500.0,
+      "avg_speed_cm_s": 3.6710319300925978,
+      "num_detections": 599
+    },
+    {
+      "window_index": 16,
+      "window_start": 500.0,
+      "window_end": 532.01534375,
+      "avg_speed_cm_s": 0.7350435372351418,
+      "num_detections": 640
+    },
+    {
+      "window_index": 17,
+      "window_start": 532.0153125,
+      "window_end": 563.86,
+      "avg_speed_cm_s": 0.9918973869971026,
+      "num_detections": 636
+    },
+    {
+      "window_index": 18,
+      "window_start": 563.86,
+      "window_end": 593.86,
+      "avg_speed_cm_s": 0.08949692223399862,
+      "num_detections": 599
+    },
+    {
+      "window_index": 19,
+      "window_start": 593.86,
+      "window_end": 624.1697187500001,
+      "avg_speed_cm_s": 0.7743353985620703,
+      "num_detections": 605
+    },
+    {
+      "window_index": 20,
+      "window_start": 624.1696875,
+      "window_end": 654.1696875,
+      "avg_speed_cm_s": 1.5177284019141766,
+      "num_detections": 599
+    },
+    {
+      "window_index": 21,
+      "window_start": 654.1696875,
+      "window_end": 684.4978437500001,
+      "avg_speed_cm_s": 0.6116298323894297,
+      "num_detections": 606
+    },
+    {
+      "window_index": 22,
+      "window_start": 684.4978125,
+      "window_end": 714.4978125,
+      "avg_speed_cm_s": 1.4382538989661358,
+      "num_detections": 599
+    },
+    {
+      "window_index": 23,
+      "window_start": 714.4978125,
+      "window_end": 744.4978125,
+      "avg_speed_cm_s": 0.02063246121287218,
+      "num_detections": 599
+    },
+    {
+      "window_index": 24,
+      "window_start": 744.4978125,
+      "window_end": 753.7706875,
+      "avg_speed_cm_s": 3.216863771884609e-14,
+      "num_detections": 185
+    }
+  ]
+}
