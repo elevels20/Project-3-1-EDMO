@@ -49,8 +49,8 @@ def predict_cluster(clustered_data, json_path):
     print(f"Prediction membership shape: {u.shape}")
     print(f"Membership values:\n{u}")
     print("Prediction complete.")
-    # return np.argmax(u, axis=0)[0] 
-    return np.argmax(u, axis=0)
+    return np.argmax(u, axis=0)                                            
+
 
 def test_predict():
     print("Predicting clusters for test data...")
@@ -61,5 +61,5 @@ def test_predict():
     print(assignments)
     return assignments
 
-# test_predict()
+test_predict()
 
