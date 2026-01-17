@@ -6,16 +6,14 @@ import dim_red_clustering_functions
 import json_extraction
 from alt_pipeline.json_extraction import selected_features
 from alt_pipeline.json_extraction import training_files as files
-
+from alt_pipeline.json_extraction import features_labels as feature_labels
 
 all_datapoints = []
 file_labels = []
 
-
-feature_labels, datapoints = (json_extraction.extract_datapoints_except_last(files, selected_features))
+datapoints = (json_extraction.extract_datapoints_except_last_multiple(files, selected_features))
 X = np.array([dp.dimension_values for dp in datapoints])
 X_scaled = StandardScaler().fit_transform(X)
-print(feature_labels)
 print([l for l in datapoints[0].dimension_labels if "window" in l])
 
 for i, f in enumerate(files):

@@ -1,27 +1,36 @@
-import json
 import numpy as np
-import json_extraction  # your module
+import json_extraction
 from sklearn.preprocessing import StandardScaler
 import dim_red_clustering_functions
-from pathlib import Path
 from alt_pipeline.json_extraction import selected_features
 from alt_pipeline.json_extraction import training_files as files
+from alt_pipeline.json_extraction import features_labels as feature_labels
 
-# load datapoints
-all_datapoints = []
-file_labels = []
-feature_labels, datapoints = (json_extraction.extract_datapoints_except_last(files, selected_features))
+# load datapoints (MULTIPLE FILES)
+datapoints = json_extraction.extract_datapoints_except_last_multiple(
+    files,
+    selected_features,
+    feature_labels
+)
 
-#preprocess
-X = np.array([dp.dimension_values for dp in all_datapoints])
+# build feature matrix
+X = np.array([dp.dimension_values for dp in datapoints])
+
+# sanity checks
 print("Feature labels:")
 for lbl in feature_labels:
     print(" -", lbl)
+
+print(f"Number of datapoints: {len(datapoints)}")
 print(f"X shape: {X.shape}")
-# X: full-dimensional feature matrix
+
+if X.size == 0:
+    raise ValueError("No datapoints extracted — clustering cannot proceed.")
+
+# scale features
 X_scaled = StandardScaler().fit_transform(X)
 
-# performing clustering
+# clustering
 (
     silhouette_scores,
     best_score,
@@ -34,11 +43,13 @@ X_scaled = StandardScaler().fit_transform(X)
     X_scaled,
     k_range=range(2, 11),
     m=2.0,
-    random_state=42
+    random_state=42,
+    score_method="intra_similarity"
 )
 
-# print results
-print(best_k)
-print(best_score)
-print(silhouette_scores)
+# results
+print("Best k:", best_k)
+print("Best silhouette score:", best_score)
+print("All silhouette scores:", silhouette_scores)
+
 
