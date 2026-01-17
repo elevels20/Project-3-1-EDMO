@@ -4,35 +4,22 @@ from sklearn.preprocessing import StandardScaler
 import plotting_pca_clustering
 import dim_red_clustering_functions
 import json_extraction
+from alt_pipeline.json_extraction import selected_features
+from alt_pipeline.json_extraction import training_files as files
 
-""""
-# set parameters
-selected_features = [
-    "audio_features.nonverbal.basic_metrics.conversation.overlap_duration",
-    "audio_features.nonverbal.basic_metrics.conversation.num_speakers",
-    "audio_features.nlp.sentiment.score",
-    "audio_features.nonverbal.basic_metrics.conversation.total_speaking_time",
-    "audio_features.emotion.emotions[0].score",
-    "audio_features.emotion.emotions[4].score",
-    "robot_speed_features.avg_speed_cm_s"
-]
-"""
 
-files = [
-    "data/111455_features.json",
-    "data/114654_features.json",
-    "data/133150_features.json",
-    "data/140252_features.json"
-]
+all_datapoints = []
+file_labels = []
 
-feature_labels, datapoints = json_extraction.full_extraction(files)
+
+feature_labels, datapoints = (json_extraction.extract_datapoints_except_last(files, selected_features))
 X = np.array([dp.dimension_values for dp in datapoints])
 X_scaled = StandardScaler().fit_transform(X)
 print(feature_labels)
 print([l for l in datapoints[0].dimension_labels if "window" in l])
 
 for i, f in enumerate(files):
-    dps = json_extraction.extract_datapoints_except_last(f, selected_features, features_labels)
+    dps = json_extraction.extract_datapoints_except_last(f, selected_features, feature_labels)
     all_datapoints.extend(dps)
     file_labels.extend([f"experiment_{i+1}"] * len(dps))  # same label for all windows of this file
 print(f"Total datapoints: {len(all_datapoints)}")
@@ -45,7 +32,8 @@ X_reduced = dim_red.fit(X_scaled)
 # --- Apply fuzzy C-means ---
 n_clusters = 3
 silhouette_scores_pca ,best_score_pca, best_k_pca, cluster_labels, u, cntr, fpc = dim_red_clustering_functions.perform_fuzzy_cmeans_auto_k(X_reduced)
-print("silhette score: " + str(best_score_pca))
+
+print("score: " + str(best_score_pca))
 print("best k: " + str(best_k_pca))
 print("all scores pca: " + str(silhouette_scores_pca))
 

@@ -8,6 +8,12 @@ class Datapoint:
         self.dimension_labels = labels
         self.dimension_values = values
 
+training_files = [
+    "data/111455_features.json",
+    "data/114654_features.json",
+    "data/133150_features.json",
+    "data/140252_features.json"
+]
 
 selected_features = [
     "audio_features.base_window_len",                                           # 1
