@@ -5,7 +5,6 @@ from transformers import pipeline as hf_pipeline
 from keybert import KeyBERT
 import re
 
-
 class NLPProcessor:
     """Processes text for various NLP tasks."""
     
@@ -122,6 +121,66 @@ class NLPProcessor:
             "label": dominant_label,
             "score": avg_sentiments[dominant_label],
         }
+        
+    
+    def simple_nlp_features(self, text: str):
+        # normalize text to lowercase for easier matching
+        text_lower = text.lower()
+        
+        # --- 1. Pronoun Usage (Group Orientation vs. Self) ---
+        # We look for "we" (collaborative) vs "I" (individual/dominant)
+        # \b ensures we match "we" but not "went" or "power"
+        we_count = len(re.findall(r'\b(we|us|our|ours)\b', text_lower))
+        i_count = len(re.findall(r'\b(i|my|mine|me)\b', text_lower))
+        
+        # Calculate ratio (handling division by zero)
+        if i_count == 0:
+            pronoun_ratio = "Infinite (All Group)" if we_count > 0 else "Neutral"
+        else:
+            pronoun_ratio = round(we_count / i_count, 2)
+
+
+        # --- 2. Epistemic Uncertainty (Hedging) ---
+        # Words that signal openness or lack of dominance
+        hedge_words = [
+            "maybe", "might", "could", "think", "guess", 
+            "probably", "sort of", "kind of", "don't know", "dunno"
+        ]
+        # Create a regex pattern that matches any of the hedge words
+        hedge_pattern = r'\b(' + '|'.join(hedge_words) + r')\b'
+        hedge_count = len(re.findall(hedge_pattern, text_lower))
+
+
+        # --- 3. Question Types (Curiosity vs. Confirmation) ---
+        # Note: This relies on punctuation or sentence structure. 
+        # Since we are using regex, we look for sentences starting with specific words.
+        
+        # Split by sentence terminators (. ? !) to analyze sentence starts
+        sentences = re.split(r'[.?!]+', text_lower)
+        
+        wh_questions = 0
+        yes_no_questions = 0
+        
+        for sentence in sentences:
+            sentence = sentence.strip()
+            if not sentence: continue
+            
+            # Check for Wh- words at the start of the sentence
+            if re.match(r'^(who|what|where|when|why|how)\b', sentence):
+                wh_questions += 1
+                
+            # Check for Auxiliary verbs at the start (indicates Yes/No question)
+            # e.g., "Do you...", "Is it...", "Can we..."
+            elif re.match(r'^(is|are|do|does|did|can|could|should|will|would)\b', sentence):
+                yes_no_questions += 1
+
+        return {
+            "collaboration_ratio": pronoun_ratio,
+            "hedges (uncertainty)": hedge_count,
+            "wh_questions (inquiry)": wh_questions,
+            "yes_no_questions (confirmation)": yes_no_questions,
+            "question_count": wh_questions + yes_no_questions,
+        }
     
     def embed_text(self, text: str) -> Dict:
         """Generate embedding for text.
@@ -165,6 +224,11 @@ def extract_keywords(text: str, processor: NLPProcessor, top_n: int = 5) -> Dict
 def analyze_sentiment(text: str, processor: NLPProcessor, max_length: int = 400) -> Dict:
     """Convenience function to analyze sentiment."""
     return processor.analyze_sentiment(text, max_length)
+
+
+def get_simplar_nlp_features(text: str, processor: NLPProcessor) -> Dict:
+    """Convenience function to get simple NLP features."""
+    return processor.simple_nlp_features(text)
 
 
 def embed_text(text: str, processor: NLPProcessor) -> Dict:
