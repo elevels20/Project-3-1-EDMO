@@ -1,4 +1,6 @@
 import numpy as np
+from sklearn.preprocessing import StandardScaler
+
 import plotting_pca_clustering
 import dim_red_clustering_functions
 import json_extraction

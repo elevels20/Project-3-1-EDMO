@@ -6,6 +6,8 @@ import sklearn.decomposition as skd
 from abc import ABC, abstractmethod
 from fcmeans import FCM
 from sklearn.cross_decomposition import PLSRegression
+from sklearn.metrics.pairwise import cosine_similarity
+
 
 
 class Datapoint:
@@ -495,13 +497,65 @@ def softSilhouette(prob_matrix,
     result = Silhouette(**sil_args)
     return result
 
+def intra_cluster_similarity(X, u, centers):
+    """
+    Membership-weighted intra-cluster similarity.
+
+    Returns
+    -------
+    float
+        Higher = tighter clusters
+    """
+    similarities = cosine_similarity(X, centers)
+    weighted_sim = (u * similarities).sum(axis=1)
+    return weighted_sim.mean()
+
+def compute_cluster_score(
+    score_method,
+    X,
+    fcm_model
+):
+    """
+    Compute clustering quality score.
+
+    Parameters
+    ----------
+    score_method : {"soft_silhouette", "intra_similarity"}
+    X : np.ndarray
+        Input data
+    fcm_model : fitted FCM object
+
+    Returns
+    -------
+    score : float
+        Higher is better
+    """
+    if score_method == "soft_silhouette":
+        sil_df = softSilhouette(
+            prob_matrix=fcm_model.u,
+            prob_type="pp",
+            method="pac",
+            average="fuzzy",
+            print_summary=False
+        )
+        return sil_df["sil_width"].mean()
+
+    elif score_method == "intra_similarity":
+        return intra_cluster_similarity(X, fcm_model.u, fcm_model.centers)
+
+    else:
+        raise ValueError(
+            "score_method must be 'soft_silhouette' or 'intra_similarity'"
+        )
+
 def perform_fuzzy_cmeans_auto_k(
     X_reduced,
     k_range=range(2, 11),
     m=2.0,
     max_iter=1000,
     error=0.005,
-    random_state=None
+    random_state=None,
+    score_method="soft_silhouette"
 ):
     """
     Perform fuzzy C-means clustering with automatic selection of K
@@ -522,7 +576,7 @@ def perform_fuzzy_cmeans_auto_k(
     fpc : float
         Fuzzy partition coefficient
     """
-    silhouette_scores = {}
+    all_scores = {}
     best_score = -np.inf
     best_model = None
     best_k = None
@@ -539,19 +593,15 @@ def perform_fuzzy_cmeans_auto_k(
         fcm.fit(X_reduced)
 
         # --- Soft silhouette ---
-        sil_df = softSilhouette(
-            prob_matrix=fcm.u,
-            prob_type="pp",
-            method="pac",
-            average="fuzzy",
-            print_summary=False
+        score = compute_cluster_score(
+            score_method=score_method,
+            X=X_reduced,
+            fcm_model=fcm
         )
+        all_scores[k] = score
 
-        sil_score = sil_df["sil_width"].mean()
-        silhouette_scores[k] = sil_score
-
-        if sil_score > best_score:
-            best_score = sil_score
+        if score > best_score:
+            best_score = score
             best_model = fcm
             best_k = k
 
@@ -561,4 +611,4 @@ def perform_fuzzy_cmeans_auto_k(
     cntr = best_model.centers
     fpc = np.sum(u ** 2) / X_reduced.shape[0]
 
-    return silhouette_scores, best_score, best_k, cluster_labels, u, cntr, fpc
+    return all_scores, best_score, best_k, cluster_labels, u, cntr, fpc
