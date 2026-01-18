@@ -16,13 +16,16 @@ training_files = [
     DATA_DIR / "093025_features.json",
     DATA_DIR / "100854_features.json",
     DATA_DIR / "111414_features.json",
-    DATA_DIR / "111455_features.json",
-    DATA_DIR / "114654_features.json",
     DATA_DIR / "115451_features.json",
     DATA_DIR / "130353_features.json",
     DATA_DIR / "132617_features.json",
     DATA_DIR / "133150_features.json",
     DATA_DIR / "140252_features.json"
+]
+
+test_files = [
+    DATA_DIR / "111455_features.json",
+    DATA_DIR / "114654_features.json"
 ]
 
 selected_features = [
