@@ -3,6 +3,7 @@ from typing import Dict, List, Optional
 from pyannote.audio import Pipeline
 from pyannote.audio.pipelines.utils.hook import ProgressHook
 import os
+import torch
 from dotenv import load_dotenv
 
 from typing import Union
@@ -30,7 +31,7 @@ class DiarizationProcessor:
             token=self.hf_token
         )
     
-    def diarize(self, audio: Union[str, Dict]) -> Dict:
+    def diarize(self, audio: Union[str, Dict], num_speakers: int = None, min_speakers: int = None, max_speakers: int = None) -> Dict:
         """
         Identify speakers in audio.
 
@@ -52,14 +53,19 @@ class DiarizationProcessor:
         # Case 2: in-memory audio
         elif isinstance(audio, dict):
             if "waveform" not in audio or "sample_rate" not in audio:
-                raise ValueError("Audio dict must contain 'waveform' and 'sample_rate'")
+                raise ValueError("Audio dict must contain 'waveform' and 'sample_rate' keys")
             pipeline_input = audio
 
         else:
             raise TypeError("audio must be a file path or a dict with waveform + sample_rate")
 
         with ProgressHook() as hook:
-            output = self.pipeline(pipeline_input, hook=hook)
+            if num_speakers is not None:
+                output = self.pipeline(pipeline_input, num_speakers=num_speakers, hook=hook)
+            elif min_speakers is not None and max_speakers is not None:
+                output = self.pipeline(pipeline_input, min_speakers=min_speakers, max_speakers=max_speakers, hook=hook)
+            else:
+                output = self.pipeline(pipeline_input, hook=hook)
     
    # def diarize(self, audio_path: str) -> Dict:
         """Identify speakers in audio file.
@@ -109,7 +115,7 @@ def get_processor() -> DiarizationProcessor:
     return _processor
 
 
-def diarize(audio_path: str) -> Dict:
+def diarize(dict: Union[str, Dict], num_speakers: int = None, min_speakers: int = None, max_speakers: int = None) -> Dict:
     """Convenience function to diarize audio without creating a processor.
     
     Args:
@@ -119,4 +125,4 @@ def diarize(audio_path: str) -> Dict:
         Dictionary with segments and num_speakers
     """
     processor = get_processor()
-    return processor.diarize(audio_path)
+    return processor.diarize(dict, num_speakers=num_speakers, min_speakers=min_speakers, max_speakers=max_speakers)

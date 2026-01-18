@@ -1,4 +1,5 @@
 import json
+from pathlib import Path
 
 class Datapoint:
     dimension_labels: list[str]
@@ -8,17 +9,20 @@ class Datapoint:
         self.dimension_labels = labels
         self.dimension_values = values
 
+BASE_DIR = Path(__file__).resolve().parent
+DATA_DIR = BASE_DIR / "data"
+
 training_files = [
-    "data/093025_features.json",
-    "data/100854_features.json",
-    "data/111414_features.json",
-    "data/111455_features.json",
-    "data/114654_features.json",
-    "data/115451_features.json",
-    "data/130353_features.json",
-    "data/132617_features.json",
-    "data/133150_features.json",
-    "data/140252_features.json"
+    DATA_DIR / "093025_features.json",
+    DATA_DIR / "100854_features.json",
+    DATA_DIR / "111414_features.json",
+    DATA_DIR / "111455_features.json",
+    DATA_DIR / "114654_features.json",
+    DATA_DIR / "115451_features.json",
+    DATA_DIR / "130353_features.json",
+    DATA_DIR / "132617_features.json",
+    DATA_DIR / "133150_features.json",
+    DATA_DIR / "140252_features.json"
 ]
 
 selected_features = [

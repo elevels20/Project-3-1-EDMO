@@ -24,6 +24,8 @@ ROBOT_MARKER_IDS = None
 SMOOTH_WINDOW = 9
 FRAME_STRIDE = 3 #skip this many frames each iteration
 
+# Calibration cache: {video_path: calibration_dict}
+_calibration_cache = {}
 
 app = FastAPI(
     title="Robot Speed Window Service",
@@ -93,31 +95,79 @@ def _calibrate_table(first_frames_centers):
     return None
 
 
+def get_calibration_for_video(video_path: str, window_start: float):
+    """
+    Get or compute calibration for a video file.
+    Uses cached calibration if available, otherwise computes and caches it.
+    """
+    if video_path in _calibration_cache:
+        return _calibration_cache[video_path]
+    
+    cap = cv2.VideoCapture(video_path)
+    if not cap.isOpened():
+        raise IOError(f"Cannot open video: {video_path}")
+    
+    # Seek to window start for calibration
+    cap.set(cv2.CAP_PROP_POS_MSEC, window_start * 1000.0)
+    
+    calibration_frames = []
+    frame_count = 0
+    max_calib_frames = 50  # Limit calibration search
+    
+    while frame_count < max_calib_frames:
+        ret, frame = cap.read()
+        if not ret:
+            break
+        
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        corners, ids, _ = cv2.aruco.detectMarkers(gray, ARUCO_DICT)
+        
+        if ids is not None:
+            centers = {}
+            for i, mid in enumerate(ids.flatten()):
+                centers[mid] = _marker_center(corners[i])
+            calibration_frames.append(centers)
+            
+            calib = _calibrate_table(calibration_frames)
+            if calib is not None:
+                cap.release()
+                _calibration_cache[video_path] = calib
+                return calib
+        
+        frame_count += 1
+    
+    cap.release()
+    return None
+
+
 #----- MAIN SPEED EXTRACTION FUNCTION----
 
 def compute_speed_for_window(video_path: str, window_start: float, window_end: float):
     """
     Compute robot speed (cm/s) inside one window:
-    - Detect table markers → calibrate pixel→cm
+    - Get cached calibration (or compute if first time)
     - For each frame: detect robot markers → compute robot center
     - Convert center to cm using calibration
     - Compute velocity from smoothed trajectory
     """
 
-    # ----Gather calibration frames---
+    # Get cached or compute calibration
+    calib = get_calibration_for_video(video_path, window_start)
+    if calib is None:
+        return np.nan, 0
+    
+    origin = np.array(calib["origin_px"])
+    inv_ppcm_x = 1.0 / calib["ppcm_x"]
+    inv_ppcm_y = 1.0 / calib["ppcm_y"]
+
+    # Open video and seek to window start
     cap = cv2.VideoCapture(video_path)
     if not cap.isOpened():
         raise IOError(f"Cannot open video: {video_path}")
+    
+    cap.set(cv2.CAP_PROP_POS_MSEC, window_start * 1000.0)
 
-    calibration_frames = []
-    pre_calib_robot_px = []
     robot_positions = []
-    calib = None
-    origin = None
-    ppcm_x = None
-    ppcm_y = None
-    inv_ppcm_x = None
-    inv_ppcm_y = None
     frame_counter = 0
 
     while True:
@@ -131,8 +181,6 @@ def compute_speed_for_window(video_path: str, window_start: float, window_end: f
 
         t = cap.get(cv2.CAP_PROP_POS_MSEC) / 1000.0
 
-        if t < window_start:
-            continue
         if t >= window_end:
             break
 
@@ -143,21 +191,6 @@ def compute_speed_for_window(video_path: str, window_start: float, window_end: f
             continue
 
         ids = ids.flatten()
-        centers = {}
-
-        for i, mid in enumerate(ids):
-            centers[mid] = _marker_center(corners[i])
-
-        if calib is None:
-            calibration_frames.append(centers)
-            calib = _calibrate_table(calibration_frames)
-            if calib is not None:
-                origin = np.array(calib["origin_px"])
-                ppcm_x = calib["ppcm_x"]
-                ppcm_y = calib["ppcm_y"]
-                inv_ppcm_x = 1.0 / ppcm_x
-                inv_ppcm_y = 1.0 / ppcm_y
-
         robot_centers = []
 
         for i, mid in enumerate(ids):
@@ -169,25 +202,12 @@ def compute_speed_for_window(video_path: str, window_start: float, window_end: f
             continue
 
         center_px = np.mean(robot_centers, axis=0)
-
-        if calib is None:
-            pre_calib_robot_px.append((t, center_px[0], center_px[1]))
-        else:
-            rel = center_px - origin
-            x_cm = rel[0] * inv_ppcm_x
-            y_cm = rel[1] * inv_ppcm_y
-            robot_positions.append((t, x_cm, y_cm))
-
-    cap.release()
-
-    if calib is None:
-        return np.nan, 0
-
-    for t, x_px, y_px in pre_calib_robot_px:
-        rel = np.array([x_px, y_px]) - origin
+        rel = center_px - origin
         x_cm = rel[0] * inv_ppcm_x
         y_cm = rel[1] * inv_ppcm_y
         robot_positions.append((t, x_cm, y_cm))
+
+    cap.release()
 
     if len(robot_positions) <= 1:
         return np.nan, len(robot_positions)

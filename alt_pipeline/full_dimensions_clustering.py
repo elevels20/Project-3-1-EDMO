@@ -2,9 +2,9 @@ import numpy as np
 import json_extraction
 from sklearn.preprocessing import StandardScaler
 import dim_red_clustering_functions
-from alt_pipeline.json_extraction import selected_features
-from alt_pipeline.json_extraction import training_files as files
-from alt_pipeline.json_extraction import features_labels as feature_labels
+from json_extraction import selected_features
+from json_extraction import training_files as files
+from json_extraction import features_labels as feature_labels
 
 # load datapoints (MULTIPLE FILES)
 datapoints = json_extraction.extract_datapoints_except_last_multiple(
@@ -52,4 +52,8 @@ print("Best k:", best_k)
 print("Best silhouette score:", best_score)
 print("All silhouette scores:", silhouette_scores)
 
+cluster_save = (silhouette_scores,best_score,best_k,cluster_labels,u,cntr,fpc)
+
+import save_cluster
+save_cluster.save_cluster(cluster_save, "./alt_pipeline/full_dimensions_cluster.pkl")
 

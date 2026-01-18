@@ -7,7 +7,7 @@ import os
 class ASRProcessor:
     """Processes audio for automatic speech recognition."""
     
-    def __init__(self, model_size: str = "base", force_lang: str = ""):
+    def __init__(self, model_size: str = "medium", force_lang: str = "", translate: bool = False):
         """Initialize the Whisper model.
         
         Args:
@@ -16,6 +16,7 @@ class ASRProcessor:
         """
         self.model = whisper.load_model(model_size)
         self.force_lang = force_lang
+        self.translate = translate
     
     def transcribe(self, audio_path: str) -> Dict:
         """Transcribe audio file.
@@ -34,6 +35,8 @@ class ASRProcessor:
         kwargs = {"fp16": False}
         if self.force_lang:
             kwargs["language"] = self.force_lang
+        if self.translate:
+            kwargs["task"] = "translate"
         
         result = self.model.transcribe(audio_path, **kwargs)
         
@@ -60,9 +63,9 @@ def get_processor() -> ASRProcessor:
     """Get or create the global ASR processor instance."""
     global _processor
     if _processor is None:
-        model_size = os.getenv("WHISPER_MODEL", "base")
+        model_size = os.getenv("WHISPER_MODEL", "medium")
         force_lang = os.getenv("WHISPER_LANG", "")
-        _processor = ASRProcessor(model_size, force_lang)
+        _processor = ASRProcessor(model_size, force_lang, translate=True)
     return _processor
 
 

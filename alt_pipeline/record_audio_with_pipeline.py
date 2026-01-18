@@ -7,7 +7,8 @@ import time
 import numpy as np
 import subprocess
 import sys
-import os
+from cluster_prediction import predict_cluster
+from save_cluster import load_cluster
 
 # Audio Settings
 fs = 44100
@@ -22,10 +23,14 @@ BASE_DIR = None
 SESSION_DIR = None
 last_recording_path = None
 
+LAST_OUTPUT_JSON = None
+LAST_OUTPUT_DIR = "alt_pipeline/data/output"
+CLUSTER_PKL_PATH = "alt_pipeline/3_cluster.pkl"
+
 # Tkinter UI
 root = tk.Tk()
 root.title("Audio Recorder")
-root.geometry("300x325")
+root.geometry("300x375")
 
 window_len_var = tk.IntVar(value=2)
 
@@ -69,6 +74,14 @@ pipeline_btn = tk.Button(
     state=tk.DISABLED
 )
 pipeline_btn.pack(pady=5)
+
+# Load Features JSON Button
+load_json_btn = tk.Button(
+    root,
+    text="Load Features JSON",
+    width=20
+)
+load_json_btn.pack(pady=5)
 
 # Assign Clusters Button
 assign_btn = tk.Button(
@@ -116,7 +129,7 @@ def toggle_recording():
     if not recording:
         # Create new session
         session_id = f"session_{int(time.time())}"
-        SESSION_DIR = Path(f"data/sessions/{session_id}")
+        SESSION_DIR = Path(f"alt_pipeline/data/sessions/{session_id}")
         BASE_DIR = SESSION_DIR / "Audio/raw"
         BASE_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -173,7 +186,7 @@ def run_pipeline():
     root.update()
 
     try:
-        output_path = "data/output"
+        output_path = "alt_pipeline/data/output"
         cmd = [
             sys.executable,
             "alt_pipeline/pipeline.py",
@@ -184,6 +197,18 @@ def run_pipeline():
         ]
 
         subprocess.run(cmd, check=True)
+
+        # Track pipeline output JSON
+        session_name = SESSION_DIR.name
+        output_json = Path(LAST_OUTPUT_DIR) / f"{session_name}_features.json"
+
+        if not output_json.exists():
+            raise FileNotFoundError(
+                f"Pipeline output not found: {output_json}"
+            )
+
+        global LAST_OUTPUT_JSON
+        LAST_OUTPUT_JSON = output_json
 
         messagebox.showinfo(
             "Pipeline finished",
@@ -250,17 +275,108 @@ def open_session_archive():
         f"Session loaded successfully:\n{SESSION_DIR}"
     )
 
-def assign_audio_clusters():
-    messagebox.showinfo(
-        "Cluster assignment error",
-        "Assign audio clusters is not yet enabled."
+def load_features_json():
+    global LAST_OUTPUT_JSON, SESSION_DIR
+
+    json_path = filedialog.askopenfilename(
+        title="Select pipeline output JSON",
+        filetypes=[("JSON files", "*.json")]
     )
+
+    if not json_path:
+        return
+
+    json_path = Path(json_path)
+
+    if not json_path.exists():
+        messagebox.showerror(
+            "Invalid file",
+            "Selected JSON file does not exist."
+        )
+        return
+
+    # Set as latest pipeline output
+    LAST_OUTPUT_JSON = json_path
+
+    # Clear session context (optional but clean)
+    SESSION_DIR = None
+
+    status_label.config(
+        text=(
+            "Loaded features JSON:\n"
+            f"{json_path.name}"
+        ),
+        fg="blue"
+    )
+
+    assign_btn.config(state=tk.NORMAL)
+
+    messagebox.showinfo(
+        "JSON loaded",
+        f"Feature file loaded:\n{json_path}"
+    )
+
+def assign_clusters():
+    global LAST_OUTPUT_JSON
+
+    if LAST_OUTPUT_JSON is None or not LAST_OUTPUT_JSON.exists():
+        messagebox.showerror(
+            "Error",
+            "No pipeline output found.\nRun the pipeline first."
+        )
+        return
+
+    try:
+        # 1. Load trained cluster model
+        clustered_data = load_cluster(CLUSTER_PKL_PATH)
+
+        # 2. Predict clusters per window
+        window_clusters = predict_cluster(
+            clustered_data,
+            json_path=str(LAST_OUTPUT_JSON)
+        )
+
+        # Ensure numpy array
+        window_clusters = np.asarray(window_clusters)
+
+        # 3. Session-level cluster (majority vote)
+        session_cluster = np.bincount(window_clusters).argmax()
+
+        # 4. Show results
+        messagebox.showinfo(
+            "Cluster Assignment",
+            # f"Session cluster: {session_cluster}\n\n"
+            f"Per-window clusters:\n"
+            f"{window_clusters.tolist()}"
+        )
+
+        source_name = (
+            SESSION_DIR.name
+            if SESSION_DIR is not None
+            else LAST_OUTPUT_JSON.name
+        )
+
+        status_label.config(
+            text=(
+                f"Source: {source_name}\n"
+                # f"Assigned cluster: {session_cluster}"
+                f"Assigned clusters per window: {window_clusters.tolist()}"
+            ),
+            fg="purple"
+        )
+
+    except Exception as e:
+        messagebox.showerror(
+            "Cluster assignment failed",
+            str(e)
+        )
 
 # Bind buttons
 record_btn.config(command=toggle_recording)
 pipeline_btn.config(command=run_pipeline)
-assign_btn.config(command=assign_audio_clusters)
+assign_btn.config(command=assign_clusters)
 open_btn.config(command=open_session_archive)
+load_json_btn.config(command=load_features_json)
 
 # Run UI
 root.mainloop()
