@@ -59928,3 +59928,15 @@ venv/
 __pycache__/
 *.pyc
 *.log
+output.zip
+output/output/093025_features.json
+output/output/100854_features.json
+output/output/111414_features.json
+output/output/111455_features.json
+output/output/114654_features.json
+output/output/115451_features.json
+output/output/130353_features.json
+output/output/132617_features.json
+output/output/133150_features.json
+output/output/140252_features.json
+communication_annotation.xlsx

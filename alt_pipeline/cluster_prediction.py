@@ -35,7 +35,7 @@ def predict_cluster(clustered_data, json_path):
     num_clusters, model_features = cntr.shape
 
     X = np.array([dp.dimension_values for dp in data])
-    X_scaled = full_dimensions_clustering.StandardScaler().fit_transform(X)
+    X_scaled = full_dimensions_clustering.X_scaled
 
     print(f"Data shape for prediction: {X.shape}")
 
@@ -54,7 +54,8 @@ def predict_cluster(clustered_data, json_path):
 
 def test_predict():
     print("Predicting clusters for test data...")
-    saved_cluster = save_cluster.load_cluster(DATA_DIR / "3_cluster.pkl")
+    saved_cluster = save_cluster.load_cluster(DATA_DIR / "full_dimensions_cluster.pkl")
+    
     assignments = predict_cluster(saved_cluster, DATA_DIR / "data" / "140252_features.json")
 
     print("Predicted cluster assignments:")
