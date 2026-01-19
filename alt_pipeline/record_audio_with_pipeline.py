@@ -30,7 +30,7 @@ CLUSTER_PKL_PATH = "alt_pipeline/3_cluster.pkl"
 # Tkinter UI
 root = tk.Tk()
 root.title("Audio Recorder")
-root.geometry("300x375")
+root.geometry("300x550")
 
 window_len_var = tk.IntVar(value=2)
 
@@ -53,6 +53,46 @@ window_spinbox = tk.Spinbox(
     width=5
 )
 window_spinbox.pack(side=tk.LEFT, padx=5)
+
+# Speaker Settings
+speaker_frame = tk.LabelFrame(root, text="Speaker Settings")
+speaker_frame.pack(pady=5, padx=10, fill="x")
+
+speaker_mode_var = tk.StringVar(value="exact")
+num_speakers_var = tk.IntVar(value=2)
+min_speakers_var = tk.IntVar(value=1)
+max_speakers_var = tk.IntVar(value=5)
+
+# Mode selection
+mode_frame = tk.Frame(speaker_frame)
+mode_frame.pack(pady=2)
+
+def update_speaker_ui():
+    mode = speaker_mode_var.get()
+    if mode == "exact":
+        range_frame.pack_forget()
+        exact_frame.pack(pady=5)
+    else:
+        exact_frame.pack_forget()
+        range_frame.pack(pady=5)
+
+tk.Radiobutton(mode_frame, text="Exact Number", variable=speaker_mode_var, value="exact", command=update_speaker_ui).pack(side=tk.LEFT, padx=5)
+tk.Radiobutton(mode_frame, text="Range", variable=speaker_mode_var, value="range", command=update_speaker_ui).pack(side=tk.LEFT, padx=5)
+
+# Exact number frame
+exact_frame = tk.Frame(speaker_frame)
+tk.Label(exact_frame, text="Speakers:").pack(side=tk.LEFT)
+tk.Spinbox(exact_frame, from_=1, to=10, textvariable=num_speakers_var, width=5).pack(side=tk.LEFT, padx=5)
+
+# Range number frame
+range_frame = tk.Frame(speaker_frame)
+tk.Label(range_frame, text="Min:").pack(side=tk.LEFT)
+tk.Spinbox(range_frame, from_=1, to=10, textvariable=min_speakers_var, width=3).pack(side=tk.LEFT, padx=2)
+tk.Label(range_frame, text="Max:").pack(side=tk.LEFT)
+tk.Spinbox(range_frame, from_=1, to=10, textvariable=max_speakers_var, width=3).pack(side=tk.LEFT, padx=2)
+
+# Initial UI state
+update_speaker_ui()
 
 # Start/Stop Button
 record_btn = tk.Button(root, text="Start Recording", width=20)
@@ -195,6 +235,12 @@ def run_pipeline():
             "--output", output_path,
             "--window-len", str(window_len_var.get())
         ]
+
+        if speaker_mode_var.get() == "exact":
+             cmd.extend(["--num-speakers", str(num_speakers_var.get())])
+        else:
+             cmd.extend(["--min-speakers", str(min_speakers_var.get())])
+             cmd.extend(["--max-speakers", str(max_speakers_var.get())])
 
         subprocess.run(cmd, check=True)
 

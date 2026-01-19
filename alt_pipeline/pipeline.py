@@ -52,12 +52,12 @@ def main():
         # Video + audio session
         if has_video:
             list_videos = os.listdir(video_dir)
-            video_name = [f for f in list_videos if f.endswith(".MP4")][0].split(".")[0]
+            video_name = [f for f in list_videos if f.endswith(".mp4")][0].split(".")[0]
 
-            raw_wav = f"{raw_audio_dir}/{video_name}.WAV"
+            raw_wav = f"{raw_audio_dir}/{video_name}.wav"
             if not os.path.exists(raw_wav):
                 extract_audio_segment(
-                    f"{video_dir}/{video_name}.MP4",
+                    f"{video_dir}/{video_name}.mp4",
                     raw_wav,
                 )
         # Audio only session
@@ -66,7 +66,7 @@ def main():
     
         # Convert all raw audio files
         for wav in os.listdir(raw_audio_dir):
-            if not wav.endswith(".WAV"):
+            if not wav.endswith(".wav"):
                 continue
 
             in_wav = f"{raw_audio_dir}/{wav}"
@@ -103,7 +103,7 @@ def main():
         has_video = os.path.exists(video_dir)
 
         if has_video:
-            video_path = f"{video_dir}/{audio_name.split('.')[0]}.MP4"
+            video_path = f"{video_dir}/{audio_name.split('.')[0]}.mp4"
             print(f"  Found video: {video_path}")
         else:
             video_path = None
