@@ -64,6 +64,6 @@ def test_sub_cluster():
     X_scaled = full_dimensions_clustering.X_scaled
     feature_labels = full_dimensions_clustering.feature_labels
 
-    perform_sub_cluster("./alt_pipeline/full_dimensions_cluster.pkl",X_scaled=X_scaled, feature_labels= feature_labels)
+    perform_sub_cluster("./alt_pipeline/full_dimensions_cluster_voice.pkl",X_scaled=X_scaled, feature_labels= feature_labels)
 
 test_sub_cluster()

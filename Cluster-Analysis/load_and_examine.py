@@ -37,10 +37,10 @@ print(f"Number of clusters", loaded_cluster_full[2])
 
 cntr = loaded_cluster_full[5]
 
-print(f"{'Metric':<20} | {'Cluster 0':<10} | {'Cluster 1':<10} | {'Cluster 2':<10} | {'Cluster 3':<10} | {'Cluster 4':<10} | {'Cluster 5':<10} | {'Cluster 6':<10}")
+print(f"{'Metric':<20} | {'Cluster 0':<10} | {'Cluster 1':<10} | {'Cluster 2':<10} | {'Cluster 3':<10} | {'Cluster 4':<10} ")
 print("-" * 45)
 
 for i in [0,1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,17,18]:
     print(i)
-    print(f"{feature_labels[i]:<20} | {cntr[0,i]:>10.4f} | {cntr[1,i]:>10.4f} | {cntr[2,i]:>10.4f} | {cntr[3,i]:>10.4f} | {cntr[4,i]:>10.4f} | {cntr[5,i]:>10.4f} | {cntr[6,i]:>10.4f}")
+    print(f"{feature_labels[i]:<20} | {cntr[0,i]:>10.4f} | {cntr[1,i]:>10.4f} | {cntr[2,i]:>10.4f} | {cntr[3,i]:>10.4f} | {cntr[4,i]:>10.4f} ")
 

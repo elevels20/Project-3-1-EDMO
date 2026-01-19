@@ -115,19 +115,17 @@ def extract_datapoints_except_last(filename, feature_paths, feature_labels=None)
         }
 
         values = []
-        all_features_present = True
 
         for path in feature_paths:
             val = get_by_path(window_data, path)
             if isinstance(val, (int, float)):
                 values.append(val)
             else:
-                all_features_present = False
-                break  # skip this window entirely
+                # Place zero for missing or non-numeric features
+                values.append(0)
 
-        if all_features_present:
-            labels_to_use = feature_labels if feature_labels is not None else feature_paths
-            datapoints.append(Datapoint(labels_to_use, values))
+        labels_to_use = feature_labels if feature_labels is not None else feature_paths
+        datapoints.append(Datapoint(labels_to_use, values))
 
     return datapoints
 
