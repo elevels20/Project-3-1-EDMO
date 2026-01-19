@@ -45,7 +45,6 @@ selected_features = [
     "audio_features.nonverbal.basic_metrics.conversation.silence_ratio",       # 15
     "audio_features.nonverbal.basic_metrics.conversation.total_interruptions",  # 16
     "audio_features.nonverbal.basic_metrics.conversation.total_speaking_time",  # 17
-    "audio_features.window_duration",                                           # 18
     "robot_speed_features.avg_speed_cm_s",                                      # 19
     "robot_speed_features.num_detections",                                      # 20
     "audio_features.nlp.simple_features.collaboration_ratio",
@@ -72,7 +71,6 @@ features_labels = [
     "audio_features_nonverbal_basic_metrics_conversation_silence_ratio",
     "audio_features_nonverbal_basic_metrics_conversation_total_interruptions",
     "audio_features_nonverbal_basic_metrics_conversation_total_speaking_time",
-    "audio_features_window_duration",
     "robot_speed_features_avg_speed_cm_s",
     "robot_speed_features_num_detections",
     "audio_features.nlp.simple_features.collaboration_ratio",

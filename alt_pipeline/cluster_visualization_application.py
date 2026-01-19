@@ -1,6 +1,7 @@
 import streamlit as st
 import numpy as np
 import matplotlib.pyplot as plt
+from json_extraction import features_labels as feature_labels
 
 # --- Simulated cluster data ---
 # Replace these with your real clustering results
@@ -9,8 +10,6 @@ cluster_centers = np.array([
     [0.6, 0.3, 0.4, 0.9],
     [0.1, 0.9, 0.2, 0.5]
 ])  # shape = (num_clusters, num_features)
-
-feature_labels = ["feature_1", "feature_2", "feature_3", "feature_4"]
 
 # --- Streamlit UI ---
 st.title("Cluster Centers Visualization")
