@@ -63,19 +63,15 @@ def average_jaccard_index(X_orig, X_red, k):
 # ----------------------------------------------------------
 def compute_reference_clustering(X_scaled):
     (
-        _,
-        best_score,
-        best_k,
         labels,
         u,
         cntr,
         _
-    ) = dim_red_clustering_functions.perform_fuzzy_cmeans_auto_k(
-        X_scaled,
-        score_method="soft_silhouette"
+    ) = dim_red_clustering_functions.perform_fuzzy_cmeans(
+        X_scaled, 5
     )
 
-    return np.asarray(labels), best_k
+    return np.asarray(labels), 5
 
 
 # ----------------------------------------------------------
