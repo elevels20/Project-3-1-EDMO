@@ -67,12 +67,18 @@ def get_by_path(obj, path):
         parts = path.replace("]", "").split(".")
         for p in parts:
             if "[" in p:
-                key, idx = p.split("[")
-                obj = obj[key][int(idx)]
+                if not p.endswith("["):  # Check for malformed bracket
+                    key, idx_str = p.split("[", 1)
+                    if idx_str:  # Check for empty index
+                        obj = obj[key][int(idx_str)]
+                    else:
+                        return None  # Malformed path with empty brackets
+                else:
+                    return None  # Malformed path ending with [
             else:
                 obj = obj[p]
         return obj
-    except (KeyError, IndexError, TypeError):
+    except (KeyError, IndexError, TypeError, ValueError):
         return None  # return None instead of raising
 
 def extract_datapoints_except_last(filename, feature_paths, feature_labels=None):

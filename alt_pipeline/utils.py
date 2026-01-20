@@ -110,6 +110,23 @@ def get_window_segments(full_asr: Dict, full_diarization: Dict, window_start: fl
     include the entire turn even if it extends beyond window_end.
     Returns: (window_segments, actual_window_end)
     """
+    # Validate segment data
+    def validate_segments(segments, segment_type):
+        for i, seg in enumerate(segments):
+            if not isinstance(seg, dict):
+                raise ValueError(f"Invalid {segment_type} segment format at index {i}: expected dict, got {type(seg)}")
+            if 'start' not in seg or 'end' not in seg:
+                raise ValueError(f"Invalid {segment_type} segment at index {i}: missing 'start' or 'end' field")
+            if not isinstance(seg['start'], (int, float)) or not isinstance(seg['end'], (int, float)):
+                raise ValueError(f"Invalid {segment_type} segment at index {i}: 'start' and 'end' must be numbers")
+            if seg['start'] < 0 or seg['end'] < 0:
+                raise ValueError(f"Invalid {segment_type} segment at index {i}: negative times not allowed")
+            if seg['start'] > seg['end']:
+                raise ValueError(f"Invalid {segment_type} segment at index {i}: start time ({seg['start']}) > end time ({seg['end']})")
+    
+    validate_segments(full_asr['segments'], 'ASR')
+    validate_segments(full_diarization['segments'], 'diarization')
+    
     window_asr_segments = []
     window_diar_segments = []
     actual_end = window_end
@@ -194,8 +211,32 @@ def extract_audio_features(audio_path: str, window_len: int, *, num_speakers: in
     
     if os.path.exists(asr_diar_cache):
         print(f"  Loading cached ASR/diarization from {asr_diar_cache}...")
-        with open(asr_diar_cache, 'r', encoding='utf-8') as f:
-            full_results = json.load(f)
+        try:
+            with open(asr_diar_cache, 'r', encoding='utf-8') as f:
+                full_results = json.load(f)
+            
+            # Validate required keys
+            required_keys = ['asr', 'diarization']
+            missing_keys = [key for key in required_keys if key not in full_results]
+            if missing_keys:
+                print(f"  Cache missing required keys: {missing_keys}")
+                print(f"  Cache appears corrupted, recomputing ASR and diarization...")
+                full_results = run_asr_and_diarization(audio_path, num_speakers, min_speakers, max_speakers)
+                
+                # Save valid results to cache
+                print(f"  Saving ASR/diarization to {asr_diar_cache}...")
+                with open(asr_diar_cache, 'w', encoding='utf-8') as f:
+                    json.dump(full_results, f, indent=2, ensure_ascii=False)
+                    
+        except (json.JSONDecodeError, IOError) as e:
+            print(f"  Error loading cache ({type(e).__name__}): {e}")
+            print(f"  Cache appears corrupted, recomputing ASR and diarization...")
+            full_results = run_asr_and_diarization(audio_path, num_speakers, min_speakers, max_speakers)
+            
+            # Save valid results to cache
+            print(f"  Saving ASR/diarization to {asr_diar_cache}...")
+            with open(asr_diar_cache, 'w', encoding='utf-8') as f:
+                json.dump(full_results, f, indent=2, ensure_ascii=False)
     else:
         print(f"  No cache found, running ASR and diarization...")
         full_results = run_asr_and_diarization(audio_path, num_speakers, min_speakers, max_speakers)
