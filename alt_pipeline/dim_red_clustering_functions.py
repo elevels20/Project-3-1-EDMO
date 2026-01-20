@@ -509,7 +509,9 @@ def perform_fuzzy_cmeans_auto_k(
 
     Returns:
     --------
-    best_silhouette : float
+    silhouette_scores : dict
+        Silhouette scores for each k tested
+    best_score : float
         Best average soft silhouette score
     best_k : int
         Optimal number of clusters
@@ -522,12 +524,22 @@ def perform_fuzzy_cmeans_auto_k(
     fpc : float
         Fuzzy partition coefficient
     """
+    n_samples = X_reduced.shape[0]
+
+    # Constrain K to be at most n_samples
+    # Can't have more clusters than samples
+    max_allowed_k = min(max(k_range), n_samples)
+    constrained_k_range = [k for k in k_range if k <= max_allowed_k]
+
+    if not constrained_k_range:
+        raise ValueError(f"No valid K values in range {list(k_range)} for dataset with {n_samples} samples")
+
     silhouette_scores = {}
     best_score = -np.inf
     best_model = None
     best_k = None
 
-    for k in k_range:
+    for k in constrained_k_range:
         fcm = FCM(
             n_clusters=k,
             m=m,

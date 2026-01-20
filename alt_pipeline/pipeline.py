@@ -52,7 +52,11 @@ def main():
         # Video + audio session
         if has_video:
             list_videos = os.listdir(video_dir)
-            video_name = [f for f in list_videos if f.endswith(".mp4")][0].split(".")[0]
+            mp4_files = [f for f in list_videos if f.endswith(".MP4")]
+            if not mp4_files:
+                print(f"Error: No MP4 files found in {video_dir}")
+                exit(1)
+            video_name = mp4_files[0].split(".")[0]
 
             raw_wav = f"{raw_audio_dir}/{video_name}.wav"
             if not os.path.exists(raw_wav):
