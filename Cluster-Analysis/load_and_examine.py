@@ -33,14 +33,23 @@ print("Cluster data length:", len(loaded_cluster_full))
 #print("cluster labels:", loaded_cluster_full[3])
 
 print('-' * 20)
-print(f"Number of clusters", loaded_cluster_full[2])
+num_clusters = loaded_cluster_full[2]
+print(f"Number of clusters: {num_clusters}")
 
 cntr = loaded_cluster_full[5]
+num_features = cntr.shape[1]
 
-print(f"{'Metric':<20} | {'Cluster 0':<10} | {'Cluster 1':<10} | {'Cluster 2':<10} | {'Cluster 3':<10} | {'Cluster 4':<10} ")
-print("-" * 45)
+# Build dynamic header
+header = f"{'Metric':<40} |"
+for c in range(num_clusters):
+    header += f" {'C' + str(c):^10} |"
+print(header)
+print("-" * len(header))
 
-for i in [0,1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,17,18]:
-    print(i)
-    print(f"{feature_labels[i]:<20} | {cntr[0,i]:>10.4f} | {cntr[1,i]:>10.4f} | {cntr[2,i]:>10.4f} | {cntr[3,i]:>10.4f} | {cntr[4,i]:>10.4f} ")
+# Print each feature row dynamically
+for i in range(num_features):
+    row = f"{feature_labels[i]:<40} |"
+    for c in range(num_clusters):
+        row += f" {cntr[c, i]:>10.4f} |"
+    print(row)
 
