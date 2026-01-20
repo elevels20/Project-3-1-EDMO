@@ -55,7 +55,4 @@ print("All silhouette scores:", silhouette_scores)
 cluster_save = (silhouette_scores,best_score,best_k,cluster_labels,u,cntr,fpc)
 
 import save_cluster
-from pathlib import Path
-BASE_DIR = Path(__file__).resolve().parent
-save_cluster.save_cluster(cluster_save, BASE_DIR / "full_dimensions_cluster.pkl")
-
+save_cluster.save_cluster(cluster_save, "./alt_pipeline/full_dimensions_cluster.pkl")

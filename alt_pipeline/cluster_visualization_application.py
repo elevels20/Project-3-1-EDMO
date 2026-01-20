@@ -1,5 +1,4 @@
 import streamlit as st
-import numpy as np
 import matplotlib.pyplot as plt
 from json_extraction import features_labels as feature_labels
 import save_cluster

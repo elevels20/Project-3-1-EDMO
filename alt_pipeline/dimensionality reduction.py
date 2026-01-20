@@ -1,61 +1,153 @@
+# ==========================================================
+# PCA / PLS dimensionality vs fuzzy clustering experiment
+# ==========================================================
+
+import os
 import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
 from sklearn.preprocessing import StandardScaler
 
-import plotting_pca_clustering
 import dim_red_clustering_functions
 import json_extraction
 from alt_pipeline.json_extraction import selected_features
 from alt_pipeline.json_extraction import training_files as files
-from alt_pipeline.json_extraction import features_labels as feature_labels
 
-all_datapoints = []
-file_labels = []
 
-datapoints = (json_extraction.extract_datapoints_except_last_multiple(files, selected_features))
-X = np.array([dp.dimension_values for dp in datapoints])
-X_scaled = StandardScaler().fit_transform(X)
-print([l for l in datapoints[0].dimension_labels if "window" in l])
+# ----------------------------------------------------------
+# Data preparation
+# ----------------------------------------------------------
+def load_data(files, selected_features):
+    datapoints = json_extraction.extract_datapoints_except_last_multiple(
+        files, selected_features
+    )
+    X = np.array([dp.dimension_values for dp in datapoints])
+    return X
 
-for i, f in enumerate(files):
-    dps = json_extraction.extract_datapoints_except_last(f, selected_features, feature_labels)
-    all_datapoints.extend(dps)
-    file_labels.extend([f"experiment_{i+1}"] * len(dps))  # same label for all windows of this file
-print(f"Total datapoints: {len(all_datapoints)}")
-X = np.array([dp.dimension_values for dp in all_datapoints])
 
-# --- Create PCA object with 2 components ---
-dim_red = dim_red_clustering_functions.create_dim_red_method("PCA", n_dimensions=2)
-# --- Fit PCA ---
-X_reduced = dim_red.fit(X_scaled)
-# --- Apply fuzzy C-means ---
-n_clusters = 3
-silhouette_scores_pca ,best_score_pca, best_k_pca, cluster_labels, u, cntr, fpc = dim_red_clustering_functions.perform_fuzzy_cmeans_auto_k(X_reduced)
+def prepare_inputs(X):
+    X_scaled = StandardScaler().fit_transform(X)
+    X_pls = X[:, :-1]
+    Y_pls = X[:, -1].reshape(-1, 1)
+    return X_scaled, X_pls, Y_pls
 
-print("score: " + str(best_score_pca))
-print("best k: " + str(best_k_pca))
-print("all scores pca: " + str(silhouette_scores_pca))
 
-# here we do pls
-X = np.array([dp.dimension_values[:-1] for dp in datapoints])
-# Y: last feature
-Y = np.array([dp.dimension_values[-1] for dp in datapoints]).reshape(-1, 1)  # column vector
-# --- PLS ---
-dim_red_pls = dim_red_clustering_functions.PLS(n_dimensions=2)
-X_pls = dim_red_pls.fit(X, Y)  # X_pls is like PCA-reduced scores
-# Fuzzy C-mean clustering on PLS
-#cluster_labels_pls, u, cntr, fpc = dim_red_clustering_functions.perform_fuzzy_cmeans(X_pls, n_clusters=3)
-silhouette_scores_pls ,best_score_pls, best_k_pls, cluster_labels_pls, u, cntr, fpc = dim_red_clustering_functions.perform_fuzzy_cmeans_auto_k(X_pls)
+# ----------------------------------------------------------
+# Clustering evaluation
+# ----------------------------------------------------------
+def evaluate_embedding(X_reduced, method_name, n_dims):
+    scores_k, best_score, best_k, labels, u, cntr, fpc = \
+        dim_red_clustering_functions.perform_fuzzy_cmeans_auto_k(
+            X_reduced,
+            score_method="soft_silhouette"
+        )
 
-#generate plots
-plotting_pca_clustering.plot_clusters(X_pls, cluster_labels_pls, output_dir="output/pls_plots")
-plotting_pca_clustering.plot_clusters(X_reduced, cluster_labels)
-plotting_pca_clustering.plot_pca_results(X_reduced, dim_red, feature_labels, files)
-features_labels_pls = feature_labels[:-1]
-plotting_pca_clustering.plot_pls_results(
-    X_scores=X_pls,
-    Y= Y,
-    dim_red=dim_red_pls,
-    features_labels=features_labels_pls,
-    file_labels=files,   # pass as keyword
-    output_dir="output/pls_plots"
-)
+    fcm_wrapper = type(
+        "FCMWrapper",
+        (),
+        {"u": u, "centers": cntr}
+    )()
+
+    intra_sim = dim_red_clustering_functions.compute_cluster_score(
+        score_method="intra_similarity",
+        X=X_reduced,
+        fcm_model=fcm_wrapper
+    )
+
+    return {
+        "n_dimensions": n_dims,
+        "best_k": best_k,
+        "soft_silhouette": best_score,
+        "intra_similarity": intra_sim
+    }
+
+
+# ----------------------------------------------------------
+# Experiments
+# ----------------------------------------------------------
+def run_experiment(X_scaled, X_pls, Y_pls, dim_range=range(2, 11)):
+    pca_results = []
+    pls_results = []
+
+    for n_dims in dim_range:
+
+        # ----- PCA -----
+        pca = dim_red_clustering_functions.create_dim_red_method(
+            "PCA",
+            n_dimensions=n_dims
+        )
+        X_pca = pca.fit(X_scaled)
+        pca_results.append(evaluate_embedding(X_pca, "PCA", n_dims))
+
+        # ----- PLS -----
+        pls = dim_red_clustering_functions.PLS(n_dimensions=n_dims)
+        X_pls_red = pls.fit(X_pls, Y_pls)
+        pls_results.append(evaluate_embedding(X_pls_red, "PLS", n_dims))
+
+    return (
+        pd.DataFrame(pca_results),
+        pd.DataFrame(pls_results)
+    )
+
+
+# ----------------------------------------------------------
+# Plotting & Saving
+# ----------------------------------------------------------
+def save_plots_and_tables(df, method_name, output_root):
+    method_dir = os.path.join(output_root, method_name.lower())
+    os.makedirs(method_dir, exist_ok=True)
+
+    # ---- Save CSV ----
+    df.to_csv(os.path.join(method_dir, "statistics.csv"), index=False)
+
+    # ---- Plot: Dimension vs Scores ----
+    plt.figure(figsize=(7, 5))
+    plt.plot(df["n_dimensions"], df["soft_silhouette"], marker="o", label="Soft silhouette")
+    plt.plot(df["n_dimensions"], df["intra_similarity"], marker="o", label="Intra similarity")
+    plt.xlabel("Number of dimensions")
+    plt.ylabel("Score")
+    plt.title(f"{method_name}: Dimensions vs Clustering Scores")
+    plt.legend()
+    plt.grid(True)
+    plt.tight_layout()
+    plt.savefig(os.path.join(method_dir, "dimension_vs_scores.png"))
+    plt.close()
+
+    # ---- Plot: Dimension vs Optimal K ----
+    plt.figure(figsize=(7, 5))
+    plt.plot(df["n_dimensions"], df["best_k"], marker="o")
+    plt.xlabel("Number of dimensions")
+    plt.ylabel("Optimal number of clusters")
+    plt.title(f"{method_name}: Dimensions vs Optimal Clusters")
+    plt.grid(True)
+    plt.tight_layout()
+    plt.savefig(os.path.join(method_dir, "dimension_vs_clusters.png"))
+    plt.close()
+
+
+# ----------------------------------------------------------
+# Main
+# ----------------------------------------------------------
+def main():
+    X = load_data(files, selected_features)
+    X_scaled, X_pls, Y_pls = prepare_inputs(X)
+
+    df_pca, df_pls = run_experiment(
+        X_scaled=X_scaled,
+        X_pls=X_pls,
+        Y_pls=Y_pls
+    )
+
+    output_root = "output"
+    save_plots_and_tables(df_pca, "PCA", output_root)
+    save_plots_and_tables(df_pls, "PLS", output_root)
+
+    print("Saved results to:")
+    print(" - output/pca/")
+    print(" - output/pls/")
+
+
+# ----------------------------------------------------------
+# Run
+# ----------------------------------------------------------
+main()
