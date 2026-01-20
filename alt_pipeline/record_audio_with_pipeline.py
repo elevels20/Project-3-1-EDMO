@@ -27,32 +27,42 @@ LAST_OUTPUT_JSON = None
 LAST_OUTPUT_DIR = "alt_pipeline/data/output"
 CLUSTER_PKL_PATH = "alt_pipeline/3_cluster.pkl"
 
+WINDOW_LEN_SECONDS = 30
+MIN_RECORDING_SECONDS = 60
+
 # Tkinter UI
 root = tk.Tk()
 root.title("Audio Recorder")
 root.geometry("300x550")
 
-window_len_var = tk.IntVar(value=2)
+# window_len_var = tk.IntVar(value=2)
 
 # Timer Label
 timer_label = tk.Label(root, text="00:00", font=("Helvetica", 14))
 timer_label.pack(pady=5)
 
+tk.Label(
+    root,
+    text="Minimum recording length: 1 minute\nWindow length: 30 seconds",
+    fg="gray",
+    font=("Helvetica", 9)
+).pack(pady=3)
+
 # Window length selector
-window_frame = tk.Frame(root)
-window_frame.pack(pady=5)
+# window_frame = tk.Frame(root)
+# window_frame.pack(pady=5)
 
-tk.Label(window_frame, text="Window length (sec):").pack(side=tk.LEFT)
+# tk.Label(window_frame, text="Window length (sec):").pack(side=tk.LEFT)
 
-window_spinbox = tk.Spinbox(
-    window_frame,
-    from_=1,
-    to=60,
-    increment=1,
-    textvariable=window_len_var,
-    width=5
-)
-window_spinbox.pack(side=tk.LEFT, padx=5)
+# window_spinbox = tk.Spinbox(
+    # window_frame,
+    # from_=1,
+    # to=60,
+    # increment=1,
+    # textvariable=window_len_var,
+    # width=5
+# )
+# window_spinbox.pack(side=tk.LEFT, padx=5)
 
 # Speaker Settings
 speaker_frame = tk.LabelFrame(root, text="Speaker Settings")
@@ -193,6 +203,18 @@ def toggle_recording():
         stream.stop()
         record_btn.config(text="Start Recording")
 
+        recording_duration = time.time() - start_time
+
+        if recording_duration < MIN_RECORDING_SECONDS:
+            audio_buffer = []  # discard recording
+            messagebox.showwarning(
+                "Recording too short",
+                "The recording must be at least 1 minute long.\n"
+                "Please record a longer session."
+            )
+            timer_label.config(text="00:00")
+            return
+
         # Save the audio
         if audio_buffer:
             audio_data = np.concatenate(audio_buffer, axis=0)
@@ -221,7 +243,7 @@ def run_pipeline():
     if not SESSION_DIR:
         messagebox.showerror("Error", "No session to process.")
         return
-
+    
     pipeline_btn.config(state=tk.DISABLED)
     root.update()
 
@@ -233,7 +255,8 @@ def run_pipeline():
             "--input", str(SESSION_DIR),
             # "--output", "alt_pipeline/data/output",
             "--output", output_path,
-            "--window-len", str(window_len_var.get())
+            # "--window-len", str(window_len_var.get())
+            "--window-len", str(WINDOW_LEN_SECONDS)
         ]
 
         if speaker_mode_var.get() == "exact":
