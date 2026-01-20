@@ -46,36 +46,62 @@ def plot_data(saved_cluster, prediction_file, type):
                 "annotations": ["Passive Participation", "Low Coordination"]}
         }
 
-    # 1. Get Cluster Predictions
+    # Get Cluster Predictions
     membership = cluster_prediction.predict_cluster(saved_cluster, prediction_file)
-    
-    # 2. Load Data from JSON
+
+    # Load Data from JSON
     with open(prediction_file, 'r') as f:
         data = json.load(f)
     
     audio_windows = data.get('audio_features', [])
-    robot_windows = data.get('robot_speed_features', [])
+    if type == 'robot':
+        robot_windows = data.get('robot_speed_features', [])
     
-    # 3. Align Cluster Data with Robot Speed Data
-    # Filter indices where 'emotion' exists (as per your previous clustering logic)
+    # Align Cluster Data with Robot Speed Data
+    # Filter indices where 'emotion' exists 
     valid_indices = [i for i, w in enumerate(audio_windows) if w.get('emotion') is not None]
     
     df_list = []
     for idx, original_idx in enumerate(valid_indices):
         if idx < len(membership):
             cid = membership[idx]
-            # Get the robot speed window at the same index
-            r_window = robot_windows[original_idx]
+            """
+             # For voice mode, use audio window only
+            a_window = audio_windows[original_idx]
             
             df_list.append({
-                "window_num": r_window['window_index'], # Show window number
-                "start_min": r_window['window_start'] / 60, # Seconds to Minutes
-                "duration_min": (r_window['window_end'] - r_window['window_start']) / 60,
-                "speed": r_window.get('avg_speed_cm_s', 0), # Correct key from your snippet
+                "window_num": a_window['window_index'], # Show window number
+                "start_min": a_window['window_start'] / 60, # Seconds to Minutes
+                "duration_min": (a_window['window_end'] - a_window['window_start']) / 60,
                 "cluster": cid,
                 "color": cluster_meta[cid]['color']
             })
 
+             # Only add speed if robot mode
+            if type == 'robot':
+                # Get the robot speed window at the same index
+                r_window = robot_windows[original_idx]
+                df_list.append({
+                "speed": r_window.get('avg_speed_cm_s', 0) # Correct key from your snippet
+                })
+            """
+            # For voice mode, use audio window only
+            a_window = audio_windows[original_idx]
+
+            entry = {
+                "window_num": a_window['window_index'],
+                "start_min": a_window['window_start'] / 60,
+                "duration_min": (a_window['window_end'] - a_window['window_start']) / 60,
+                "cluster": cid,
+                "color": cluster_meta[cid]['color']
+            }
+
+            # Only add speed if robot mode
+            if type == 'robot':
+                r_window = robot_windows[original_idx]
+                entry["speed"] = r_window.get('avg_speed_cm_s', 0)
+
+            df_list.append(entry)
     if not df_list:
         print("No valid data to plot.")
         return
@@ -83,7 +109,7 @@ def plot_data(saved_cluster, prediction_file, type):
     df = pd.DataFrame(df_list)
     k = 5 if type == 'robot' else 4
 
-    # 4. Visualization
+    # Visualization
     fig, ax1 = plt.subplots(figsize=(16, 7))
 
     # A. Plot Cluster Timeline Blocks
@@ -98,12 +124,13 @@ def plot_data(saved_cluster, prediction_file, type):
                  fontsize=8, fontweight='bold', path_effects=None)
 
     # C. Plot Speed Average on Secondary Axis
-    ax2 = ax1.twinx()
-    ax2.plot(df['start_min'], df['speed'], color='black', marker='.', 
-             linestyle='-', alpha=0.5, label='Avg Robot Speed (cm/s)')
-    ax2.set_ylabel("Robot Speed (cm/s)")
-    ax2.set_ylim(0, df['speed'].max() * 1.2 if not df.empty else 1)
-    ax2.legend(loc='upper right')
+    if type == 'robot':
+        ax2 = ax1.twinx()
+        ax2.plot(df['start_min'], df['speed'], color='black', marker='.', 
+                linestyle='-', alpha=0.5, label='Avg Robot Speed (cm/s)')
+        ax2.set_ylabel("Robot Speed (cm/s)")
+        ax2.set_ylim(0, df['speed'].max() * 1.2 if not df.empty else 1)
+        ax2.legend(loc='upper right')
 
     # Formatting
     total_duration_min = robot_windows[-1]['window_end'] / 60
@@ -485,10 +512,14 @@ def plot_full_dashboard(saved_cluster, prediction_file, type='robot', save=True)
 
 # Execution
 DATA_DIR = cluster_prediction.DATA_DIR
-saved_cluster = save_cluster.load_cluster(DATA_DIR / "full_dimensions_cluster.pkl")
+# saved_cluster = save_cluster.load_cluster(DATA_DIR / "full_dimensions_cluster.pkl")
+# saved_cluster = save_cluster.load_cluster(DATA_DIR / "full_dimensions_cluster_voice.pkl")
 
 # Run full dashboard
-plot_full_dashboard(saved_cluster, DATA_DIR / "data" / "test_data" / "111455_features.json", 'robot')
+#plot_full_dashboard(saved_cluster, DATA_DIR / "data" / "test_data" / "111455_features.json", 'robot')
 
 # Or run individual plots:
-#plot_data(saved_cluster, DATA_DIR / "data" / "test_data" / "111455_features.json", 'robot')
+# plot_data(saved_cluster, DATA_DIR / "data" / "test_data" / "111455_features.json", 'robot')
+# plot_data(saved_cluster, DATA_DIR / "data" / "output" / "session_11111111111_features.json", 'voice')
+
+# plot_data(saved_cluster, DATA_DIR / "data" / "output" / "session_1768932529_features.json", 'voice')

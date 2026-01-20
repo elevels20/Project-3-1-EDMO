@@ -563,9 +563,7 @@ def perform_fuzzy_cmeans_auto_k(
 
     Returns:
     --------
-    silhouette_scores : dict
-        Silhouette scores for each k tested
-    best_score : float
+    best_silhouette : float
         Best average soft silhouette score
     best_k : int
         Optimal number of clusters
@@ -583,7 +581,7 @@ def perform_fuzzy_cmeans_auto_k(
     best_model = None
     best_k = None
 
-    for k in constrained_k_range:
+    for k in k_range:
         fcm = FCM(
             n_clusters=k,
             m=m,

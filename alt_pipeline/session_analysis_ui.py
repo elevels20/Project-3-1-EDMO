@@ -7,7 +7,8 @@ import time
 import numpy as np
 import subprocess
 import sys
-from cluster_prediction import predict_cluster
+# from cluster_prediction import predict_cluster
+from prediction_plotting import plot_data
 from save_cluster import load_cluster
 
 # Audio Settings
@@ -25,44 +26,24 @@ last_recording_path = None
 
 LAST_OUTPUT_JSON = None
 LAST_OUTPUT_DIR = "alt_pipeline/data/output"
-CLUSTER_PKL_PATH = "alt_pipeline/3_cluster.pkl"
+
+#CLUSTER_PKL_PATH = "alt_pipeline/full_dimensions_cluster.pkl"
+CLUSTER_ROBOT_PKL_PATH = "alt_pipeline/full_dimensions_cluster.pkl"
 
 WINDOW_LEN_SECONDS = 30
 MIN_RECORDING_SECONDS = 60
 
 # Tkinter UI
 root = tk.Tk()
-root.title("Audio Recorder")
+root.title("Communication strategy analysis")
 root.geometry("300x550")
-
-# window_len_var = tk.IntVar(value=2)
-
-# Timer Label
-timer_label = tk.Label(root, text="00:00", font=("Helvetica", 14))
-timer_label.pack(pady=5)
 
 tk.Label(
     root,
-    text="Minimum recording length: 1 minute\nWindow length: 30 seconds",
+    text="Minimum session length: 1 minute\nWindow length: 30 seconds",
     fg="gray",
     font=("Helvetica", 9)
 ).pack(pady=3)
-
-# Window length selector
-# window_frame = tk.Frame(root)
-# window_frame.pack(pady=5)
-
-# tk.Label(window_frame, text="Window length (sec):").pack(side=tk.LEFT)
-
-# window_spinbox = tk.Spinbox(
-    # window_frame,
-    # from_=1,
-    # to=60,
-    # increment=1,
-    # textvariable=window_len_var,
-    # width=5
-# )
-# window_spinbox.pack(side=tk.LEFT, padx=5)
 
 # Speaker Settings
 speaker_frame = tk.LabelFrame(root, text="Speaker Settings")
@@ -104,10 +85,6 @@ tk.Spinbox(range_frame, from_=1, to=10, textvariable=max_speakers_var, width=3).
 # Initial UI state
 update_speaker_ui()
 
-# Start/Stop Button
-record_btn = tk.Button(root, text="Start Recording", width=20)
-record_btn.pack(pady=5)
-
 # Open Archive Button
 open_btn = tk.Button(
     root,
@@ -145,99 +122,12 @@ assign_btn.pack(pady=5)
 # Status label
 status_label = tk.Label(
     root,
-    text="No session recorded yet.",
+    text="No session selected yet.",
     wraplength=260,
     justify="left",
     fg="gray"
 )
 status_label.pack(pady=5)
-
-# Sounddevice stream callback
-def audio_callback(indata, frames, time_info, status):
-    if recording:
-        audio_buffer.append(indata.copy())
-
-stream = sd.InputStream(
-    samplerate=fs,
-    channels=channels,
-    callback=audio_callback
-)
-
-# Timer update
-def update_timer():
-    if recording and start_time is not None:
-        elapsed = int(time.time() - start_time)
-        timer_label.config(
-            text=f"{elapsed // 60:02d}:{elapsed % 60:02d}"
-        )
-        root.after(100, update_timer)
-
-def toggle_recording():
-    global recording, audio_buffer, start_time
-    global BASE_DIR, SESSION_DIR, last_recording_path
-
-    if not recording:
-        # Create new session
-        session_id = f"session_{int(time.time())}"
-        SESSION_DIR = Path(f"alt_pipeline/data/sessions/{session_id}")
-        BASE_DIR = SESSION_DIR / "Audio/raw"
-        BASE_DIR.mkdir(parents=True, exist_ok=True)
-
-        (SESSION_DIR / "session.log").touch(exist_ok=True)
-
-        # Start recording
-        recording = True
-        audio_buffer = []
-        start_time = time.time()
-
-        record_btn.config(text="Stop Recording")
-        pipeline_btn.config(state=tk.DISABLED)
-
-        stream.start()
-        update_timer()
-        print(f"Recording started ({session_id})")
-
-    else:
-        # Stop recording
-        recording = False
-        stream.stop()
-        record_btn.config(text="Start Recording")
-
-        recording_duration = time.time() - start_time
-
-        if recording_duration < MIN_RECORDING_SECONDS:
-            audio_buffer = []  # discard recording
-            messagebox.showwarning(
-                "Recording too short",
-                "The recording must be at least 1 minute long.\n"
-                "Please record a longer session."
-            )
-            timer_label.config(text="00:00")
-            return
-
-        # Save the audio
-        if audio_buffer:
-            audio_data = np.concatenate(audio_buffer, axis=0)
-            last_recording_path = BASE_DIR / f"recorded_{int(time.time())}.wav"
-            sf.write(last_recording_path, audio_data, fs)
-
-            messagebox.showinfo(
-                "Saved",
-                f"Audio saved to:\n{last_recording_path}"
-            )
-
-            pipeline_btn.config(state=tk.NORMAL)
-
-            status_label.config(
-                text=f"Last recording:\n{SESSION_DIR.name}",
-                fg="gray"
-            )
-        else:
-            messagebox.showwarning("Warning", "No audio recorded!")
-
-        # Reset timer
-        timer_label.config(text="00:00")
-        print("Recording stopped.")
 
 def run_pipeline():
     if not SESSION_DIR:
@@ -386,62 +276,34 @@ def load_features_json():
     )
 
 def assign_clusters():
-    global LAST_OUTPUT_JSON
+    global LAST_OUTPUT_JSON, SESSION_DIR
 
+    # Choose JSON to use
     if LAST_OUTPUT_JSON is None or not LAST_OUTPUT_JSON.exists():
         messagebox.showerror(
             "Error",
             "No pipeline output found.\nRun the pipeline first."
         )
         return
-
+    
+    # Load cluster model
     try:
-        # 1. Load trained cluster model
-        clustered_data = load_cluster(CLUSTER_PKL_PATH)
-
-        # 2. Predict clusters per window
-        window_clusters = predict_cluster(
-            clustered_data,
-            json_path=str(LAST_OUTPUT_JSON)
-        )
-
-        # Ensure numpy array
-        window_clusters = np.asarray(window_clusters)
-
-        # 3. Session-level cluster (majority vote)
-        session_cluster = np.bincount(window_clusters).argmax()
-
-        # 4. Show results
-        messagebox.showinfo(
-            "Cluster Assignment",
-            # f"Session cluster: {session_cluster}\n\n"
-            f"Per-window clusters:\n"
-            f"{window_clusters.tolist()}"
-        )
-
-        source_name = (
-            SESSION_DIR.name
-            if SESSION_DIR is not None
-            else LAST_OUTPUT_JSON.name
-        )
-
-        status_label.config(
-            text=(
-                f"Source: {source_name}\n"
-                # f"Assigned cluster: {session_cluster}"
-                f"Assigned clusters per window: {window_clusters.tolist()}"
-            ),
-            fg="purple"
-        )
-
+        saved_cluster = load_cluster(CLUSTER_ROBOT_PKL_PATH)
     except Exception as e:
-        messagebox.showerror(
-            "Cluster assignment failed",
-            str(e)
+        messagebox.showerror("Error", f"Could not load cluster model:\n{e}")
+        return
+
+    # Plot using prediction_plotting.plot_data
+    try:
+        plot_data(saved_cluster, str(LAST_OUTPUT_JSON), type='robot')
+        messagebox.showinfo(
+            "Plot Generated",
+            f"Plot generated for:\n{LAST_OUTPUT_JSON.name}"
         )
+    except Exception as e:
+        messagebox.showerror("Plotting failed", str(e))
 
 # Bind buttons
-record_btn.config(command=toggle_recording)
 pipeline_btn.config(command=run_pipeline)
 assign_btn.config(command=assign_clusters)
 open_btn.config(command=open_session_archive)
