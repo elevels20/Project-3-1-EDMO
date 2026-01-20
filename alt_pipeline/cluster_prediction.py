@@ -15,6 +15,7 @@ BASE_DIR = Path(__file__).resolve().parent
 DATA_DIR = BASE_DIR
 
 def predict_cluster(clustered_data, json_path):
+    
     selected_features = json_extraction.selected_features
     feature_labels = json_extraction.features_labels
 
@@ -37,7 +38,34 @@ def predict_cluster(clustered_data, json_path):
     print(f"Correct Prediction shape: {u.shape}") # Should be (7, 38)
     
     # Return the full array of assignments
-    return np.argmax(u, axis=0)                                            
+    return np.argmax(u, axis=0)
+
+
+def predict_cluster_with_probabilities(clustered_data, json_path):
+    """
+    Same as predict_cluster but returns both assignments and full probability matrix.
+
+    Returns:
+        assignments: array of cluster assignments (argmax)
+        probabilities: full membership matrix (n_clusters x n_samples)
+    """
+    selected_features = json_extraction.selected_features
+    feature_labels = json_extraction.features_labels
+
+    data = json_extraction.extract_datapoints_except_last(json_path, selected_features, feature_labels)
+    X_new = np.array([dp.dimension_values for dp in data])
+
+    from sklearn.preprocessing import StandardScaler
+    X_new_scaled = StandardScaler().fit_transform(X_new)
+
+    cntr = clustered_data[5]
+
+    u, _, _, _, _, _ = fuzz.cluster.cmeans_predict(
+        X_new_scaled.T, cntr, m=1.056, error=0.005, maxiter=1000
+    )
+
+    assignments = np.argmax(u, axis=0)
+    return assignments, u  # u shape: (n_clusters, n_samples)
 
 
 def test_predict():
