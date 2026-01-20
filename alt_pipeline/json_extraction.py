@@ -1,4 +1,5 @@
 import json
+from pathlib import Path
 
 class Datapoint:
     dimension_labels: list[str]
@@ -8,9 +9,26 @@ class Datapoint:
         self.dimension_labels = labels
         self.dimension_values = values
 
+BASE_DIR = Path(__file__).resolve().parent
+DATA_DIR = BASE_DIR / "data"
+
+training_files = [
+    DATA_DIR / "093025_features.json",
+    DATA_DIR / "100854_features.json",
+    DATA_DIR / "111414_features.json",
+    DATA_DIR / "115451_features.json",
+    DATA_DIR / "130353_features.json",
+    DATA_DIR / "132617_features.json",
+    DATA_DIR / "133150_features.json",
+    DATA_DIR / "140252_features.json"
+]
+
+test_files = [
+    DATA_DIR / "111455_features.json",
+    DATA_DIR / "114654_features.json"
+]
 
 selected_features = [
-    "audio_features.base_window_len",                                           # 1
     "audio_features.emotion.emotions[0].score",                                 # 2
     "audio_features.emotion.emotions[1].score",                                 # 3
     "audio_features.emotion.emotions[2].score",                                 # 4
@@ -27,15 +45,13 @@ selected_features = [
     "audio_features.nonverbal.basic_metrics.conversation.silence_ratio",       # 15
     "audio_features.nonverbal.basic_metrics.conversation.total_interruptions",  # 16
     "audio_features.nonverbal.basic_metrics.conversation.total_speaking_time",  # 17
-    "audio_features.window_duration",                                           # 18
-    "audio_features.window_end",                                                # 19
-    "audio_features.window_index",                                              # 20
-    "audio_features.window_start",                                              # 21
-    "robot_speed_features.avg_speed_cm_s",                                      # 22
-    "robot_speed_features.num_detections",                                      # 23
-    "robot_speed_features.window_end",                                          # 24
-    "robot_speed_features.window_index",                                        # 25
-    "robot_speed_features.window_start"
+    "robot_speed_features.avg_speed_cm_s",                                      # 19
+    "robot_speed_features.num_detections",                                      # 20
+    "audio_features.nlp.simple_features.collaboration_ratio",
+    "audio_features.nlp.simple_features.hedges (uncertainty)",
+    "audio_features.nlp.simple_features.wh_questions (inquiry)",
+    "audio_features.nlp.simple_features.yes_no_questions (confirmation)",
+    "audio_features.nlp.simple_features.question_count"
 ]
 
 features_labels = [
@@ -55,10 +71,13 @@ features_labels = [
     "audio_features_nonverbal_basic_metrics_conversation_silence_ratio",
     "audio_features_nonverbal_basic_metrics_conversation_total_interruptions",
     "audio_features_nonverbal_basic_metrics_conversation_total_speaking_time",
-    "audio_features_window_duration",
-
     "robot_speed_features_avg_speed_cm_s",
-    "robot_speed_features_num_detections"
+    "robot_speed_features_num_detections",
+    "audio_features.nlp.simple_features.collaboration_ratio",
+    "audio_features.nlp.simple_features.hedges (uncertainty)",
+    "audio_features.nlp.simple_features.wh_questions (inquiry)",
+    "audio_features.nlp.simple_features.yes_no_questions (confirmation)",
+    "audio_features.nlp.simple_features.question_count"
 ]
 
 
@@ -102,21 +121,36 @@ def extract_datapoints_except_last(filename, feature_paths, feature_labels=None)
         }
 
         values = []
-        all_features_present = True
 
         for path in feature_paths:
             val = get_by_path(window_data, path)
             if isinstance(val, (int, float)):
                 values.append(val)
             else:
-                all_features_present = False
-                break  # skip this window entirely
+                # Place zero for missing or non-numeric features
+                values.append(0)
 
-        if all_features_present:
-            labels_to_use = feature_labels if feature_labels is not None else feature_paths
-            datapoints.append(Datapoint(labels_to_use, values))
+        labels_to_use = feature_labels if feature_labels is not None else feature_paths
+        datapoints.append(Datapoint(labels_to_use, values))
 
     return datapoints
+
+def extract_datapoints_except_last_multiple(
+        filenames,
+        feature_paths,
+        feature_labels=None
+):
+    all_datapoints = []
+
+    for filename in filenames:
+        datapoints = extract_datapoints_except_last(
+            filename,
+            feature_paths,
+            feature_labels
+        )
+        all_datapoints.extend(datapoints)
+
+    return all_datapoints
 
 def collect_numeric_paths(obj, prefix=""):
     paths = []

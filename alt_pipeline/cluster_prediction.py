@@ -18,48 +18,37 @@ def predict_cluster(clustered_data, json_path):
     selected_features = json_extraction.selected_features
     feature_labels = json_extraction.features_labels
 
+    # 1. Extract the 38 new datapoints
     data = json_extraction.extract_datapoints_except_last(json_path, selected_features, feature_labels)
+    X_new = np.array([dp.dimension_values for dp in data])
     
-    print("Feature data extracted.")
-    print(f"Number of datapoints extracted: {len(data)}")
+    # 2. Scale the NEW data
+    from sklearn.preprocessing import StandardScaler
+    X_new_scaled = StandardScaler().fit_transform(X_new)
 
-    print(type(data))
-    data_array = np.array(data)
-    if data_array.ndim == 1:
-        data_array = data_array.reshape(1, -1)
-    
-    print(f"Data array shape for prediction: {data_array.shape}")
-    # Get centroids
+    # 3. Get centroids from pkl
     cntr = clustered_data[5]
 
-    num_clusters, model_features = cntr.shape
-
-    X = np.array([dp.dimension_values for dp in data])
-    X_scaled = full_dimensions_clustering.StandardScaler().fit_transform(X)
-
-    print(f"Data shape for prediction: {X.shape}")
-
-    print(f"Pkl rows and features: {num_clusters} clusters, {model_features} model features.")
-
-    # Predict
+    # 4. Predict using ONLY the new 38 points (Transposed)
     u, _, _, _, _, _ = fuzz.cluster.cmeans_predict(
-        X_scaled.T, cntr, m=1.056, error=0.005, maxiter=1000
+        X_new_scaled.T, cntr, m=1.056, error=0.005, maxiter=1000
     )
 
-    print(f"Prediction membership shape: {u.shape}")
-    print(f"Membership values:\n{u}")
-    print("Prediction complete.")
-    # return np.argmax(u, axis=0)[0] 
-    return np.argmax(u, axis=0)
+    print(f"Correct Prediction shape: {u.shape}") # Should be (7, 38)
+    
+    # Return the full array of assignments
+    return np.argmax(u, axis=0)                                            
+
 
 def test_predict():
     print("Predicting clusters for test data...")
-    saved_cluster = save_cluster.load_cluster(DATA_DIR / "3_cluster.pkl")
-    assignments = predict_cluster(saved_cluster, DATA_DIR / "data" / "140252_features.json")
+    saved_cluster = save_cluster.load_cluster(DATA_DIR / "full_dimensions_cluster_voice.pkl")
+    
+    assignments = predict_cluster(saved_cluster, DATA_DIR / "data" / "test_data" / "111455_features.json")
 
     print("Predicted cluster assignments:")
     print(assignments)
     return assignments
 
-# test_predict()
+#test_predict()
 

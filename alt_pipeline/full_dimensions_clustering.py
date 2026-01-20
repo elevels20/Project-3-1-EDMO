@@ -1,84 +1,58 @@
-import json
 import numpy as np
 import json_extraction
 from sklearn.preprocessing import StandardScaler
 import dim_red_clustering_functions
-from pathlib import Path
+from json_extraction import selected_features
+from json_extraction import training_files as files
+from json_extraction import features_labels as feature_labels
 
-BASE_DIR = Path(__file__).resolve().parent
-DATA_DIR = BASE_DIR / "data"
+# load datapoints (MULTIPLE FILES)
+datapoints = json_extraction.extract_datapoints_except_last_multiple(
+    files,
+    selected_features,
+    feature_labels
+)
 
-def run_full_dimensions_clustering():
-    files = [
-        DATA_DIR / "111455_features.json",
-        DATA_DIR / "114654_features.json",
-        DATA_DIR / "133150_features.json",
-        DATA_DIR / "140252_features.json"
-    ]
+# build feature matrix
+X = np.array([dp.dimension_values for dp in datapoints])
 
-    # --- Step 1: discover common complete features across all files ---
-    feature_sets = []
+# sanity checks
+print("Feature labels:")
+for lbl in feature_labels:
+    print(" -", lbl)
 
-    for f in files:
-        with open(f, "r") as fh:
-            data = json.load(fh)
-        feature_sets.append(
-            set(json_extraction.find_complete_feature_paths(data))
-        )
+print(f"Number of datapoints: {len(datapoints)}")
+print(f"X shape: {X.shape}")
 
-    common_feature_paths = sorted(set.intersection(*feature_sets))
-    print(f"Number of shared features: {len(common_feature_paths)}")
+if X.size == 0:
+    raise ValueError("No datapoints extracted — clustering cannot proceed.")
 
-    # --- Step 2: generate readable labels ---
-    feature_labels = [
-        json_extraction.path_to_feature_label(p)
-        for p in common_feature_paths
-    ]
+# scale features
+X_scaled = StandardScaler().fit_transform(X)
 
-    # --- Step 3: extract datapoints using shared features ---
-    all_datapoints = []
-    file_labels = []
+# clustering
+(
+    silhouette_scores,
+    best_score,
+    best_k,
+    cluster_labels,
+    u,
+    cntr,
+    fpc
+) = dim_red_clustering_functions.perform_fuzzy_cmeans_auto_k(
+    X_scaled,
+    k_range=range(2, 11),
+    m=2.0,
+    random_state=42,
+    score_method="intra_similarity"
+)
 
-    for i, f in enumerate(files):
-        dps = json_extraction.extract_datapoints_except_last(
-            f,
-            common_feature_paths,
-            feature_labels=feature_labels
-        )
-        all_datapoints.extend(dps)
-        file_labels.extend([f"experiment_{i+1}"] * len(dps))
+# results
+print("Best k:", best_k)
+print("Best silhouette score:", best_score)
+print("All silhouette scores:", silhouette_scores)
 
-    print(f"Total datapoints: {len(all_datapoints)}")
+cluster_save = (silhouette_scores,best_score,best_k,cluster_labels,u,cntr,fpc)
 
-    # --- Step 4: convert to NumPy array ---
-    X = np.array([dp.dimension_values for dp in all_datapoints])
-
-    print("Feature labels:")
-    for lbl in feature_labels:
-        print(" -", lbl)
-
-    print(f"X shape: {X.shape}")
-
-    X_scaled = StandardScaler().fit_transform(X)
-
-    return dim_red_clustering_functions.perform_fuzzy_cmeans_auto_k(
-        X_scaled,
-        k_range=range(2, 11),
-        m=2.0,
-        random_state=42
-    )
-
-if __name__ == "__main__":
-    (
-        silhouette_scores,
-        best_score,
-        best_k,
-        cluster_labels,
-        u,
-        cntr,
-        fpc
-    ) = run_full_dimensions_clustering()
-
-    print(best_k)
-    print(best_score)
-    print(silhouette_scores)
+import save_cluster
+save_cluster.save_cluster(cluster_save, "./alt_pipeline/full_dimensions_cluster.pkl")

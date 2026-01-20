@@ -1,6 +1,4 @@
 import pickle
-import dim_red_clustering_functions
-import full_dimensions_clustering
 import numpy as np
               
 def save_cluster(clustered_data, filename):
@@ -26,6 +24,8 @@ def load_cluster(filename):
     return clustered_data
 
 def test_save():
+    import dim_red_clustering_functions
+    import full_dimensions_clustering
     # Create some sample clustered data
     XScaled = full_dimensions_clustering.X_scaled
     clustered_data = dim_red_clustering_functions.perform_fuzzy_cmeans_auto_k(
