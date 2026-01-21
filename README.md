@@ -71,5 +71,5 @@ This project uses the `pyannote/speaker-diarization-community-1` model for speak
 - `src/`: Contains core services for audio processing, NLP, and robot data handling.
 - `Cluster-Analysis/`: Scripts for examining and loading cluster models.
 
-# AI Assistance
+## AI Assistance
 GitHub Copilot was used to assist with syntax generation and boilerplate code, but the core algorithmic logic and system design are our own original work (wherever it is not mentioned otherwise).
