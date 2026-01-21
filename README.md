@@ -29,8 +29,7 @@ python alt_pipeline/session_analysis_ui.py
 
 The UI provides a centralized hub for recording, managing, and analyzing session data.
 
-![UI Screenshot](images/ui_screenshot.png)
-*(Place your UI screenshot here)*
+<img src="images/ui_screenshot.png" width="300" alt="UI Screenshot">
 
 ### Functionalities
 
