@@ -23,12 +23,12 @@ def predict_cluster(clustered_data, json_path):
     data = json_extraction.extract_datapoints_except_last(json_path, selected_features, feature_labels)
     X_new = np.array([dp.dimension_values for dp in data])
     
-    # 2. Scale the NEW data
-    from sklearn.preprocessing import StandardScaler
-    X_new_scaled = StandardScaler().fit_transform(X_new)
-
-    # 3. Get centroids from pkl
+    # 2. Get scaler and centroids from pkl
     cntr = clustered_data[5]
+    scaler = clustered_data[7]  # Load the fitted scaler from training
+
+    # 3. Scale the NEW data using the training scaler (transform only, not fit)
+    X_new_scaled = scaler.transform(X_new)
 
     # 4. Predict using ONLY the new 38 points (Transposed)
     u, _, _, _, _, _ = fuzz.cluster.cmeans_predict(
@@ -55,10 +55,12 @@ def predict_cluster_with_probabilities(clustered_data, json_path):
     data = json_extraction.extract_datapoints_except_last(json_path, selected_features, feature_labels)
     X_new = np.array([dp.dimension_values for dp in data])
 
-    from sklearn.preprocessing import StandardScaler
-    X_new_scaled = StandardScaler().fit_transform(X_new)
-
+    # Get scaler and centroids from pkl
     cntr = clustered_data[5]
+    scaler = clustered_data[7]  # Load the fitted scaler from training
+
+    # Scale using training scaler (transform only, not fit)
+    X_new_scaled = scaler.transform(X_new)
 
     u, _, _, _, _, _ = fuzz.cluster.cmeans_predict(
         X_new_scaled.T, cntr, m=1.056, error=0.005, maxiter=1000

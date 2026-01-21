@@ -147,8 +147,8 @@ def run_accuracy_check(excel_path, saved_cluster_path, prediction_json, session_
 
 # Run with your file paths
 run_accuracy_check(
-    excel_path="./alt_pipeline/data/communication_annotation.xlsx", 
-    saved_cluster_path="./alt_pipeline/full_dimensions_cluster.pkl", 
-    prediction_json="./alt_pipeline/data/test_data/114654_features.json",
+    excel_path="./data/communication_annotation.xlsx",
+    saved_cluster_path="./full_dimensions_cluster.pkl",
+    prediction_json="./data/test_data/114654_features.json",
     session_type='robot'
 )
