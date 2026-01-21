@@ -7,6 +7,7 @@ import time
 import numpy as np
 import subprocess
 import sys
+import shutil
 # from cluster_prediction import predict_cluster
 from prediction_plotting import plot_data
 from save_cluster import load_cluster
@@ -108,6 +109,14 @@ open_btn = tk.Button(
     width=20
 )
 open_btn.pack(pady=5)
+
+# Open Audio File Button
+open_audio_btn = tk.Button(
+    control_frame,
+    text="Open Audio File",
+    width=20
+)
+open_audio_btn.pack(pady=5)
 
 # Run Pipeline Button
 pipeline_btn = tk.Button(
@@ -337,6 +346,49 @@ def open_session_archive():
         f"Session loaded successfully:\n{SESSION_DIR}"
     )
 
+def open_audio_file():
+    global SESSION_DIR, BASE_DIR, last_recording_path
+
+    file_path = filedialog.askopenfilename(
+        title="Select audio file",
+        filetypes=[("Audio files", "*.wav *.mp3 *.m4a *.flac *.aac *.ogg")]
+    )
+
+    if not file_path:
+        return
+
+    file_path = Path(file_path)
+
+    # Create new session structure similar to recording
+    session_id = f"session_{int(time.time())}"
+    SESSION_DIR = Path(f"alt_pipeline/data/sessions/{session_id}")
+    BASE_DIR = SESSION_DIR / "Audio/raw"
+    BASE_DIR.mkdir(parents=True, exist_ok=True)
+    
+    (SESSION_DIR / "session.log").touch(exist_ok=True)
+
+    # Copy audio file
+    try:
+        dest_path = BASE_DIR / file_path.name
+        shutil.copy2(file_path, dest_path)
+        last_recording_path = dest_path
+    except Exception as e:
+        messagebox.showerror("Error", f"Failed to copy audio file:\n{e}")
+        return
+
+    status_label.config(
+        text=f"Loaded audio:\n{file_path.name}\ninto session:\n{SESSION_DIR.name}",
+        fg="blue"
+    )
+
+    pipeline_btn.config(state=tk.NORMAL)
+    assign_btn.config(state=tk.DISABLED)
+
+    messagebox.showinfo(
+        "Audio Loaded",
+        f"Audio imported to session:\n{session_id}"
+    )
+
 def load_features_json():
     global LAST_OUTPUT_JSON, SESSION_DIR
 
@@ -482,6 +534,7 @@ record_btn.config(command=toggle_recording)
 pipeline_btn.config(command=run_pipeline)
 assign_btn.config(command=assign_clusters)
 open_btn.config(command=open_session_archive)
+open_audio_btn.config(command=open_audio_file)
 load_json_btn.config(command=load_features_json)
 
 # Run UI
