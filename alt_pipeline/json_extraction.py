@@ -80,6 +80,105 @@ features_labels = [
     "audio_features.nlp.simple_features.question_count"
 ]
 
+robot_selected_features = [
+    "audio_features.emotion.emotions[0].score",                                 # 2
+    "audio_features.emotion.emotions[1].score",                                 # 3
+    "audio_features.emotion.emotions[2].score",                                 # 4
+    "audio_features.emotion.emotions[3].score",                                 # 5
+    "audio_features.emotion.emotions[4].score",                                 # 6
+    "audio_features.emotion.emotions[5].score",                                 # 7
+    "audio_features.emotion.emotions[6].score",                                 # 8
+    "audio_features.nlp.sentiment.score",                                       # 9
+    "audio_features.nonverbal.basic_metrics.conversation.interruption_rate",    # 10
+    "audio_features.nonverbal.basic_metrics.conversation.num_speakers",         # 11
+    "audio_features.nonverbal.basic_metrics.conversation.overlap_duration",     # 12
+    "audio_features.nonverbal.basic_metrics.conversation.overlap_ratio",        # 13
+    "audio_features.nonverbal.basic_metrics.conversation.silence_duration",     # 14
+    "audio_features.nonverbal.basic_metrics.conversation.silence_ratio",       # 15
+    "audio_features.nonverbal.basic_metrics.conversation.total_interruptions",  # 16
+    "audio_features.nonverbal.basic_metrics.conversation.total_speaking_time",  # 17
+    "robot_speed_features.avg_speed_cm_s",                                      # 19
+    "robot_speed_features.num_detections",                                      # 20
+    "audio_features.nlp.simple_features.collaboration_ratio",
+    "audio_features.nlp.simple_features.hedges (uncertainty)",
+    "audio_features.nlp.simple_features.wh_questions (inquiry)",
+    "audio_features.nlp.simple_features.yes_no_questions (confirmation)",
+    "audio_features.nlp.simple_features.question_count"
+]
+
+robot_features_labels = [
+    "audio_features_emotion_emotions_0_score",
+    "audio_features_emotion_emotions_1_score",
+    "audio_features_emotion_emotions_2_score",
+    "audio_features_emotion_emotions_3_score",
+    "audio_features_emotion_emotions_4_score",
+    "audio_features_emotion_emotions_5_score",
+    "audio_features_emotion_emotions_6_score",
+    "audio_features_nlp_sentiment_score",
+    "audio_features_nonverbal_basic_metrics_conversation_interruption_rate",
+    "audio_features_nonverbal_basic_metrics_conversation_num_speakers",
+    "audio_features_nonverbal_basic_metrics_conversation_overlap_duration",
+    "audio_features_nonverbal_basic_metrics_conversation_overlap_ratio",
+    "audio_features_nonverbal_basic_metrics_conversation_silence_duration",
+    "audio_features_nonverbal_basic_metrics_conversation_silence_ratio",
+    "audio_features_nonverbal_basic_metrics_conversation_total_interruptions",
+    "audio_features_nonverbal_basic_metrics_conversation_total_speaking_time",
+    "robot_speed_features_avg_speed_cm_s",
+    "robot_speed_features_num_detections",
+    "audio_features.nlp.simple_features.collaboration_ratio",
+    "audio_features.nlp.simple_features.hedges (uncertainty)",
+    "audio_features.nlp.simple_features.wh_questions (inquiry)",
+    "audio_features.nlp.simple_features.yes_no_questions (confirmation)",
+    "audio_features.nlp.simple_features.question_count"
+]
+
+voice_selected_features = [
+    "audio_features.emotion.emotions[0].score",                                 # 2
+    "audio_features.emotion.emotions[1].score",                                 # 3
+    "audio_features.emotion.emotions[2].score",                                 # 4
+    "audio_features.emotion.emotions[3].score",                                 # 5
+    "audio_features.emotion.emotions[4].score",                                 # 6
+    "audio_features.emotion.emotions[5].score",                                 # 7
+    "audio_features.emotion.emotions[6].score",                                 # 8
+    "audio_features.nlp.sentiment.score",                                       # 9
+    "audio_features.nonverbal.basic_metrics.conversation.interruption_rate",    # 10
+    "audio_features.nonverbal.basic_metrics.conversation.num_speakers",         # 11
+    "audio_features.nonverbal.basic_metrics.conversation.overlap_duration",     # 12
+    "audio_features.nonverbal.basic_metrics.conversation.overlap_ratio",        # 13
+    "audio_features.nonverbal.basic_metrics.conversation.silence_duration",     # 14
+    "audio_features.nonverbal.basic_metrics.conversation.silence_ratio",       # 15
+    "audio_features.nonverbal.basic_metrics.conversation.total_interruptions",  # 16
+    "audio_features.nonverbal.basic_metrics.conversation.total_speaking_time",  # 17
+    "audio_features.nlp.simple_features.collaboration_ratio",
+    "audio_features.nlp.simple_features.hedges (uncertainty)",
+    "audio_features.nlp.simple_features.wh_questions (inquiry)",
+    "audio_features.nlp.simple_features.yes_no_questions (confirmation)",
+    "audio_features.nlp.simple_features.question_count"
+]
+
+voice_features_labels = [
+    "audio_features_emotion_emotions_0_score",
+    "audio_features_emotion_emotions_1_score",
+    "audio_features_emotion_emotions_2_score",
+    "audio_features_emotion_emotions_3_score",
+    "audio_features_emotion_emotions_4_score",
+    "audio_features_emotion_emotions_5_score",
+    "audio_features_emotion_emotions_6_score",
+    "audio_features_nlp_sentiment_score",
+    "audio_features_nonverbal_basic_metrics_conversation_interruption_rate",
+    "audio_features_nonverbal_basic_metrics_conversation_num_speakers",
+    "audio_features_nonverbal_basic_metrics_conversation_overlap_duration",
+    "audio_features_nonverbal_basic_metrics_conversation_overlap_ratio",
+    "audio_features_nonverbal_basic_metrics_conversation_silence_duration",
+    "audio_features_nonverbal_basic_metrics_conversation_silence_ratio",
+    "audio_features_nonverbal_basic_metrics_conversation_total_interruptions",
+    "audio_features_nonverbal_basic_metrics_conversation_total_speaking_time",
+    "audio_features.nlp.simple_features.collaboration_ratio",
+    "audio_features.nlp.simple_features.hedges (uncertainty)",
+    "audio_features.nlp.simple_features.wh_questions (inquiry)",
+    "audio_features.nlp.simple_features.yes_no_questions (confirmation)",
+    "audio_features.nlp.simple_features.question_count"
+]
 
 def get_by_path(obj, path):
     try:
@@ -99,6 +198,39 @@ def get_by_path(obj, path):
         return obj
     except (KeyError, IndexError, TypeError, ValueError):
         return None  # return None instead of raising
+
+def voice_extract_datapoints_except_last(filename, feature_paths, feature_labels=None):
+    # load the JSON file
+    with open(filename, 'r') as f:
+        data = json.load(f)
+    audio_windows = {w["window_index"]: w for w in data.get("audio_features", [])}
+
+    # Intersect window indices and remove last window
+    common_indices = sorted(set(audio_windows.keys()))
+    if common_indices:
+        common_indices = common_indices[:-1]  # remove last window
+
+    datapoints = []
+
+    for idx in common_indices:
+        window_data = {
+            "audio_features": audio_windows[idx],
+        }
+
+        values = []
+
+        for path in feature_paths:
+            val = get_by_path(window_data, path)
+            if isinstance(val, (int, float)):
+                values.append(val)
+            else:
+                # Place zero for missing or non-numeric features
+                values.append(0)
+
+        labels_to_use = feature_labels if feature_labels is not None else feature_paths
+        datapoints.append(Datapoint(labels_to_use, values))
+
+    return datapoints
 
 def extract_datapoints_except_last(filename, feature_paths, feature_labels=None):
     # load the JSON file

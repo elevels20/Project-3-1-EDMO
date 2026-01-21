@@ -27,7 +27,7 @@ last_recording_path = None
 LAST_OUTPUT_JSON = None
 LAST_OUTPUT_DIR = "alt_pipeline/data/output"
 
-#CLUSTER_PKL_PATH = "alt_pipeline/full_dimensions_cluster.pkl"
+CLUSTER_VOICE_PKL_PATH = "alt_pipeline/full_dimensions_cluster_voice.pkl"
 CLUSTER_ROBOT_PKL_PATH = "alt_pipeline/full_dimensions_cluster.pkl"
 
 WINDOW_LEN_SECONDS = 30
@@ -38,9 +38,21 @@ root = tk.Tk()
 root.title("Communication strategy analysis")
 root.geometry("300x550")
 
-tk.Label(
+control_frame = tk.LabelFrame(
     root,
-    text="Minimum session length: 1 minute\nWindow length: 30 seconds",
+    text="Session Controls",
+    padx=10,
+    pady=10
+)
+control_frame.pack(pady=10, padx=10, fill="x")
+
+# Timer Label
+timer_label = tk.Label(control_frame, text="00:00", font=("Helvetica", 14))
+timer_label.pack(pady=5)
+
+tk.Label(
+    control_frame,
+    text="Minimum recording length: 1 minute\nWindow length: 30 seconds",
     fg="gray",
     font=("Helvetica", 9)
 ).pack(pady=3)
@@ -85,9 +97,13 @@ tk.Spinbox(range_frame, from_=1, to=10, textvariable=max_speakers_var, width=3).
 # Initial UI state
 update_speaker_ui()
 
+# Start/Stop Button
+record_btn = tk.Button(control_frame, text="Start Recording", width=20)
+record_btn.pack(pady=5)
+
 # Open Archive Button
 open_btn = tk.Button(
-    root,
+    control_frame,
     text="Open Session Archive",
     width=20
 )
@@ -96,7 +112,7 @@ open_btn.pack(pady=5)
 # Run Pipeline Button
 pipeline_btn = tk.Button(
     root,
-    text="Run Pipeline",
+    text="Run Feauture Extraction Pipeline",
     width=20,
     state=tk.DISABLED
 )
@@ -128,6 +144,93 @@ status_label = tk.Label(
     fg="gray"
 )
 status_label.pack(pady=5)
+
+# Sounddevice stream callback
+def audio_callback(indata, frames, time_info, status):
+    if recording:
+        audio_buffer.append(indata.copy())
+
+stream = sd.InputStream(
+    samplerate=fs,
+    channels=channels,
+    callback=audio_callback
+)
+
+# Timer update
+def update_timer():
+    if recording and start_time is not None:
+        elapsed = int(time.time() - start_time)
+        timer_label.config(
+            text=f"{elapsed // 60:02d}:{elapsed % 60:02d}"
+        )
+        root.after(100, update_timer)
+
+def toggle_recording():
+    global recording, audio_buffer, start_time
+    global BASE_DIR, SESSION_DIR, last_recording_path
+
+    if not recording:
+        # Create new session
+        session_id = f"session_{int(time.time())}"
+        SESSION_DIR = Path(f"alt_pipeline/data/sessions/{session_id}")
+        BASE_DIR = SESSION_DIR / "Audio/raw"
+        BASE_DIR.mkdir(parents=True, exist_ok=True)
+
+        (SESSION_DIR / "session.log").touch(exist_ok=True)
+
+        # Start recording
+        recording = True
+        audio_buffer = []
+        start_time = time.time()
+
+        record_btn.config(text="Stop Recording")
+        pipeline_btn.config(state=tk.DISABLED)
+
+        stream.start()
+        update_timer()
+        print(f"Recording started ({session_id})")
+
+    else:
+        # Stop recording
+        recording = False
+        stream.stop()
+        record_btn.config(text="Start Recording")
+
+        recording_duration = time.time() - start_time
+
+        if recording_duration < MIN_RECORDING_SECONDS:
+            audio_buffer = []  # discard recording
+            messagebox.showwarning(
+                "Recording too short",
+                "The recording must be at least 1 minute long.\n"
+                "Please record a longer session."
+            )
+            timer_label.config(text="00:00")
+            return
+
+        # Save the audio
+        if audio_buffer:
+            audio_data = np.concatenate(audio_buffer, axis=0)
+            last_recording_path = BASE_DIR / f"recorded_{int(time.time())}.wav"
+            sf.write(last_recording_path, audio_data, fs)
+
+            messagebox.showinfo(
+                "Saved",
+                f"Audio saved to:\n{last_recording_path}"
+            )
+
+            pipeline_btn.config(state=tk.NORMAL)
+
+            status_label.config(
+                text=f"Last recording:\n{SESSION_DIR.name}",
+                fg="gray"
+            )
+        else:
+            messagebox.showwarning("Warning", "No audio recorded!")
+
+        # Reset timer
+        timer_label.config(text="00:00")
+        print("Recording stopped.")
 
 def run_pipeline():
     if not SESSION_DIR:
@@ -275,7 +378,78 @@ def load_features_json():
         f"Feature file loaded:\n{json_path}"
     )
 
+def get_data_mode(json_path: Path):
+    import json
+
+    data = json.loads(json_path.read_text())
+
+    robot_speed = data.get("robot_speed_features", [])
+
+    for w in robot_speed:
+        if w.get("avg_speed_cm_s") is not None:
+            return "robot"
+
+    return "voice"
+
+def remove_robot_features_from_json(json_path: Path):
+    import json
+    import tempfile
+
+    data = json.loads(json_path.read_text())
+
+    # Explicitly remove robot-related sections
+    data.pop("robot_data_features", None)
+    data.pop("robot_speed_features", None)
+
+    tmp_file = tempfile.NamedTemporaryFile(
+        delete=False, suffix=".json", mode="w"
+    )
+    json.dump(data, tmp_file, indent=2)
+    tmp_file.close()
+
+    return Path(tmp_file.name)
+
 def assign_clusters():
+    global LAST_OUTPUT_JSON, SESSION_DIR
+
+    # Choose JSON to use
+    if LAST_OUTPUT_JSON is None or not LAST_OUTPUT_JSON.exists():
+        messagebox.showerror(
+            "Error",
+            "No pipeline output found.\nRun the pipeline first."
+        )
+        return
+
+    # Determine mode (voice or robot)
+    mode = get_data_mode(LAST_OUTPUT_JSON)  # "voice" or "robot"
+    
+    # 3. Choose correct cluster model path
+    if mode == "voice":
+        cluster_path = CLUSTER_VOICE_PKL_PATH
+        # json_to_use = sanitize_voice_json(LAST_OUTPUT_JSON)
+        json_to_use = remove_robot_features_from_json(LAST_OUTPUT_JSON)
+    else:
+        cluster_path = CLUSTER_ROBOT_PKL_PATH
+        json_to_use = LAST_OUTPUT_JSON
+
+    # Load cluster model
+    try:
+        saved_cluster = load_cluster(cluster_path)
+    except Exception as e:
+        messagebox.showerror("Error", f"Could not load cluster model:\n{e}")
+        return
+
+    # Plot using prediction_plotting.plot_data
+    try:
+        plot_data(saved_cluster, str(json_to_use), type=mode)
+        messagebox.showinfo(
+            "Plot Generated",
+            f"Plot generated for:\n{LAST_OUTPUT_JSON.name}"
+        )
+    except Exception as e:
+        messagebox.showerror("Plotting failed", str(e))
+
+def good_assign_clusters():
     global LAST_OUTPUT_JSON, SESSION_DIR
 
     # Choose JSON to use
@@ -304,6 +478,7 @@ def assign_clusters():
         messagebox.showerror("Plotting failed", str(e))
 
 # Bind buttons
+record_btn.config(command=toggle_recording)
 pipeline_btn.config(command=run_pipeline)
 assign_btn.config(command=assign_clusters)
 open_btn.config(command=open_session_archive)
