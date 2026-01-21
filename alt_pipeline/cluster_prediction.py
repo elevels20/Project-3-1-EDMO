@@ -72,7 +72,7 @@ def predict_cluster_with_probabilities(clustered_data, json_path):
 
 def test_predict():
     print("Predicting clusters for test data...")
-    saved_cluster = save_cluster.load_cluster(DATA_DIR / "full_dimensions_cluster_voice.pkl")
+    saved_cluster = save_cluster.load_cluster(DATA_DIR / "full_dimensions_cluster.pkl")
     
     assignments = predict_cluster(saved_cluster, DATA_DIR / "data" / "test_data" / "111455_features.json")
 

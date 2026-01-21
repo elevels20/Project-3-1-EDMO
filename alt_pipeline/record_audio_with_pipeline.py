@@ -25,7 +25,7 @@ last_recording_path = None
 
 LAST_OUTPUT_JSON = None
 LAST_OUTPUT_DIR = "alt_pipeline/data/output"
-CLUSTER_PKL_PATH = "alt_pipeline/3_cluster.pkl"
+CLUSTER_PKL_PATH = "alt_pipeline/full_dimensions_cluster.pkl"
 
 # Tkinter UI
 root = tk.Tk()
