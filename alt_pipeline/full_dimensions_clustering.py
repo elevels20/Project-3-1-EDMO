@@ -28,8 +28,7 @@ if X.size == 0:
     raise ValueError("No datapoints extracted — clustering cannot proceed.")
 
 # scale features
-scaler = StandardScaler()
-X_scaled = scaler.fit_transform(X)
+X_scaled = StandardScaler().fit_transform(X)
 
 # clustering
 (
@@ -53,7 +52,7 @@ print("Best k:", best_k)
 print("Best silhouette score:", best_score)
 print("All silhouette scores:", silhouette_scores)
 
-cluster_save = (silhouette_scores, best_score, best_k, cluster_labels, u, cntr, fpc, scaler)
+cluster_save = (silhouette_scores,best_score,best_k,cluster_labels,u,cntr,fpc)
 
 import save_cluster
-save_cluster.save_cluster(cluster_save, "./full_dimensions_cluster.pkl")
+save_cluster.save_cluster(cluster_save, "./alt_pipeline/full_dimensions_cluster.pkl")
