@@ -14,13 +14,19 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent
 DATA_DIR = BASE_DIR
 
-def predict_cluster(clustered_data, json_path):
+def predict_cluster(clustered_data, json_path, type='robot'):
     
-    selected_features = json_extraction.selected_features
-    feature_labels = json_extraction.features_labels
-
-    # 1. Extract the 38 new datapoints
-    data = json_extraction.extract_datapoints_except_last(json_path, selected_features, feature_labels)
+    if type == 'robot':
+        selected_features = json_extraction.robot_selected_features
+        feature_labels = json_extraction.robot_features_labels
+        #Extract the new datapoints
+        data = json_extraction.extract_datapoints_except_last(json_path, selected_features, feature_labels)
+    else:
+        selected_features = json_extraction.voice_selected_features
+        feature_labels = json_extraction.voice_features_labels
+        #Extract the new datapoints
+        data = json_extraction.voice_extract_datapoints_except_last(json_path, selected_features, feature_labels)
+   
     X_new = np.array([dp.dimension_values for dp in data])
     
     # 2. Scale the NEW data

@@ -47,7 +47,7 @@ def plot_data(saved_cluster, prediction_file, type):
         }
 
     # Get Cluster Predictions
-    membership = cluster_prediction.predict_cluster(saved_cluster, prediction_file)
+    membership = cluster_prediction.predict_cluster(saved_cluster, prediction_file, type)
 
     # Load Data from JSON
     with open(prediction_file, 'r') as f:
@@ -133,7 +133,11 @@ def plot_data(saved_cluster, prediction_file, type):
         ax2.legend(loc='upper right')
 
     # Formatting
-    total_duration_min = robot_windows[-1]['window_end'] / 60
+    # total_duration_min = robot_windows[-1]['window_end'] / 60
+    if type == 'robot':
+        total_duration_min = robot_windows[-1]['window_end'] / 60
+    else:
+        total_duration_min = audio_windows[-1]['window_end'] / 60
     ax1.set_xlim(0, total_duration_min)
     ax1.set_yticks(range(k))
     ax1.set_yticklabels([f"C{i}: {cluster_meta[i]['name']}" for i in range(k)])
