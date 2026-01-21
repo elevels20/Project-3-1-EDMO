@@ -4,3 +4,4 @@ venv/
 __pycache__/
 sessions/
 output/
+.DS_Store
